@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.dao.WheelDispatchDao">
+    <insert id="insertWheelDispatch" parameterType="WheelDispatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO wheelDispatch
+        (
+                id	,
+                wheelId	,
+                axleDiameter	,
+                wheelDiameterLeft	,
+                wheelDiameterRight	,
+                treadWearLeft	,
+                treadWearRight	,
+                rimWideLeft	,
+                rimWideRight	,
+                flangeThickLeft	,
+                flangeThickRight	,
+                rimThickLeft	,
+                rimThickRight	,
+                internalDistance1	,
+                internalDistance2	,
+                internalDistance3	,
+
+                axleNumber	,
+                axleType	,
+                axleMaterial	,
+                axleMadeDate	,
+                axleMadeIn	,
+
+                wheelType	,
+                wheelMaterial	,
+                wheelMadeIn	,
+                wheelAssemblefirst	,
+                wheelAssemblefirstIn	,
+                wheelAssemblelast	,
+                wheelAssemblelastIn	,
+
+                bearingTypeLeft	,
+                bearingAssembleDateLeft,
+                bearingMadeInLeft,
+                bearingTypeRight,
+                bearingAssembleDateRight,
+                bearingMadeInRight,
+                worker ,
+                isFinish	,
+                finishTime
+        )
+        VALUES
+        (
+                #{	id	},
+                #{	wheelId	},
+                #{	axleDiameter	},
+                #{	wheelDiameterLeft	},
+                #{	wheelDiameterRight	},
+                #{	treadWearLeft	},
+                #{	treadWearRight	},
+                #{	rimWideLeft	},
+                #{	rimWideRight	},
+                #{	flangeThickLeft	},
+                #{	flangeThickRight	},
+                #{	rimThickLeft	},
+                #{	rimThickRight	},
+                #{	internalDistance1	},
+                #{	internalDistance2	},
+                #{	internalDistance3	},
+                #{	axleNumber	},
+                #{	axleType	},
+                #{	axleMaterial	},
+                #{	axleMadeDate	},
+                #{	axleMadeIn	},
+                #{	wheelType	},
+                #{	wheelMaterial	},
+                #{	wheelMadeIn	},
+                #{	wheelAssemblefirst	},
+                #{	wheelAssemblefirstIn	},
+                #{	wheelAssemblelast	},
+                #{	wheelAssemblelastIn	},
+                #{	bearingTypeLeft	},
+                #{	bearingAssembleDateLeft},
+                #{	bearingMadeInLeft},
+                #{	bearingTypeRight},
+                #{	bearingAssembleDateRight},
+                #{	bearingMadeInRight},
+                #{ worker },
+                #{	isFinish	},
+                #{	finishTime	}
+        )
+    </insert>
+    <update id="updateWheelDispatch" parameterType="WheelDispatch">
+        update wheelDispatch set
+                axleDiameter	=	#{	axleDiameter	},
+                wheelDiameterLeft	=	#{	wheelDiameterLeft	},
+                wheelDiameterRight	=	#{	wheelDiameterRight	},
+                treadWearLeft	=	#{	treadWearLeft	},
+                treadWearRight	=	#{	treadWearRight	},
+                rimWideLeft	=	#{	rimWideLeft	},
+                rimWideRight	=	#{	rimWideRight	},
+                flangeThickLeft	=	#{	flangeThickLeft	},
+                flangeThickRight	=	#{	flangeThickRight	},
+                rimThickLeft	=	#{	rimThickLeft	},
+                rimThickRight	=	#{	rimThickRight	},
+                internalDistance1	=	#{	internalDistance1	},
+                internalDistance2	=	#{	internalDistance2	},
+                internalDistance3	=	#{	internalDistance3	},
+                axleNumber	=	#{	axleNumber	},
+                axleType	=	#{	axleType	},
+                axleMaterial	=	#{	axleMaterial	},
+                axleMadeDate	=	#{	axleMadeDate	},
+                axleMadeIn	=	#{	axleMadeIn	},
+                wheelType	=	#{	wheelType	},
+                wheelMaterial	=	#{	wheelMaterial	},
+                wheelMadeIn	=	#{	wheelMadeIn	},
+                wheelAssemblefirst	=	#{	wheelAssemblefirst	},
+                wheelAssemblefirstIn	=	#{	wheelAssemblefirstIn	},
+                wheelAssemblelast	=	#{	wheelAssemblelast	},
+                wheelAssemblelastIn	=	#{	wheelAssemblelastIn	},
+                bearingTypeLeft = #{	bearingTypeLeft	},
+                bearingAssembleDateLeft = #{	bearingAssembleDateLeft},
+                bearingMadeInLeft =  #{	bearingMadeInLeft},
+                bearingTypeRight = #{	bearingTypeRight},
+                bearingAssembleDateRight = #{	bearingAssembleDateRight},
+                bearingMadeInRight = #{	bearingMadeInRight},
+                worker = #{ worker },
+                isFinish	=	#{	isFinish	},
+                finishTime	=	#{	finishTime	}
+                where wheelId	=	#{	wheelId	}
+    </update>
+
+    <select id="findWheelInfoToWheelDispatch" resultType="WheelInfo">
+                select * from wheelinfo w where  w.isbearingrollTestFinish = '1' and iswheelDispatchFinish = '0'
+        </select>
+    <select id="findWheelDispatchByWheelId" parameterType="int" resultType="WheelDispatch">
+                select * from wheelDispatch where wheelId = #{wheelId}
+        </select>
+    <update id="deleteWheelDispatchByWheelId" parameterType="int">
+                delete FROM wheelDispatch where wheelId = #{wheelId}
+        </update>
+
+    <update id="finishInspection">
+        UPDATE  wheeldispatch SET
+        qualityInspectFinishTime = #{time},
+        qualityInspector = #{inspector}
+        WHERE wheelId = #{wheelId}
+    </update>
+
+    <update id="flushWheelInfoqualityInspectionFinish" parameterType="int">
+        UPDATE wheelinfo SET isqualityInspectionFinish = '1' where wheelId = #{wheelId}
+    </update>
+
+    <update id="flushWheelInfowheelRemeasureFinish" >
+                UPDATE wheelinfo SET isreMeasureFinish = '1' where wheelId = #{wheelId}
+        </update>
+    <update id="flushWheelInfoWheelDispatchFinish" >
+                UPDATE wheelinfo SET iswheelDispatchFinish = '1',state = '2' where wheelId = #{wheelId}
+        </update>
+    <update id="rollbackWheelInfoWheelRemeasureFinish" >
+                UPDATE wheelinfo SET isreMeasureFinish = '0' where wheelId = #{wheelId}
+        </update>
+    <update id="rollbackWheelInfoWheelDispatchFinish" >
+                UPDATE wheelinfo SET iswheelDispatchFinish = '0' where wheelId = #{wheelId}
+        </update>
+
+    <select id="findWheelIdCount" parameterType="int" resultType="int">
+        SELECT COUNT(wheelid) FROM wheelDispatch WHERE wheelid  = #{wheelId}
+    </select>
+
+    <select id="searchWheelInfoByconditionWheelDispatch" parameterType="String" resultType="WheelInfo">
+        SELECT w.* FROM wheelinfo w
+        <if test="infoTakeFinishTime != null and infoTakeFinishTime != ''">
+            JOIN wheelDispatch r ON w.`WheelId` = r.`wheelId`
+        </if>
+        where  w.isbearingrollTestFinish = '1'
+        <if test="wheelId != ''">
+            AND  w.wheelId = #{wheelId}
+        </if>
+        <if test="takeInDate != null and takeInDate != ''">
+            AND  w.takeInDate = #{takeInDate}
+        </if>
+        <if test="axleNumber != ''">
+            AND  w.axleNumber = #{axleNumber}
+        </if>
+        <if test="vehicleNumber != ''">
+            AND w.vehicleNumber = #{vehicleNumber}
+        </if>
+        <if test="infoTakeFinishTime != null and infoTakeFinishTime != ''">
+            AND r.finishTime like #{infoTakeFinishTime}
+        </if>
+    </select>
+
+    <select id="findWheelOrgInfoOfVehicle" parameterType="String" resultType="WheelMeasure">
+        SELECT d.* FROM  wheelmeasure  d
+        JOIN `wheelinfo` w ON w.`WheelId` = d.`wheelId`
+        WHERE w.`VehicleNumber` = #{number};
+    </select>
+    <select id="findTarget" parameterType="String" resultType="WheelDispatch">
+        SELECT * FROM wheeldispatch
+            WHERE wheelDiameterLeft >= #{low}
+            AND  #{high} >= wheelDiameterLeft
+            AND  axlemadedate > #{axleLife}
+            AND  bearingAssembleDateLeft > #{bearingLife}
+            AND  bearingAssembleDateRight > #{bearingLife}
+            AND  wheelStatus = '0'
+            AND  chooseMark = '0'
+    </select>
+    <update id="updateDispatchStatus" >
+        UPDATE wheeldispatch SET
+            wheelStatus = '1',
+            vehicleType = #{vehicleType},
+            vehicleNumber = #{vehicleNumber},
+            axleDispatchPosition = #{axleDispatchPosition},
+            matcher = #{matcher}
+         WHERE wheelId = #{wheelId};
+    </update>
+
+    <select id="findvehicleNum" resultType="VehicleInfo">
+        SELECT DISTINCT vehiclenumber,vehicleType FROM `wheelinfo`WHERE
+        isqualityInspectionFinish = '1' AND iswheelDispatchFinish = '0'
+    </select>
+
+    <update id="setchooseMark" parameterType="int">
+        UPDATE wheeldispatch SET chooseMark = '1' WHERE wheelId = #{wheelId}
+    </update>
+    <update id="resetchooseMark" parameterType="int">
+        UPDATE wheeldispatch SET chooseMark = '0' WHERE wheelStatus = '0'
+    </update>
+</mapper>

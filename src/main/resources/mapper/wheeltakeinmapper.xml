@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.dao.WheelDao">
+    <insert id="insertWheelInfo" parameterType="WheelInfo" useGeneratedKeys="true" keyProperty="wheelId">
+        INSERT INTO wheelinfo
+        (takeInDate,takeInDepot,takeInReason,vehicleType,vehicleNumber,axleNumber,axleType,axleMaterial,
+        axleMadeDate,axleMadeIn,wheelType,wheelMaterial,wheelMadeIn,wheelAssemblefirstDate,wheelAssemblefirstIn,
+        wheelAssemblelastDate,wheelAssemblelastIn,wheelMarkLeft,wheelMarkRight,worker,infoTakeFinish,
+        infoTakeFinishTime,axlePosition,
+        isMeasureFinish,
+        isbearingRepairFinish,
+        isaxleInspectionFinish,
+        isWheelRoundingFinish,
+        isbearingLoadFinish,
+        isbearingrollTestFinish,
+        iswheelDispatchFinish,
+        isqualityInspectionFinish,
+        isverifyFinish,
+        ismagnetInspectionFinish,
+        isbearingCapFinish,
+        isbearingCapFinishW,
+        isbearingCapFinishL,
+        isprocessFinish,
+        state,
+        dipatchVehicleNumber,
+        dispatchDate,
+        dipatchAxlePosition,
+        reserve1,
+        reserve2,
+        reserve3,
+        reserve4,
+        isreMeasureFinish
+        )
+        VALUES
+        (#{takeInDate},#{takeInDepot},#{takeInReason},#{vehicleType},#{vehicleNumber},#{axleNumber},#{axleType},#{axleMaterial},
+        #{axleMadeDate},#{axleMadeIn},#{wheelType},#{wheelMaterial},#{wheelMadeIn},#{wheelAssemblefirstDate},#{wheelAssemblefirstIn},
+        #{wheelAssemblelastDate},#{wheelAssemblelastIn},#{wheelMarkLeft},#{wheelMarkRight},#{worker},#{infoTakeFinish},
+        #{infoTakeFinishTime},#{axlePosition},
+        #{isMeasureFinish},
+        #{isbearingRepairFinish},
+        #{isaxleInspectionFinish},
+        #{isWheelRoundingFinish},
+        #{isbearingLoadFinish},
+        #{isbearingrollTestFinish},
+        #{iswheelDispatchFinish},
+        #{isqualityInspectionFinish},
+        #{isverifyFinish},
+        #{ismagnetInspectionFinish},
+        #{isbearingCapFinish},
+        #{isbearingCapFinishW},
+        #{isbearingCapFinishL},
+        #{isprocessFinish},
+        #{state},
+        #{dipatchVehicleNumber},
+        #{dispatchDate},
+        #{dipatchAxlePosition},
+        #{reserve1},
+        #{reserve2},
+        #{reserve3},
+        #{reserve4},
+        #{isreMeasureFinish}
+        )
+    </insert>
+
+    <update id="updateWheelInfo" parameterType="WheelInfo">
+        update wheelinfo set
+        takeInDate=#{takeInDate},takeInDepot=#{takeInDepot},takeInReason=#{takeInReason},vehicleType=#{vehicleType},vehicleNumber=#{vehicleNumber},axleNumber=#{axleNumber},axleType=#{axleType},axleMaterial=#{axleMaterial},
+        axleMadeDate=#{axleMadeDate},axleMadeIn=#{axleMadeIn},wheelType=#{wheelType},wheelMaterial=#{wheelMaterial},wheelMadeIn=#{wheelMadeIn},wheelAssemblefirstDate=#{wheelAssemblefirstDate},wheelAssemblefirstIn=#{wheelAssemblefirstIn},
+        wheelAssemblelastDate=#{wheelAssemblelastDate},wheelAssemblelastIn=#{wheelAssemblelastIn},wheelMarkLeft=#{wheelMarkLeft},wheelMarkRight=#{wheelMarkRight},worker=#{worker},
+        infoTakeFinish=#{infoTakeFinish},infoTakeFinishTime=#{infoTakeFinishTime},axlePosition=#{axlePosition},#{isMeasureFinish},
+        isbearingRepairFinish=#{isbearingRepairFinish},
+        isaxleInspectionFinish=#{isaxleInspectionFinish},
+        isWheelRoundingFinish=#{isWheelRoundingFinish},
+        isbearingLoadFinish=#{isbearingLoadFinish},
+        isbearingrollTestFinish=#{isbearingrollTestFinish},
+        iswheelDispatchFinish=#{iswheelDispatchFinish},
+        isqualityInspectionFinish=#{isqualityInspectionFinish},
+        isverifyFinish=#{isverifyFinish},
+        ismagnetInspectionFinish = #{ismagnetInspectionFinish},
+        isbearingCapFinish = #{isbearingCapFinish},
+        isbearingCapFinishW = #{isbearingCapFinishW},
+        isbearingCapFinishL = #{isbearingCapFinishL},
+        isprocessFinish = #{isprocessFinish},
+        state = #{state},
+        dipatchVehicleNumber = #{dipatchVehicleNumber},
+        dispatchDate = #{dispatchDate},
+        dipatchAxlePosition = #{dipatchAxlePosition},
+        reserve1 = #{reserve1},
+        reserve2 = #{reserve2},
+        reserve3 = #{reserve3},
+        reserve4 = #{reserve4},
+        isreMeasureFinish = #{isreMeasureFinish}
+        where wheelId=#{wheelId}
+    </update>
+
+    <select id="findAllWheelInfo" parameterType="int" resultType="WheelInfo">
+        select * from wheelinfo
+    </select>
+    <select id="findWheelInfoById" parameterType="int" resultType="WheelInfo">
+        select * from wheelinfo where wheelId=#{wheelId}
+    </select>
+    <update id="deleteWheelInfo" parameterType="int">
+        delete from wheelinfo where wheelId = #{wheelId}
+    </update>
+    <select id="findWheelInfoToMeasure" resultType="WheelInfo">
+        select * from wheelinfo where isMeasureFinish = '0'
+    </select>
+    <select id="findWheelInfoToBearing" resultType="WheelInfo">
+        select * from wheelinfo where isbearingRepairFinish = '0' and isMeasureFinish = '1'
+    </select>
+
+    <update id="robackWheelInfoMeasureFinish" parameterType="int">
+        UPDATE wheelinfo SET isMeasureFinish = '0' where wheelId = #{wheelId}
+    </update>
+    <update id="rollbackWheelInfoMagInspectionFinish" parameterType="int">
+        UPDATE wheelinfo SET ismagnetInspectionFinish = '-1' where wheelId = #{wheelId}
+    </update>
+    <update id="rollbackWheelInfoAxleInspectionFinish" parameterType="int">
+        UPDATE wheelinfo SET isaxleInspectionFinish = '-1' where wheelId = #{wheelId}
+    </update>
+    <update id="rollbackWheelInfoWheelRoundingFinish" parameterType="int">
+        UPDATE wheelinfo SET isWheelRoundingFinish = '-1',isbearingCapFinishW = '-1',isbearingCapFinish = '-1'  where wheelId = #{wheelId}
+    </update>
+    <update id="rollbackWheelInfoisbearingLoadFinish" parameterType="int">
+        UPDATE wheelinfo SET isbearingLoadFinish = '-1' where wheelId = #{wheelId}
+    </update>
+    <update id="rollbackWheelInfoRepairFinish" parameterType="int">
+        UPDATE wheelinfo SET isbearingRepairFinish = '0' where wheelId = #{wheelId}
+    </update>
+    <update id="rollbackWheelInfobearingCapFinish" parameterType="int">
+        UPDATE wheelinfo SET isbearingCapFinish = '-1',isbearingCapFinishL = '-1',isbearingCapFinishW = '-1' where wheelId = #{wheelId}
+    </update>
+    <update id="rollbackWheelInforollTestFinish" parameterType="int">
+        UPDATE wheelinfo SET isbearingrollTestFinish = '0' where wheelId = #{wheelId}
+    </update>
+    <update id="rollbackWheelInfowheelRemeasureFinish" parameterType="int">
+        UPDATE wheelinfo SET isreMeasureFinish = '0' where wheelId = #{wheelId}
+    </update>
+    <update id="rollbackWheelInfowheelDispatchFinish" parameterType="int">
+        UPDATE wheelinfo SET iswheelDispatchFinish = '0' where wheelId = #{wheelId}
+    </update>
+    <update id="rollbackWheelInfoqualityInspectionFinish" parameterType="int">
+        UPDATE wheelinfo SET isqualityInspectionFinish = '0' where wheelId = #{wheelId}
+    </update>
+    <update id="rollbackWheelInfoverifyFinish" parameterType="int">
+        UPDATE wheelinfo SET isverifyFinish = '0' where wheelId = #{wheelId}
+    </update>
+    <update id="rollbackWheelInfoprocessFinish" parameterType="int">
+        UPDATE wheelinfo SET isprocessFinish = '0' where wheelId = #{wheelId}
+    </update>
+    <select id="findWheelInfo" parameterType="String" resultType="WheelInfo">
+        SELECT * FROM wheelinfo
+        <where>
+            <if test="wheelId != ''">
+                wheelId = #{wheelId}
+            </if>
+            <if test="takeInDate != null and takeInDate != ''">
+                AND takeInDate = #{takeInDate}
+            </if>
+            <if test="axleNumber != ''">
+                AND axleNumber = #{axleNumber}
+            </if>
+            <if test="vehicleNumber != ''">
+                AND vehicleNumber = #{vehicleNumber}
+            </if>
+            <if test="infoTakeFinishTime != null and infoTakeFinishTime != ''">
+                AND infoTakeFinishTime like #{infoTakeFinishTime}
+            </if>
+        </where>
+    </select>
+    <select id="findWheelInfoByCondition" resultType="WheelInfo">
+        select w.* from wheelinfo w
+            <if test="infoTakeFinishTime != null and infoTakeFinishTime != ''">
+                JOIN wheelDispatch r ON w.`WheelId` = r.`wheelId`
+            </if>
+        <where>
+            <if test="wheelId != ''">
+                AND  w.wheelId = #{wheelId}
+            </if>
+            <if test="isprocessFinish != ''">
+                AND  w.isprocessFinish = #{isprocessFinish}
+            </if>
+            <if test="axleNumber != ''">
+                AND w.axleNumber = #{axleNumber}
+            </if>
+            <if test="axleType != ''">
+                AND w.axleType = #{axleType}
+            </if>
+            <if test="vehicleNumber != ''">
+                AND w.vehicleNumber = #{vehicleNumber}
+            </if>
+            <if test="takeInReason != ''">
+                AND w.takeInReason = #{takeInReason}
+            </if>
+            <if test="status != null and status != ''">
+                AND w.state = #{status}
+            </if>
+            <if test="dipatchVehicleNumber != null and dipatchVehicleNumber != ''">
+                AND w.dipatchVehicleNumber = #{dipatchVehicleNumber}
+            </if>
+            <if test="takeInDate != null and takeInDate != ''">
+                AND w.takeInDate like #{takeInDate}
+            </if>
+            <if test="dispatchDate != null and dispatchDate != ''">
+                AND w.dispatchDate like #{dispatchDate}
+            </if>
+            <if test="infoTakeFinishTime != null and infoTakeFinishTime != ''">
+                AND r.finishTime like #{infoTakeFinishTime}
+            </if>
+        </where>
+    </select>
+
+</mapper>
