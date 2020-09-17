@@ -73,24 +73,28 @@
 
     <select id="searchWheelInfoByconditionTest" parameterType="String" resultType="WheelInfo">
         SELECT w.* FROM wheelinfo w
-        <if test="infoTakeFinishTime != null and infoTakeFinishTime != ''">
             JOIN rollTest r ON w.`WheelId` = r.`wheelId`
-        </if>
-        WHERE isbearingCapFinish != '0'  and isbearingRepairFinish = '1'  and isaxleInspectionFinish !='0'
+        WHERE w.isbearingCapFinish != '0'  and w.isbearingRepairFinish = '1'  and w.isaxleInspectionFinish !='0'
         <if test="wheelId != ''">
-            AND  w.wheelId = #{wheelId}
-        </if>
-        <if test="takeInDate != null and takeInDate != ''">
-            AND  w.takeInDate = #{takeInDate}
-        </if>
-        <if test="axleNumber != ''">
-            AND  w.axleNumber = #{axleNumber}
+            w.wheelId = #{wheelId}
         </if>
         <if test="vehicleNumber != ''">
             AND w.vehicleNumber = #{vehicleNumber}
         </if>
-        <if test="infoTakeFinishTime != null and infoTakeFinishTime != ''">
-            AND r.finishTime like #{infoTakeFinishTime}
+        <if test="axleNumber != ''">
+            AND  w.axleNumber = #{axleNumber}
+        </if>
+        <if test="takeInDateFrom != null ">
+            AND w.takeInDate >= #{takeInDateFrom}
+        </if>
+        <if test="takeInDateTo != null ">
+            AND #{takeInDateTo} >= w.takeInDate
+        </if>
+        <if test="infoTakeFinishTimeFrom != null ">
+            AND r.finishTime >= #{infoTakeFinishTimeFrom}
+        </if>
+        <if test="infoTakeFinishTimeTo != null ">
+            AND  #{infoTakeFinishTimeTo} >= r.finishTime
         </if>
     </select>
 </mapper>

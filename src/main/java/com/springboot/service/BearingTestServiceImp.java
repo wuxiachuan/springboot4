@@ -51,10 +51,13 @@ public class BearingTestServiceImp implements BearingTestService{
 
     @Override
     public List<WheelInfo> searchWheelInfoTest(SearchWheelParam param) {
-        String finishtime = param.getInfoTakeFinishTime();
-        if (finishtime != null)  finishtime = "%"+finishtime+"%";
-        return bearingTestDao.searchWheelInfoByconditionTest(param.getWheelId(),param.getTakeInDate(),
-                param.getAxleNumber(),param.getVehicleNumber(),finishtime);
+        return bearingTestDao.searchWheelInfoByconditionTest(
+                param.getWheelId(),
+                param.getTakeInDateFrom(),
+                param.getTakeInDateTo(),
+                param.getAxleNumber(),param.getVehicleNumber(),
+                param.getInfoTakeFinishTimeFrom(),
+                param.getInfoTakeFinishTimeTo());
     }
     public void fresh(Integer id){
         wheelDao.rollbackWheelInfowheelDispatchFinish(id);

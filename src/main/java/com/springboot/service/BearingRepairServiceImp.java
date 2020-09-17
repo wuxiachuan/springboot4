@@ -51,10 +51,12 @@ public class BearingRepairServiceImp implements BearingRepairService{
 
     @Override
     public List<WheelInfo> searchWheelInfoRepairCondition(SearchWheelParam param) {
-        String finishtime = param.getInfoTakeFinishTime();
-        if (finishtime != null)  finishtime = "%"+finishtime+"%";
-        return bearingRepairDao.searchWheelInfoByconditionRepair(param.getWheelId(),param.getTakeInDate(),
-                param.getAxleNumber(),param.getVehicleNumber(),finishtime);
+        return bearingRepairDao.searchWheelInfoByconditionRepair(param.getWheelId(),
+                param.getTakeInDateFrom(),
+                param.getTakeInDateTo(),
+                param.getAxleNumber(),param.getVehicleNumber(),
+                param.getInfoTakeFinishTimeFrom(),
+                param.getInfoTakeFinishTimeTo());
     }
 
     @Override

@@ -76,10 +76,13 @@ public class WheelMeasureServiceImp implements WheelMeasureService{
 
     @Override
     public List<WheelInfo> searchWheelInfoMeasure(SearchWheelParam param) {
-        String finishtime = param.getInfoTakeFinishTime();
-        if (finishtime != null)  finishtime = "%"+finishtime+"%";
-        return measureDao.searchWheelInfoByconditionMeasure(param.getWheelId(),param.getTakeInDate(),
-                param.getAxleNumber(),param.getVehicleNumber(),finishtime);
+        return measureDao.searchWheelInfoByconditionMeasure(
+                                                            param.getWheelId(),
+                                                            param.getTakeInDateFrom(),
+                                                            param.getTakeInDateTo(),
+                                                            param.getAxleNumber(),param.getVehicleNumber(),
+                                                            param.getInfoTakeFinishTimeFrom(),
+                                                            param.getInfoTakeFinishTimeTo());
     }
     private void fresh(Integer id){
         wheelDao.rollbackWheelInfoRepairFinish(id);

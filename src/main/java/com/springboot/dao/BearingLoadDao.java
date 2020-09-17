@@ -13,8 +13,13 @@ public interface BearingLoadDao {
     void updateBearingLoad(BearingLoad bearingLoad);
 
     List<WheelInfo> findWheelInfoToBearingLoad();
-    List<WheelInfo> searchWheelInfoBycondition(@Param("wheelId") String wheelId,@Param("takeInDate") String takeInDate,@Param("axleNumber") String axleNumber,
-                                                            @Param("vehicleNumber")String vehicleNumber, @Param("infoTakeFinishTime")String infoTakeFinishTime);
+    List<WheelInfo> searchWheelInfoBycondition(@Param("wheelId") String wheelId,
+                                               @Param("takeInDateFrom") String takeInDateFrom,
+                                               @Param("takeInDateTo") String takeInDateTo,
+                                               @Param("axleNumber") String axleNumber,
+                                               @Param("vehicleNumber")String vehicleNumber,
+                                               @Param("infoTakeFinishTimeFrom")String infoTakeFinishTimeFrom,
+                                               @Param("infoTakeFinishTimeTo")String infoTakeFinishTimeTo);
 
     BearingLoad findBearingLoadByWheelId(Integer id);
     void deleteBearingLoadByWheelId(Integer wheelId);

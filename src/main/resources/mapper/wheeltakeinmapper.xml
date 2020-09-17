@@ -156,25 +156,29 @@
             <if test="wheelId != ''">
                 wheelId = #{wheelId}
             </if>
-            <if test="takeInDate != null and takeInDate != ''">
-                AND takeInDate = #{takeInDate}
-            </if>
             <if test="axleNumber != ''">
                 AND axleNumber = #{axleNumber}
             </if>
             <if test="vehicleNumber != ''">
                 AND vehicleNumber = #{vehicleNumber}
             </if>
-            <if test="infoTakeFinishTime != null and infoTakeFinishTime != ''">
-                AND infoTakeFinishTime like #{infoTakeFinishTime}
+            <if test="takeInDateFrom != null ">
+                AND takeInDate >= #{takeInDateFrom}
+            </if>
+            <if test="takeInDateTo != null ">
+                AND #{takeInDateTo} >= takeInDate
+            </if>
+            <if test="infoTakeFinishTimeFrom != null ">
+                AND infoTakeFinishTime >= #{infoTakeFinishTimeFrom}
+            </if>
+            <if test="infoTakeFinishTimeTo != null ">
+                AND  #{infoTakeFinishTimeTo} >= infoTakeFinishTime
             </if>
         </where>
     </select>
     <select id="findWheelInfoByCondition" resultType="WheelInfo">
         select w.* from wheelinfo w
-            <if test="infoTakeFinishTime != null and infoTakeFinishTime != ''">
-                JOIN wheelDispatch r ON w.`WheelId` = r.`wheelId`
-            </if>
+              JOIN wheelDispatch r ON w.`WheelId` = r.`wheelId`
         <where>
             <if test="wheelId != ''">
                 AND  w.wheelId = #{wheelId}
@@ -200,14 +204,23 @@
             <if test="dipatchVehicleNumber != null and dipatchVehicleNumber != ''">
                 AND w.dipatchVehicleNumber = #{dipatchVehicleNumber}
             </if>
-            <if test="takeInDate != null and takeInDate != ''">
-                AND w.takeInDate like #{takeInDate}
+            <if test="dispatchDateFrom != null ">
+                AND w.dispatchDate >= #{dispatchDateFrom}
             </if>
-            <if test="dispatchDate != null and dispatchDate != ''">
-                AND w.dispatchDate like #{dispatchDate}
+            <if test="dispatchDateTo != null ">
+                AND #{dispatchDateTo} >= w.dispatchDate
             </if>
-            <if test="infoTakeFinishTime != null and infoTakeFinishTime != ''">
-                AND r.finishTime like #{infoTakeFinishTime}
+            <if test="takeInDateFrom != null ">
+                AND w.takeInDate >= #{takeInDateFrom}
+            </if>
+            <if test="takeInDateTo != null ">
+                AND #{takeInDateTo} >= w.takeInDate
+            </if>
+            <if test="infoTakeFinishTimeFrom != null ">
+                AND r.finishTime >= #{infoTakeFinishTimeFrom}
+            </if>
+            <if test="infoTakeFinishTimeTo != null ">
+                AND  #{infoTakeFinishTimeTo} >= r.finishTime
             </if>
         </where>
     </select>

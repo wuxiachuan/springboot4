@@ -42,7 +42,7 @@ public class UserServiceImp implements UserService{
         String token = UUID.randomUUID().toString();
         resmap.put("token",token);
         String status = user.getStatus();
-        redisTemplate.opsForValue().set(token,name, Duration.ofMinutes(30));
+        redisTemplate.opsForValue().set(token,name);
         redisTemplate.opsForHash().put(name+"token","token",token);
         redisTemplate.opsForHash().put(name+"token","status",status);
         redisTemplate.opsForHash().put(name+"token","loginTime",dateFormater.format(new Date()));

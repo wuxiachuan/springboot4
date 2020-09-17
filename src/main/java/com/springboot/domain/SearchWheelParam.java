@@ -3,13 +3,19 @@ package com.springboot.domain;
 public class SearchWheelParam {
     private String wheelId;
     private String takeInDate;
+    private String takeInDateFrom;
+    private String takeInDateTo;
     private String dispatchDate;
+    private String dispatchDateFrom;
+    private String dispatchDateTo;
     private String takeInReason;
     private String axleNumber;
     private String axleType;
     private String vehicleNumber;
     private String dipatchVehicleNumber;
     private String infoTakeFinishTime;
+    private String infoTakeFinishTimeFrom;
+    private String infoTakeFinishTimeTo;
     private String status;
     private String isprocessFinish;
     private String page;
@@ -17,16 +23,20 @@ public class SearchWheelParam {
 
     public SearchWheelParam() {
         wheelId = "";
-        takeInDate = "";
-        dispatchDate = "";
+        takeInDate = null;
+        takeInDateFrom = null;
+        takeInDateTo = null;
+        dispatchDate = null;
+        dispatchDateFrom = null;
+        dispatchDateTo = null;
         takeInReason = "";
         axleNumber = "";
         axleType = "";
         vehicleNumber = "";
         dipatchVehicleNumber = "";
-        infoTakeFinishTime = "";
+        infoTakeFinishTime = null;
         status = "";
-        isprocessFinish = null;
+        isprocessFinish = "0";
     }
 
     public String getWheelId() {
@@ -133,11 +143,61 @@ public class SearchWheelParam {
         this.isprocessFinish = isprocessFinish;
     }
 
+    public String getTakeInDateFrom() {
+        return takeInDateFrom;
+    }
+
+    public void setTakeInDateFrom(String takeInDateFrom) {
+        this.takeInDateFrom = takeInDateFrom;
+    }
+
+    public String getTakeInDateTo() {
+        return takeInDateTo;
+    }
+
+    public void setTakeInDateTo(String takeInDateTo) {
+        this.takeInDateTo = takeInDateTo;
+    }
+
+    public String getInfoTakeFinishTimeFrom() {
+        return infoTakeFinishTimeFrom;
+    }
+
+    public void setInfoTakeFinishTimeFrom(String infoTakeFinishTimeFrom) {
+        this.infoTakeFinishTimeFrom = infoTakeFinishTimeFrom;
+    }
+
+    public String getInfoTakeFinishTimeTo() {
+        return infoTakeFinishTimeTo;
+    }
+
+    public void setInfoTakeFinishTimeTo(String infoTakeFinishTimeTo) {
+        this.infoTakeFinishTimeTo = infoTakeFinishTimeTo;
+    }
+
+    public String getDispatchDateFrom() {
+        return dispatchDateFrom;
+    }
+
+    public void setDispatchDateFrom(String dispatchDateFrom) {
+        this.dispatchDateFrom = dispatchDateFrom;
+    }
+
+    public String getDispatchDateTo() {
+        return dispatchDateTo;
+    }
+
+    public void setDispatchDateTo(String dispatchDateTo) {
+        this.dispatchDateTo = dispatchDateTo;
+    }
+
     @Override
     public String toString() {
         return "SearchWheelParam{" +
                 "wheelId='" + wheelId + '\'' +
                 ", takeInDate='" + takeInDate + '\'' +
+                ", takeInDateFrom='" + takeInDateFrom + '\'' +
+                ", takeInDateTo='" + takeInDateTo + '\'' +
                 ", dispatchDate='" + dispatchDate + '\'' +
                 ", takeInReason='" + takeInReason + '\'' +
                 ", axleNumber='" + axleNumber + '\'' +
@@ -146,6 +206,7 @@ public class SearchWheelParam {
                 ", dipatchVehicleNumber='" + dipatchVehicleNumber + '\'' +
                 ", infoTakeFinishTime='" + infoTakeFinishTime + '\'' +
                 ", status='" + status + '\'' +
+                ", isprocessFinish='" + isprocessFinish + '\'' +
                 ", page='" + page + '\'' +
                 ", size='" + size + '\'' +
                 '}';

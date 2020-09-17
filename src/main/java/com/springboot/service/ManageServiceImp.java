@@ -42,16 +42,15 @@ public class ManageServiceImp implements ManageService{
         String infoTakeFinishTime = param.getInfoTakeFinishTime();
         String status = param.getStatus();
         String isprocessFinish = param.getIsprocessFinish();
-        if (takeInDate != null) takeInDate = "%"+takeInDate+"%";
-        if (dispatchDate != null) dispatchDate = "%"+dispatchDate+"%";
-        if (infoTakeFinishTime != null) infoTakeFinishTime = "%"+infoTakeFinishTime+"%";
         List<WheelInfo> wheelInfoList = wheelDao.findWheelInfoByCondition(
-                                    id,
-                                    takeInDate,
-                                    axleNumber,
-                                    vehicleNumber,
-                                    infoTakeFinishTime,
-                                    dispatchDate,
+                                    param.getWheelId(),
+                                    param.getTakeInDateFrom(),
+                                    param.getTakeInDateTo(),
+                                    param.getAxleNumber(),param.getVehicleNumber(),
+                                    param.getInfoTakeFinishTimeFrom(),
+                                    param.getInfoTakeFinishTimeTo(),
+                                    param.getDispatchDateFrom(),
+                                    param.getDispatchDateTo(),
                                     dipatchVehicleNumber,
                                     status,
                                     axleType,

@@ -14,8 +14,13 @@ public interface BearingCapDao {
     void updateBearingCap(BearingCap bearingCap);
 
     List<WheelInfo> findWheelInfoToBearingCap();
-    List<WheelInfo> searchWheelInfoBycondition(@Param("wheelId") String wheelId, @Param("takeInDate") String takeInDate, @Param("axleNumber") String axleNumber,
-                                               @Param("vehicleNumber")String vehicleNumber, @Param("infoTakeFinishTime")String infoTakeFinishTime);
+    List<WheelInfo> searchWheelInfoBycondition(@Param("wheelId") String wheelId,
+                                               @Param("takeInDateFrom") String takeInDateFrom,
+                                               @Param("takeInDateTo") String takeInDateTo,
+                                               @Param("axleNumber") String axleNumber,
+                                               @Param("vehicleNumber")String vehicleNumber,
+                                               @Param("infoTakeFinishTimeFrom")String infoTakeFinishTimeFrom,
+                                               @Param("infoTakeFinishTimeTo")String infoTakeFinishTimeTo);
 
     BearingCap findBearingCapByWheelId(Integer id);
     void deleteBearingCapByWheelId(Integer wheelId);

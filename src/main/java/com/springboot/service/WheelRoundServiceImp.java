@@ -52,10 +52,13 @@ public class WheelRoundServiceImp implements WheelRoundService{
 
     @Override
     public List<WheelInfo> searchWheelInfoWheelRound(SearchWheelParam param) {
-        String finishtime = param.getInfoTakeFinishTime();
-        if (finishtime != null)  finishtime = "%"+finishtime+"%";
-        return wheelRoundDao.searchWheelInfoByconditionWheelRound(param.getWheelId(),param.getTakeInDate(),
-                param.getAxleNumber(),param.getVehicleNumber(),finishtime);
+        return wheelRoundDao.searchWheelInfoByconditionWheelRound(
+                                param.getWheelId(),
+                                param.getTakeInDateFrom(),
+                                param.getTakeInDateTo(),
+                                param.getAxleNumber(),param.getVehicleNumber(),
+                                param.getInfoTakeFinishTimeFrom(),
+                                param.getInfoTakeFinishTimeTo());
     }
 
     private void fresh(Integer id){

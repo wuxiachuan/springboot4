@@ -116,24 +116,28 @@
 
     <select id="searchWheelInfoByconditionMeasure" parameterType="String"  resultType="WheelInfo">
         SELECT w.* FROM wheelinfo w
-        <if test="infoTakeFinishTime != null and infoTakeFinishTime != ''">
-            JOIN wheelmeasure r ON w.`WheelId` = r.`wheelId`
-        </if>
+        JOIN wheelmeasure r ON w.`WheelId` = r.`wheelId`
         <where>
             <if test="wheelId != ''">
                 w.wheelId = #{wheelId}
             </if>
-            <if test="takeInDate != null and takeInDate != ''">
-                AND  w.takeInDate = #{takeInDate}
+            <if test="vehicleNumber != ''">
+                AND w.vehicleNumber = #{vehicleNumber}
             </if>
             <if test="axleNumber != ''">
                 AND  w.axleNumber = #{axleNumber}
             </if>
-            <if test="vehicleNumber != ''">
-                AND w.vehicleNumber = #{vehicleNumber}
+            <if test="takeInDateFrom != null ">
+                AND w.takeInDate >= #{takeInDateFrom}
             </if>
-            <if test="infoTakeFinishTime != null and infoTakeFinishTime != ''">
-                AND r.finishTime like #{infoTakeFinishTime}
+            <if test="takeInDateTo != null ">
+                AND #{takeInDateTo} >= w.takeInDate
+            </if>
+            <if test="infoTakeFinishTimeFrom != null ">
+                AND r.finishTime >= #{infoTakeFinishTimeFrom}
+            </if>
+            <if test="infoTakeFinishTimeTo != null ">
+                AND  #{infoTakeFinishTimeTo} >= r.finishTime
             </if>
         </where>
     </select>

@@ -56,8 +56,12 @@ public class BearingLoadServiceImp implements BearingLoadService{
     public List<WheelInfo> searchWheelInfoBycondition(SearchWheelParam param) {
         String finishtime = param.getInfoTakeFinishTime();
         if (finishtime != null)  finishtime = "%"+finishtime+"%";
-        return bearingLoadDao.searchWheelInfoBycondition(param.getWheelId(),param.getTakeInDate(),
-                param.getAxleNumber(),param.getVehicleNumber(),finishtime);
+        return bearingLoadDao.searchWheelInfoBycondition(param.getWheelId(),
+                param.getTakeInDateFrom(),
+                param.getTakeInDateTo(),
+                param.getAxleNumber(),param.getVehicleNumber(),
+                param.getInfoTakeFinishTimeFrom(),
+                param.getInfoTakeFinishTimeTo());
     }
 
     public void fresh(Integer id){

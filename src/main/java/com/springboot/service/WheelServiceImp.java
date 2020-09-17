@@ -20,10 +20,13 @@ public class WheelServiceImp implements WheelService{
 
     @Override
     public List<WheelInfo> findWheelInfo(SearchWheelParam param) {
-        String finishtime = param.getInfoTakeFinishTime();
-        if (finishtime != null)  finishtime = "%"+finishtime+"%";
-        return wheelDao.findWheelInfo(param.getWheelId(),param.getTakeInDate(),
-                param.getAxleNumber(),param.getVehicleNumber(),finishtime);
+        return wheelDao.findWheelInfo(  param.getWheelId(),
+                                        param.getTakeInDateFrom(),
+                                        param.getTakeInDateTo(),
+                                        param.getAxleNumber(),
+                                        param.getVehicleNumber(),
+                                        param.getInfoTakeFinishTimeFrom(),
+                                        param.getInfoTakeFinishTimeTo());
     }
 
     @Override

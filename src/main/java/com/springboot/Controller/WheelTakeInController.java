@@ -33,6 +33,7 @@ public class WheelTakeInController {
     @ResponseBody
     public Result findWheelInfo(@RequestBody SearchWheelParam param){
         List<WheelInfo> list = null;
+        System.out.println(param);
         try{
             list = wheelService.findWheelInfo(param);
         }catch (Exception e){

@@ -48,10 +48,13 @@ public class AxleInspectionServiceImp implements AxleInspectionService{
 
     @Override
     public List<WheelInfo> searchWheelInfoAxleInspection(SearchWheelParam param) {
-        String finishtime = param.getInfoTakeFinishTime();
-        if (finishtime != null)  finishtime = "%"+finishtime+"%";
-        return axleInspectionDao.searchWheelInfoByconditionAxleInspection(param.getWheelId(),param.getTakeInDate(),
-                param.getAxleNumber(),param.getVehicleNumber(),finishtime);
+        return axleInspectionDao.searchWheelInfoByconditionAxleInspection(
+                param.getWheelId(),
+                param.getTakeInDateFrom(),
+                param.getTakeInDateTo(),
+                param.getAxleNumber(),param.getVehicleNumber(),
+                param.getInfoTakeFinishTimeFrom(),
+                param.getInfoTakeFinishTimeTo());
     }
 
     @Override
@@ -88,10 +91,12 @@ public class AxleInspectionServiceImp implements AxleInspectionService{
 
     @Override
     public List<WheelInfo> searchWheelInfoMagInspection(SearchWheelParam param) {
-        String finishtime = param.getInfoTakeFinishTime();
-        if (finishtime != null)  finishtime = "%"+finishtime+"%";
-        return axleInspectionDao.searchWheelInfoByconditionMagInspection(param.getWheelId(),param.getTakeInDate(),
-                param.getAxleNumber(),param.getVehicleNumber(),finishtime);
+        return axleInspectionDao.searchWheelInfoByconditionMagInspection(param.getWheelId(),
+                param.getTakeInDateFrom(),
+                param.getTakeInDateTo(),
+                param.getAxleNumber(),param.getVehicleNumber(),
+                param.getInfoTakeFinishTimeFrom(),
+                param.getInfoTakeFinishTimeTo());
     }
     private void fresh(Integer id){
         wheelDao.rollbackWheelInforollTestFinish(id);

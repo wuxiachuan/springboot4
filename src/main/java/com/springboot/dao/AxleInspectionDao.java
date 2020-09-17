@@ -13,8 +13,13 @@ public interface AxleInspectionDao {
     void insertAxleInspection(AxleInspection axleInspection);
     void updateAxleInspection(AxleInspection axleInspection);
     List<WheelInfo> findWheelInfoToAxleInspection();
-    List<WheelInfo> searchWheelInfoByconditionAxleInspection(@Param("wheelId") String wheelId, @Param("takeInDate") String takeInDate, @Param("axleNumber") String axleNumber,
-                                                   @Param("vehicleNumber")String vehicleNumber, @Param("infoTakeFinishTime")String infoTakeFinishTime);
+    List<WheelInfo> searchWheelInfoByconditionAxleInspection(@Param("wheelId") String wheelId,
+                                                             @Param("takeInDateFrom") String takeInDateFrom,
+                                                             @Param("takeInDateTo") String takeInDateTo,
+                                                             @Param("axleNumber") String axleNumber,
+                                                             @Param("vehicleNumber")String vehicleNumber,
+                                                             @Param("infoTakeFinishTimeFrom")String infoTakeFinishTimeFrom,
+                                                             @Param("infoTakeFinishTimeTo")String infoTakeFinishTimeTo);
 
     AxleInspection findAxleInspectionByWheelId(Integer id);
     void deleteAxleInspectionByWheelId(Integer wheelId);
@@ -27,9 +32,13 @@ public interface AxleInspectionDao {
     void insertMagInspection(AxleInspection axleInspection);
     void updateMagInspection(AxleInspection axleInspection);
     List<WheelInfo> findWheelInfoToMagInspection();
-    List<WheelInfo> searchWheelInfoByconditionMagInspection(@Param("wheelId") String wheelId, @Param("takeInDate") String takeInDate, @Param("axleNumber") String axleNumber,
-                                                             @Param("vehicleNumber")String vehicleNumber, @Param("infoTakeFinishTime")String infoTakeFinishTime);
-
+    List<WheelInfo> searchWheelInfoByconditionMagInspection(@Param("wheelId") String wheelId,
+                                                            @Param("takeInDateFrom") String takeInDateFrom,
+                                                            @Param("takeInDateTo") String takeInDateTo,
+                                                            @Param("axleNumber") String axleNumber,
+                                                            @Param("vehicleNumber")String vehicleNumber,
+                                                            @Param("infoTakeFinishTimeFrom")String infoTakeFinishTimeFrom,
+                                                            @Param("infoTakeFinishTimeTo")String infoTakeFinishTimeTo);
     AxleInspection findMagInspectionByWheelId(Integer id);
     void deleteMagInspectionByWheelId(Integer wheelId);
 

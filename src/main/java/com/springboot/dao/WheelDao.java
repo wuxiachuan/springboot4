@@ -9,8 +9,13 @@ import java.util.List;
 @Mapper
 public interface WheelDao {
     void insertWheelInfo(WheelInfo wheelInfo);
-    List<WheelInfo> findWheelInfo(@Param("wheelId") String wheelId,@Param("takeInDate") String takeInDate,@Param("axleNumber") String axleNumber,
-                                  @Param("vehicleNumber")String vehicleNumber, @Param("infoTakeFinishTime")String infoTakeFinishTime);
+    List<WheelInfo> findWheelInfo(@Param("wheelId") String wheelId,
+                                  @Param("takeInDateFrom") String takeInDateFrom,
+                                  @Param("takeInDateTo") String takeInDateTo,
+                                  @Param("axleNumber") String axleNumber,
+                                  @Param("vehicleNumber")String vehicleNumber,
+                                  @Param("infoTakeFinishTimeFrom")String infoTakeFinishTimeFrom,
+                                  @Param("infoTakeFinishTimeTo")String infoTakeFinishTimeTo);
     void updateWheelInfo(WheelInfo wheelInfo);
     void deleteWheelInfo(Integer id);
     List<WheelInfo> findWheelInfoToMeasure();
@@ -19,11 +24,14 @@ public interface WheelDao {
     WheelInfo findWheelInfoById(Integer wheelId);
     List<WheelInfo> findAllWheelInfo();
     List<WheelInfo> findWheelInfoByCondition(@Param("wheelId") String wheelId,
-                                             @Param("takeInDate") String takeInDate,
+                                             @Param("takeInDateFrom") String takeInDateFrom,
+                                             @Param("takeInDateTo") String takeInDateTo,
                                              @Param("axleNumber") String axleNumber,
                                              @Param("vehicleNumber")String vehicleNumber,
-                                             @Param("infoTakeFinishTime")String infoTakeFinishTime,
-                                             @Param("dispatchDate")String dispatchDate,
+                                             @Param("infoTakeFinishTimeFrom")String infoTakeFinishTimeFrom,
+                                             @Param("infoTakeFinishTimeTo")String infoTakeFinishTimeTo,
+                                             @Param("dispatchDateFrom")String dispatchDateFrom,
+                                             @Param("dispatchDateTo")String dispatchDateTo,
                                              @Param("dipatchVehicleNumber")String dipatchVehicleNumber,
                                              @Param("status")String status,
                                              @Param("axleType")String axleType,

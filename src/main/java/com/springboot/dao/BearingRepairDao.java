@@ -17,7 +17,12 @@ public interface BearingRepairDao {
     void rollbackWheelInfoLoadFinish(Integer wheelId);
     BearingRepair findBearingRepairByWheelId(Integer wheelId);
     void deleteBearingRepairByWheelId(Integer wheelId);
-    List<WheelInfo> searchWheelInfoByconditionRepair(@Param("wheelId") String wheelId, @Param("takeInDate") String takeInDate, @Param("axleNumber") String axleNumber,
-                                                   @Param("vehicleNumber")String vehicleNumber, @Param("infoTakeFinishTime")String infoTakeFinishTime);
+    List<WheelInfo> searchWheelInfoByconditionRepair(@Param("wheelId") String wheelId,
+                                                     @Param("takeInDateFrom") String takeInDateFrom,
+                                                     @Param("takeInDateTo") String takeInDateTo,
+                                                     @Param("axleNumber") String axleNumber,
+                                                     @Param("vehicleNumber")String vehicleNumber,
+                                                     @Param("infoTakeFinishTimeFrom")String infoTakeFinishTimeFrom,
+                                                     @Param("infoTakeFinishTimeTo")String infoTakeFinishTimeTo);
     Integer findWheelIdCount(Integer wheelId);
 }

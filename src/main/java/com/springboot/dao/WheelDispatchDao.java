@@ -12,10 +12,12 @@ public interface WheelDispatchDao {
 
     List<WheelInfo> findWheelInfoToWheelDispatchRemeasure();
     List<WheelInfo> searchWheelInfoByconditionWheelDispatch(@Param("wheelId") String wheelId,
-                                                            @Param("takeInDate") String takeInDate,
+                                                            @Param("takeInDateFrom") String takeInDateFrom,
+                                                            @Param("takeInDateTo") String takeInDateTo,
                                                             @Param("axleNumber") String axleNumber,
                                                             @Param("vehicleNumber")String vehicleNumber,
-                                                            @Param("infoTakeFinishTime")String infoTakeFinishTime);
+                                                            @Param("infoTakeFinishTimeFrom")String infoTakeFinishTimeFrom,
+                                                            @Param("infoTakeFinishTimeTo")String infoTakeFinishTimeTo);
 
     WheelDispatch findWheelDispatchByWheelId(Integer id);
     void deleteWheelDispatchByWheelId(Integer wheelId);

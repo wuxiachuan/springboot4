@@ -33,7 +33,6 @@ public class WheelInterceptor implements HandlerInterceptor {
         if ("0".equals(status)){
             return false;
         }
-        redisTemplate.expire(token, Duration.ofMinutes(30));
         String ipaddr = request.getRemoteAddr();
         redisTemplate.opsForHash().putIfAbsent(name+"token","ip",ipaddr);
         redisTemplate.opsForList().leftPush(name+"log",url+"="+dateFormater.format(new Date())+"="+ipaddr);

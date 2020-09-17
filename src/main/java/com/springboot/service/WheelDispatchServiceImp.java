@@ -64,10 +64,12 @@ public class WheelDispatchServiceImp implements WheelDispatchService{
 
     @Override
     public List<WheelInfo> searchWheelInfoDispatch(SearchWheelParam param) {
-        String finishtime = param.getInfoTakeFinishTime();
-        if (finishtime != null)  finishtime = "%"+finishtime+"%";
-        return wheelDispatchDao.searchWheelInfoByconditionWheelDispatch(param.getWheelId(),param.getTakeInDate(),
-                param.getAxleNumber(),param.getVehicleNumber(),finishtime);
+        return wheelDispatchDao.searchWheelInfoByconditionWheelDispatch(param.getWheelId(),
+                param.getTakeInDateFrom(),
+                param.getTakeInDateTo(),
+                param.getAxleNumber(),param.getVehicleNumber(),
+                param.getInfoTakeFinishTimeFrom(),
+                param.getInfoTakeFinishTimeTo());
     }
 
 
