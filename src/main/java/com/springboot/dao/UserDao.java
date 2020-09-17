@@ -13,10 +13,12 @@ public interface UserDao {
     UserInfo findUserById(Integer id);
     UserInfo findUserByNameAndPassword(@Param("name") String name,@Param("password") String paasword);
     List<UserInfo> findUserByName (String name);
-    List<UserInfo> findAllUser();
+    List<UserInfo> findAllUser(@Param("isonline") String isonline);
     void updateUser(UserInfo user);
     void addUser(UserInfo user);
     void deleteUser(Integer id);
+    void login(String username);
+    void logout(String username);
 
     Role findRoleById(Integer id);
     List<Role> findAllRole();

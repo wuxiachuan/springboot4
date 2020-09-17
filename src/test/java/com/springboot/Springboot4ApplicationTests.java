@@ -37,10 +37,23 @@ class Springboot4ApplicationTests {
 
     @Test
     public  void testredisTemplate(){
-        redisTemplate.opsForHash().put("team2","name","java");
-        redisTemplate.opsForValue().set("token","value",Duration.ofMinutes(10L));
-       String name = (String) redisTemplate.opsForHash().get("team2","name");
-        System.out.println(name);
+//        String te = "team2";
+//        String name = "name";
+//        redisTemplate.opsForHash().put(te,name,name);
+//        redisTemplate.opsForHash().put("team2","sex","femal");
+//        redisTemplate.opsForList().leftPush("users","zhangshang");
+//        redisTemplate.opsForList().leftPush("users","lisi");
+          redisTemplate.opsForValue().set("token","value",Duration.ofMinutes(10L));
+          String value = (String) redisTemplate.opsForValue().get("token");
+//        String na = (String) redisTemplate.opsForHash().get(te,"name");
+//        String sex = (String) redisTemplate.opsForHash().get("team2","sex");
+//        String u = (String) redisTemplate.opsForList().index("users",1);
+//        List<String> l = redisTemplate.opsForList().range("users", 0, -1);
+//        redisTemplate.opsForHash().put("team2","user","users");
+          System.out.println(value);
+//        System.out.println(sex);
+//        System.out.println(u);
+//        System.out.println(l);
     }
     @Test
     public void dateFormate(){
@@ -102,6 +115,16 @@ class Springboot4ApplicationTests {
            // System.out.println(generateAxledate());
             System.out.println(generatewheelDiam());
         }
+    }
+
+    @Test
+    public void split(){
+        String str = "/userManage/getusersLog=2020-09-17 14:02:13=0:0:0:0:0:0:0:1";
+        String[] arr = str.split("=");
+        System.out.println(arr[0]);
+        System.out.println(arr[1]);
+        System.out.println(arr[2]);
+
     }
 
 }

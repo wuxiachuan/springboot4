@@ -31,11 +31,11 @@ public class WheelDispatchServiceImp implements WheelDispatchService{
     }
     @Override
     //添加复测
-    public void addWheelDispatch(WheelDispatch wheelDispatch) {
+    public void addWheelDispatchRemeasure(WheelDispatch wheelDispatch) {
 
         Integer count =  wheelDispatchDao.findWheelIdCount(wheelDispatch.getWheelId());
         if (count == 1){
-            updateWheelDispatch(wheelDispatch);
+            updateWheelDispatchRemeasure(wheelDispatch);
         }else{
             wheelDispatchDao.insertWheelDispatch(wheelDispatch);
         }
@@ -44,7 +44,7 @@ public class WheelDispatchServiceImp implements WheelDispatchService{
 
     @Override
     //更新复测
-    public void updateWheelDispatch(WheelDispatch wheelDispatch) {
+    public void updateWheelDispatchRemeasure(WheelDispatch wheelDispatch) {
         wheelDispatchDao.updateWheelDispatch(wheelDispatch);
         fresh(wheelDispatch.getWheelId());
     }
@@ -73,8 +73,11 @@ public class WheelDispatchServiceImp implements WheelDispatchService{
 
 
     public void fresh(Integer id){
+        //回滚质检
         wheelDao.rollbackWheelInfoqualityInspectionFinish(id);
+        //回滚验收
         wheelDao.rollbackWheelInfoverifyFinish(id);
+        //回滚完工
         wheelDao.rollbackWheelInfoprocessFinish(id);
     }
 

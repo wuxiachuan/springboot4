@@ -1,7 +1,9 @@
 package com.springboot.Controller;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.springboot.dao.UserDao;
 import com.springboot.domain.*;
 import com.springboot.service.RoleService;
 import com.springboot.service.UserService;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
 
@@ -19,11 +23,18 @@ import java.util.*;
 @RequestMapping("/userManage")
 public class UserController {
     @Autowired
+    private UserDao userDao;
+    @Autowired
     private RoleService roleService;
     @Autowired
     private UserService userService;
     @Autowired
     private RedisTemplate redisTemplate;
+    private SimpleDateFormat dateFormater;
+
+    public UserController(){
+        this.dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    }
 
     @RequestMapping("/getall")
     @ResponseBody
@@ -50,32 +61,24 @@ public class UserController {
     public Result logincheck(@RequestBody Map<String,Object> map){
         String name = (String) map.get("name");
         String password = (String) map.get("password");
-        UserInfo user = userService.login(name,password);
-        Map<String,Object> resmap = new HashMap<>();
-        List<Right> rights = new ArrayList<>();
-        List<Right> subrights = new ArrayList<>();
-        Set<String> rightsUrl = new HashSet<>();
-        Set<String> subrightsUrl = new HashSet<>();
-        for (Role role : user.getRoles()){
-            rights.addAll(userService.findRoleRight(role.getId()));
+        Map<String,Object> resmap = userService.login(name,password);
+        if (resmap==null){
+            return new Result(null,"用户名或密码错误",101);
         }
-        for (Right right : rights){
-            rightsUrl.add(right.getUrl());
-            subrights.addAll(right.getSubRight());
-        }
-        for (Right right : subrights){
-            subrightsUrl.add(right.getUrl());
-        }
-
-        if (user != null){
-            String token = UUID.randomUUID().toString();
-            redisTemplate.opsForValue().set(token,name, Duration.ofMinutes(30));
-            resmap.put("token",token);
-            resmap.put("rights",rightsUrl);
-            resmap.put("subrights",subrightsUrl);
-            return new Result(resmap,"登录成功",100);
-        }
-        return new Result(null,"用户名或密码错误",101);
+        return new Result(resmap,"登录成功",100);
+    }
+    //退出
+    @RequestMapping( "/logout")
+    @ResponseBody
+    public Result logout(HttpServletRequest request){
+        String url = request.getServletPath();
+        String token = request.getHeader("Authorization");
+        String name = (String) redisTemplate.opsForValue().get(token);
+        redisTemplate.delete(token);
+        redisTemplate.delete(name+"token");
+        redisTemplate.opsForList().leftPush(name+"log",url+"="+dateFormater.format(new Date()));
+        userDao.logout(name);
+        return new Result(null,"退出成功",100);
     }
     //获取菜单
     @RequestMapping("/getmenus")
@@ -87,18 +90,69 @@ public class UserController {
         }
         return new Result(null,"菜单获取失败",101);
     }
-    //获取用户列表
+    //获取用户在线列表
     @RequestMapping("/getusers")
     @ResponseBody
     public Result getusers(@RequestBody Map<String,Object> map){
-        Integer page = (Integer) map.get("page");
-        Integer size = (Integer) map.get("size");
-        List<UserInfo> list =  userService.findAllUser(page,size);
+        Integer page = (Integer) map.get("currentPage");
+        Integer size = (Integer) map.get("pagesize");
+        String online = (String) map.get("isonline");
+        PageHelper.startPage(page,size);
+        List<UserInfo> list =  userService.findAllUser(online);
         if (list != null){
             PageInfo pageInfo = new PageInfo(list);
             return new Result(pageInfo,"用户获取成功",100);
         }
         return new Result(null,"用户获取失败",101);
+    }
+    //获取用户在线列表
+    @RequestMapping("/getusersWithLog")
+    @ResponseBody
+    public Result getusersWithLog(@RequestBody Map<String,Object> map){
+        Integer page = (Integer) map.get("currentPage");
+        Integer size = (Integer) map.get("pagesize");
+        String online = (String) map.get("isonline");
+        PageHelper.startPage(page,size);
+        List<UserInfo> list =  userService.findAllUserLog(online);
+        if (list != null){
+            PageInfo pageInfo = new PageInfo(list);
+            return new Result(pageInfo,"用户获取成功",100);
+        }
+        return new Result(null,"用户获取失败",101);
+    }
+    //获取用户登录日志
+    @RequestMapping("/getusersLog")
+    @ResponseBody
+    public Result getusersLog(@RequestBody UserInfo userInfo,HttpServletRequest request){
+        String name = userInfo.getUsername();
+        List<String> list = redisTemplate.opsForList().range(name+"log",0,-1);
+        if (list==null){
+            return new Result(null,"日志获取失败",101);
+        }
+        List<Map<String,String>> logmap = new ArrayList<>();
+        for (String str : list){
+            String[] arr = str.split("=");
+            HashMap<String,String> map = new HashMap<>();
+            map.put("url",arr[0]);
+            map.put("time",arr[1]);
+            map.put("ip",arr[2]);
+            logmap.add(map);
+        }
+        UserLogIn userLogIn = new UserLogIn();
+        userLogIn.setUsername(name);
+        userLogIn.setLogMap(logmap);
+        return new Result(userLogIn,"日志获取成功",100);
+    }
+    //强制下线用户
+    @RequestMapping("/onLineChange")
+    @ResponseBody
+    public Result onLineChange(@RequestBody UserInfo userInfo){
+        String name = userInfo.getUsername();
+        String token = (String) redisTemplate.opsForHash().get(name+"token","token");
+        redisTemplate.delete(token);
+        redisTemplate.delete(name+"token");
+        userDao.logout(name);
+        return new Result(null,"强制下线成功",100);
     }
     //搜索用户
     @RequestMapping("/searchusers")

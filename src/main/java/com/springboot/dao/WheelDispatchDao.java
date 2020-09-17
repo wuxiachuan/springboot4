@@ -10,7 +10,7 @@ public interface WheelDispatchDao {
     void insertWheelDispatch(WheelDispatch wheelDispatch);
     void updateWheelDispatch(WheelDispatch wheelDispatch);
 
-    List<WheelInfo> findWheelInfoToWheelDispatch();
+    List<WheelInfo> findWheelInfoToWheelDispatchRemeasure();
     List<WheelInfo> searchWheelInfoByconditionWheelDispatch(@Param("wheelId") String wheelId,
                                                             @Param("takeInDate") String takeInDate,
                                                             @Param("axleNumber") String axleNumber,

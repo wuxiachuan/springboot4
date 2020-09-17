@@ -128,8 +128,8 @@
                 where wheelId	=	#{	wheelId	}
     </update>
 
-    <select id="findWheelInfoToWheelDispatch" resultType="WheelInfo">
-                select * from wheelinfo w where  w.isbearingrollTestFinish = '1' and iswheelDispatchFinish = '0'
+    <select id="findWheelInfoToWheelDispatchRemeasure" resultType="WheelInfo">
+                select * from wheelinfo w where  w.isbearingrollTestFinish = '1' and isreMeasureFinish = '0'
         </select>
     <select id="findWheelDispatchByWheelId" parameterType="int" resultType="WheelDispatch">
                 select * from wheelDispatch where wheelId = #{wheelId}
@@ -141,7 +141,7 @@
     <update id="finishInspection">
         UPDATE  wheeldispatch SET
         qualityInspectFinishTime = #{time},
-        qualityInspector = #{inspector}
+        qualityInspector = #{inspector},
         WHERE wheelId = #{wheelId}
     </update>
 
@@ -194,16 +194,21 @@
         JOIN `wheelinfo` w ON w.`WheelId` = d.`wheelId`
         WHERE w.`VehicleNumber` = #{number};
     </select>
+    <!--        查找完工可以支出的轮对-->
     <select id="findTarget" parameterType="String" resultType="WheelDispatch">
-        SELECT * FROM wheeldispatch
-            WHERE wheelDiameterLeft >= #{low}
-            AND  #{high} >= wheelDiameterLeft
-            AND  axlemadedate > #{axleLife}
-            AND  bearingAssembleDateLeft > #{bearingLife}
-            AND  bearingAssembleDateRight > #{bearingLife}
-            AND  wheelStatus = '0'
-            AND  chooseMark = '0'
+        SELECT * FROM wheeldispatch d
+            JOIN `wheelinfo` w ON w.`WheelId` = d.`wheelId`
+            WHERE d.wheelDiameterLeft >= #{low}
+            AND  #{high} >= d.wheelDiameterLeft
+            AND  d.axlemadedate > #{axleLife}
+            AND  d.bearingAssembleDateLeft > #{bearingLife}
+            AND  d.bearingAssembleDateRight > #{bearingLife}
+            AND  d.wheelStatus = '0'
+            AND  d.chooseMark = '0'
+            AND  w.isqualityInspectionFinish = '1'
+            AND  w.iswheelDispatchFinish = '0'
     </select>
+    <!--        完成支出登记-->
     <update id="updateDispatchStatus" >
         UPDATE wheeldispatch SET
             wheelStatus = '1',
@@ -213,10 +218,9 @@
             matcher = #{matcher}
          WHERE wheelId = #{wheelId};
     </update>
-
+<!--        查找可以支出的车辆-->
     <select id="findvehicleNum" resultType="VehicleInfo">
-        SELECT DISTINCT vehiclenumber,vehicleType FROM `wheelinfo`WHERE
-        isqualityInspectionFinish = '1' AND iswheelDispatchFinish = '0'
+        SELECT DISTINCT vehiclenumber,vehicleType FROM `wheelinfo` WHERE  isMeasureFinish = '1'
     </select>
 
     <update id="setchooseMark" parameterType="int">

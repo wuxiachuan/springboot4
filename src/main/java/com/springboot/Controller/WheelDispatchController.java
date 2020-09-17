@@ -24,22 +24,22 @@ public class WheelDispatchController {
 
     @RequestMapping("/addWheelDispatch")
     @ResponseBody
-    public Result addbearingCap(@RequestBody WheelDispatch wheelDispatch){
-        wheelDispatchService.addWheelDispatch(wheelDispatch);
+    public Result addWheelDispatchRemeasure(@RequestBody WheelDispatch wheelDispatch){
+        wheelDispatchService.addWheelDispatchRemeasure(wheelDispatch);
         return new Result(wheelDispatch,"添加成功",100);
     }
 
     @RequestMapping("/modifyWheelDispatch")
     @ResponseBody
-    public Result modifyBearingCap(@RequestBody WheelDispatch wheelDispatch){
-        wheelDispatchService.updateWheelDispatch(wheelDispatch);
+    public Result modifyWheelDispatchRemeasure(@RequestBody WheelDispatch wheelDispatch){
+        wheelDispatchService.updateWheelDispatchRemeasure(wheelDispatch);
         return new Result(wheelDispatch,"添加成功",100);
     }
 
     @RequestMapping("/unFinishWheelDispatch")
     @ResponseBody
-    public Result unFinishBearingCap(){
-        List<WheelInfo> wheelInfoList = wheelDispatchDao.findWheelInfoToWheelDispatch();
+    public Result unFinishWheelDispatch(){
+        List<WheelInfo> wheelInfoList = wheelDispatchDao.findWheelInfoToWheelDispatchRemeasure();
         return new Result(wheelInfoList,"添加成功",100);
     }
 

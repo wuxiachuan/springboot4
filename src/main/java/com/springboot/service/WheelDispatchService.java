@@ -5,8 +5,8 @@ import com.springboot.domain.*;
 import java.util.List;
 
 public interface WheelDispatchService {
-    void addWheelDispatch(WheelDispatch wheelDispatch);
-    void updateWheelDispatch(WheelDispatch wheelDispatch);
+    void addWheelDispatchRemeasure(WheelDispatch wheelDispatch);
+    void updateWheelDispatchRemeasure(WheelDispatch wheelDispatch);
     void flushWheelInfoRemeasure(WheelDispatch wheelDispatch);
     void deleteWheelDispatch(String id);
     List<WheelInfo> searchWheelInfoDispatch(SearchWheelParam param);

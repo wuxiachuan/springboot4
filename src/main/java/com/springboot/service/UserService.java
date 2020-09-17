@@ -6,12 +6,14 @@ import com.springboot.domain.UserInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
-    UserInfo login(String name,String password);
+    Map<String,Object> login(String name, String password);
     UserInfo findUserById(Integer id);
     List<UserInfo> findUserByName (String name);
-    List<UserInfo> findAllUser(Integer page,Integer size);
+    List<UserInfo> findAllUser(String online);
+    List<UserInfo> findAllUserLog(String online);
     void updateUserStatu(UserInfo user);
     void updateUser(UserInfo user, List<String> roles);
     void addUser(UserInfo user, List<String> roles);

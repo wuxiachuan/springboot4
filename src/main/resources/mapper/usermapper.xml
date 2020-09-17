@@ -10,6 +10,7 @@
         <result property="password" column="PASSWORD"/>
         <result property="phoneNum" column="phoneNum"/>
         <result property="status" column="STATUS"/>
+        <result property="isOnline" column="isonLine"/>
         <collection property="roles" column="id" select="findRoleByUserId"/>
     </resultMap>
     <!--    获取修改role-right表-->
@@ -110,18 +111,36 @@
     <select id="findUserByName" parameterType="String" resultMap="user">
         SELECT * FROM users where username like #{username}
     </select>
-    <select id="findAllUser" resultMap="user">
+    <select id="findAllUser" parameterType="String" resultMap="user">
         select * from users
+        <where>
+            <if test="isonline != ''">
+                isonline = #{isonline}
+            </if>
+        </where>
     </select>
     <update id="updateUser" parameterType="UserInfo">
-        update users set email = #{email},username = #{username},password= #{password},phoneNum= #{phoneNum},status= #{status} where id = #{id}
+        update users set
+            email = #{email},
+            username = #{username},
+            password= #{password},
+            phoneNum= #{phoneNum},
+            status= #{status},
+            isOnline = #{isOnline}
+        where id = #{id}
     </update>
     <insert id="addUser" parameterType="UserInfo" useGeneratedKeys="true" keyProperty="id">
-        insert into users (email,username,password,phoneNum,status)
-        values (#{email},#{username},#{password},#{phoneNum},#{status})
+        insert into users (email,username,password,phoneNum,status,isOnline)
+        values (#{email},#{username},#{password},#{phoneNum},#{status},#{isOnline})
     </insert>
     <update id="deleteUser" parameterType="int">
         delete from users where id = #{id}
+    </update>
+    <update id="login" parameterType="String">
+         update users set isonLine = '1' WHERE username = #{username}
+    </update>
+    <update id="logout" parameterType="String">
+         update users set isonLine = '0' WHERE username = #{username}
     </update>
     <!--    Role查询-->
     <select id="findRoleById" resultMap="role3">

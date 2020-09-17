@@ -2,6 +2,7 @@ package com.springboot.domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class UserInfo implements Serializable {
     private String id;
@@ -13,7 +14,12 @@ public class UserInfo implements Serializable {
     private String statusStr;
     private List<Role> roles;
 
+    private String isOnline;
+    private String LoginTime;
+    private String IpAddr;
+
     public UserInfo() {
+        this.isOnline = "0";
     }
 
     public String getId() {
@@ -80,6 +86,30 @@ public class UserInfo implements Serializable {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(String isOnline) {
+        this.isOnline = isOnline;
+    }
+
+    public String getLoginTime() {
+        return LoginTime;
+    }
+
+    public void setLoginTime(String loginTime) {
+        LoginTime = loginTime;
+    }
+
+    public String getIpAddr() {
+        return IpAddr;
+    }
+
+    public void setIpAddr(String ipAddr) {
+        IpAddr = ipAddr;
     }
 
     @Override

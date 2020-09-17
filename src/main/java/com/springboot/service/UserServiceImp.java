@@ -2,6 +2,7 @@ package com.springboot.service;
 
 import com.github.pagehelper.PageHelper;
 import com.springboot.dao.UserDao;
+import com.springboot.domain.Result;
 import com.springboot.domain.Right;
 import com.springboot.domain.Role;
 import com.springboot.domain.UserInfo;
@@ -9,24 +10,65 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.util.*;
 
 //@CacheConfig(cacheNames = "rights")
 @Service
 public class UserServiceImp implements UserService{
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     private Map<String,String> rightMap;
 
+    private SimpleDateFormat dateFormater;
+
+    public UserServiceImp(){
+         this.dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    }
     @Override
-    public UserInfo login(String name, String password) {
-      UserInfo user =  userDao.findUserByNameAndPassword(name,password);
-        return user;
+    public Map<String,Object> login(String name, String password) {
+        UserInfo user =  userDao.findUserByNameAndPassword(name,password);
+        if (user == null) return null;
+        if ("0".equals(user.getStatus())) return null;
+        Map<String,Object> resmap = getUserRightMap(user);
+        String token = UUID.randomUUID().toString();
+        resmap.put("token",token);
+        String status = user.getStatus();
+        redisTemplate.opsForValue().set(token,name, Duration.ofMinutes(30));
+        redisTemplate.opsForHash().put(name+"token","token",token);
+        redisTemplate.opsForHash().put(name+"token","status",status);
+        redisTemplate.opsForHash().put(name+"token","loginTime",dateFormater.format(new Date()));
+        redisTemplate.opsForList().leftPush(name+"log","/userManage/login="+dateFormater.format(new Date())+"=login");
+        userDao.login(name);
+        return resmap;
+    }
+    public Map<String,Object> getUserRightMap(UserInfo user){
+        Map<String,Object> resmap = new HashMap<>();
+        List<Right> rights = new ArrayList<>();
+        List<Right> subrights = new ArrayList<>();
+        Set<String> rightsUrl = new HashSet<>();
+        Set<String> subrightsUrl = new HashSet<>();
+        for (Role role : user.getRoles()){
+            rights.addAll(findRoleRight(role.getId()));
+        }
+        for (Right right : rights){
+            rightsUrl.add(right.getUrl());
+            subrights.addAll(right.getSubRight());
+        }
+        for (Right right : subrights){
+            subrightsUrl.add(right.getUrl());
+        }
+        resmap.put("rights",rightsUrl);
+        resmap.put("subrights",subrightsUrl);
+        return resmap;
     }
 
     @Override
@@ -40,9 +82,24 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    public List<UserInfo> findAllUser(Integer page,Integer size) {
-        PageHelper.startPage(page,size);
-        return userDao.findAllUser();
+    public List<UserInfo> findAllUser(String online) {
+        return userDao.findAllUser(online);
+    }
+
+    @Override
+    public List<UserInfo> findAllUserLog(String online) {
+        List<UserInfo> list = userDao.findAllUser(online);
+        String addr = null;
+        String name = null;
+        String logintime = null;
+        for (UserInfo user : list){
+            name = user.getUsername();
+            addr = (String) redisTemplate.opsForHash().get(name+"token","ip");
+            logintime = (String) redisTemplate.opsForHash().get(name+"token","loginTime");
+            user.setIpAddr(addr);
+            user.setLoginTime(logintime);
+        }
+        return list;
     }
 
     @Override
