@@ -137,23 +137,33 @@
     <update id="deleteWheelDispatchByWheelId" parameterType="int">
                 delete FROM wheelDispatch where wheelId = #{wheelId}
         </update>
-
+<!--    完成质量检查登记-->
     <update id="finishInspection">
         UPDATE  wheeldispatch SET
+        wheelStatus = '0',
         qualityInspectFinishTime = #{time},
         qualityInspector = #{inspector},
+        storePositionX = #{storePositionX},
+        storePositionY = #{storePositionY}
         WHERE wheelId = #{wheelId}
     </update>
 
     <update id="flushWheelInfoqualityInspectionFinish" parameterType="int">
-        UPDATE wheelinfo SET isqualityInspectionFinish = '1' where wheelId = #{wheelId}
+        UPDATE wheelinfo SET isqualityInspectionFinish = '1',isprocessFinish = '1',state = '1' where wheelId = #{wheelId}
     </update>
 
     <update id="flushWheelInfowheelRemeasureFinish" >
                 UPDATE wheelinfo SET isreMeasureFinish = '1' where wheelId = #{wheelId}
         </update>
     <update id="flushWheelInfoWheelDispatchFinish" >
-                UPDATE wheelinfo SET iswheelDispatchFinish = '1',state = '2' where wheelId = #{wheelId}
+                UPDATE wheelinfo SET
+                    iswheelDispatchFinish = '1',
+                    state = '2' ,
+                    dispatchVehicleType = #{dispatchVehicleType},
+                    dipatchVehicleNumber = #{dipatchVehicleNumber},
+                    dipatchAxlePosition = #{dipatchAxlePosition},
+                    dispatchDate = #{dispatchDate}
+                where wheelId = #{wheelId}
         </update>
     <update id="rollbackWheelInfoWheelRemeasureFinish" >
                 UPDATE wheelinfo SET isreMeasureFinish = '0' where wheelId = #{wheelId}
@@ -165,7 +175,7 @@
     <select id="findWheelIdCount" parameterType="int" resultType="int">
         SELECT COUNT(wheelid) FROM wheelDispatch WHERE wheelid  = #{wheelId}
     </select>
-
+<!--    查找复测轮对-->
     <select id="searchWheelInfoByconditionWheelDispatch" parameterType="String" resultType="WheelInfo">
         SELECT w.* FROM wheelinfo w
             JOIN wheelDispatch r ON w.`WheelId` = r.`wheelId`
@@ -219,12 +229,23 @@
             vehicleType = #{vehicleType},
             vehicleNumber = #{vehicleNumber},
             axleDispatchPosition = #{axleDispatchPosition},
+            dispatchFinishTime = #{dispatchFinishTime},
             matcher = #{matcher}
          WHERE wheelId = #{wheelId};
     </update>
 <!--        查找可以支出的车辆-->
     <select id="findvehicleNum" resultType="VehicleInfo">
-        SELECT DISTINCT vehiclenumber,vehicleType FROM `wheelinfo` WHERE  isMeasureFinish = '1'
+        SELECT DISTINCT vehiclenumber,vehicleType FROM `wheelinfo` w
+        WHERE  isMeasureFinish = '1'
+        <if test="takeInDateFrom != null ">
+            AND w.takeInDate >= #{takeInDateFrom}
+        </if>
+        <if test="takeInDateTo != null ">
+            AND #{takeInDateTo} >= w.takeInDate
+        </if>
+        <if test="vehicleNum != ''">
+            AND w.vehiclenumber = #{vehicleNum}
+        </if>
     </select>
 
     <update id="setchooseMark" parameterType="int">

@@ -38,6 +38,21 @@ public interface WheelDao {
                                              @Param("takeInReason")String takeInReason,
                                              @Param("isprocessFinish") String isprocessFinish);
 
+
+    List<WheelInfo> findWheelInfoByCondition2Check(@Param("wheelId") String wheelId,
+                                             @Param("takeInDateFrom") String takeInDateFrom,
+                                             @Param("takeInDateTo") String takeInDateTo,
+                                             @Param("axleNumber") String axleNumber,
+                                             @Param("vehicleNumber")String vehicleNumber,
+                                             @Param("infoTakeFinishTimeFrom")String infoTakeFinishTimeFrom,
+                                             @Param("infoTakeFinishTimeTo")String infoTakeFinishTimeTo,
+                                             @Param("dispatchDateFrom")String dispatchDateFrom,
+                                             @Param("dispatchDateTo")String dispatchDateTo,
+                                             @Param("dipatchVehicleNumber")String dipatchVehicleNumber,
+                                             @Param("status")String status,
+                                             @Param("axleType")String axleType,
+                                             @Param("takeInReason")String takeInReason,
+                                             @Param("isprocessFinish") String isprocessFinish);
     void robackWheelInfoMeasureFinish(Integer wheelId);
     void rollbackWheelInfoMagInspectionFinish(Integer wheelId);
     void rollbackWheelInfoAxleInspectionFinish(Integer wheelId);

@@ -46,7 +46,8 @@ public class ManageServiceImp implements ManageService{
                                     param.getWheelId(),
                                     param.getTakeInDateFrom(),
                                     param.getTakeInDateTo(),
-                                    param.getAxleNumber(),param.getVehicleNumber(),
+                                    param.getAxleNumber(),
+                                    param.getVehicleNumber(),
                                     param.getInfoTakeFinishTimeFrom(),
                                     param.getInfoTakeFinishTimeTo(),
                                     param.getDispatchDateFrom(),
@@ -56,6 +57,37 @@ public class ManageServiceImp implements ManageService{
                                     axleType,
                                     takeInReason,
                                     isprocessFinish);
+        return findWheelAllByInfoList(wheelInfoList);
+    }
+
+    @Override
+    public List<WheelAll> findWheelAllByCondition2Check(SearchWheelParam param) {
+        String id = param.getWheelId();
+        String takeInDate = param.getTakeInDate();
+        String dispatchDate = param.getDispatchDate();
+        String takeInReason = param.getTakeInReason();
+        String axleNumber = param.getAxleNumber();
+        String axleType = param.getAxleType();
+        String vehicleNumber = param.getVehicleNumber();
+        String dipatchVehicleNumber = param.getDipatchVehicleNumber();
+        String infoTakeFinishTime = param.getInfoTakeFinishTime();
+        String status = param.getStatus();
+        String isprocessFinish = param.getIsprocessFinish();
+        List<WheelInfo> wheelInfoList = wheelDao.findWheelInfoByCondition2Check(
+                param.getWheelId(),
+                param.getTakeInDateFrom(),
+                param.getTakeInDateTo(),
+                param.getAxleNumber(),
+                param.getVehicleNumber(),
+                param.getInfoTakeFinishTimeFrom(),
+                param.getInfoTakeFinishTimeTo(),
+                param.getDispatchDateFrom(),
+                param.getDispatchDateTo(),
+                dipatchVehicleNumber,
+                status,
+                axleType,
+                takeInReason,
+                isprocessFinish);
         return findWheelAllByInfoList(wheelInfoList);
     }
 

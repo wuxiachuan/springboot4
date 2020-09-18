@@ -21,12 +21,16 @@ public class WheelDispatchServiceImp implements WheelDispatchService{
     private WheelDao wheelDao;
     @Autowired
     private MeasureDao measureDao;
+    @Autowired
+    WheelRepository wheelRepository;
 
     private SimpleDateFormat dateFormater;
+    private SimpleDateFormat dateFormater2;
     private Random random ;
 
     public WheelDispatchServiceImp(){
         this.dateFormater = new SimpleDateFormat("yyyy-M-d");
+        this.dateFormater2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.random = new Random(47);
     }
     @Override
@@ -86,6 +90,7 @@ public class WheelDispatchServiceImp implements WheelDispatchService{
 
     @Override
     public void receiveResult(List<VehicleInfo> resultlist,String matcher) {
+            String dispatchFinishTime = dateFormater2.format(new Date());
             for (VehicleInfo vec : resultlist){
                 int axlepos = 1;
                 for (WheelDispatch des : vec.getAxleOut()){
@@ -94,8 +99,15 @@ public class WheelDispatchServiceImp implements WheelDispatchService{
                             vec.getVehicleType(),
                             vec.getVehicleNumber(),
                             axlepos++,
+                            dispatchFinishTime,
                             matcher);
-                    wheelDispatchDao.flushWheelInfoWheelDispatchFinish(des.getWheelId());
+                    wheelDispatchDao.flushWheelInfoWheelDispatchFinish(
+                            des.getWheelId(),
+                            vec.getVehicleType(),
+                            vec.getVehicleNumber(),
+                            axlepos,
+                            dispatchFinishTime);
+                    wheelRepository.getAxleOutPosition(des.getWheelId().toString());
                 }
             }
     }

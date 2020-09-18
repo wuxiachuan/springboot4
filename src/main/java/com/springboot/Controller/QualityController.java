@@ -5,9 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.springboot.dao.ProblemDao;
 import com.springboot.dao.WheelDispatchDao;
-import com.springboot.domain.Problem;
-import com.springboot.domain.Result;
-import com.springboot.domain.UserInfo;
+import com.springboot.domain.*;
 import com.springboot.service.ProblemService;
 import com.springboot.service.QualityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,10 +103,9 @@ public class QualityController {
     @RequestMapping("/finishInspection")
     @ResponseBody
     public Result finishInspection(String name,String id){
-        SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String time = dateFormater.format(new Date());
-        wheelDispatchDao.finishInspection(name,Integer.parseInt(id),time);
-        wheelDispatchDao.flushWheelInfoqualityInspectionFinish(Integer.parseInt(id));
+        qualityService.finishInspection(name,id);
         return  new Result(null,"整改成功",100);
     }
+
+
 }

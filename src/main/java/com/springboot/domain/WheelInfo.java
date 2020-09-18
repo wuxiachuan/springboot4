@@ -45,6 +45,7 @@ public class WheelInfo implements Serializable {
     private String   isbearingCapFinishL;
     private String   isprocessFinish;
     private String   state;
+    private String   dispatchVehicleType;
     private String   dipatchVehicleNumber;
     private String   dispatchDate;
     private String   dipatchAxlePosition;
@@ -52,7 +53,6 @@ public class WheelInfo implements Serializable {
     private String   reserve1;
     private String   reserve2;
     private String   reserve3;
-    private String   reserve4;
     private String   isreMeasureFinish;
 
     public WheelInfo() {
@@ -455,12 +455,12 @@ public class WheelInfo implements Serializable {
         this.reserve3 = reserve3;
     }
 
-    public String getReserve4() {
-        return reserve4;
+    public String getDispatchVehicleType() {
+        return dispatchVehicleType;
     }
 
-    public void setReserve4(String reserve4) {
-        this.reserve4 = reserve4;
+    public void setDispatchVehicleType(String dispatchVehicleType) {
+        this.dispatchVehicleType = dispatchVehicleType;
     }
 
     public String getIsreMeasureFinish() {

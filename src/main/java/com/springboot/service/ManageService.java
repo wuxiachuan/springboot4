@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ManageService {
     List<WheelAll> findWheelAllByCondition(SearchWheelParam param);
+    List<WheelAll> findWheelAllByCondition2Check(SearchWheelParam param);
     List<WheelAll> findAllWheelAll();
     WheelAll findWheelAllByWheelId(Integer id);
 }

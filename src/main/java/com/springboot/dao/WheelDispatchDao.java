@@ -25,14 +25,20 @@ public interface WheelDispatchDao {
     void flushWheelInfowheelRemeasureFinish(Integer wheelId);
     void rollbackWheelInfoWheelRemeasureFinish(Integer wheelId);
 
-    void flushWheelInfoWheelDispatchFinish(Integer wheelId);
+    void flushWheelInfoWheelDispatchFinish(@Param("wheelId") Integer wheelId,
+                                           @Param("dispatchVehicleType") String dispatchVehicleType,
+                                           @Param("dipatchVehicleNumber") String dipatchVehicleNumber,
+                                           @Param("dipatchAxlePosition") Integer dipatchAxlePosition,
+                                           @Param("dispatchDate") String dispatchDate);
     void rollbackWheelInfoWheelDispatchFinish(Integer wheelId);
 
     void flushWheelInfoqualityInspectionFinish(Integer wheelId);
 
     void finishInspection(@Param("inspector") String inspector,
                           @Param("wheelId") Integer wheelId,
-                          @Param("time") String time);
+                          @Param("time") String time,
+                          @Param("storePositionX") String storePositionX,
+                          @Param("storePositionY") String storePositionY);
 
     Integer findWheelIdCount(Integer wheelId);
 
@@ -41,12 +47,17 @@ public interface WheelDispatchDao {
                                    @Param("high")String high,
                                    @Param("axleLife")String axleLife,
                                    @Param("bearingLife")String bearingLife);
-    List<VehicleInfo> findvehicleNum();
+
+    List<VehicleInfo> findvehicleNum(@Param("vehicleNum") String vehicleNum,
+                                    @Param("takeInDateFrom")String takeInDateFrom,
+                                    @Param("takeInDateTo")String takeInDateTo);
+
     void setchooseMark(Integer wheelId);
     void resetchooseMark();
     void updateDispatchStatus(@Param("wheelId") Integer wheelId,
                               @Param("vehicleType") String vehicleType,
                               @Param("vehicleNumber") String vehicleNumber,
                               @Param("axleDispatchPosition") Integer axleDispatchPosition,
+                              @Param("dispatchFinishTime") String dispatchFinishTime,
                               @Param("matcher") String matcher);
 }

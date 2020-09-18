@@ -6,7 +6,10 @@ import com.springboot.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -29,6 +32,12 @@ public class QualityServiceImp implements QualityService{
     private BearingLoadDao bearingLoadDao;
     @Autowired
     private BearingRepairDao bearingRepairDao;
+    @Autowired
+    WheelRepository wheelRepository;
+    private SimpleDateFormat dateFormater;
+    public QualityServiceImp(){
+        this.dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    }
     @Override
     public void modifyInfo(String database, Object data) {
         if ("wheelinfo".equals(database)){
@@ -71,5 +80,20 @@ public class QualityServiceImp implements QualityService{
         }else {
 
         }
+    }
+
+    @Override
+    public void finishInspection(String name, String id) {
+        SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = dateFormater.format(new Date());
+        List<Integer> position = wheelRepository.putAxleInPosition(id);
+        if (position!=null) {
+            String storePositionX = String.valueOf(position.get(0));
+            String storePositionY = String.valueOf(position.get(1));
+            wheelDispatchDao.finishInspection(name,Integer.parseInt(id),time,storePositionX,storePositionY);
+        }else {
+            wheelDispatchDao.finishInspection(name,Integer.parseInt(id),time,"null","null");
+        }
+        wheelDispatchDao.flushWheelInfoqualityInspectionFinish(Integer.parseInt(id));
     }
 }

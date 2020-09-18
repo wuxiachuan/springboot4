@@ -35,6 +35,22 @@ public class ManageController {
         result.setTotal(total);
         return  new Result(result,"添加成功",100);
     }
+    @RequestMapping("/getInfo2check")
+    @ResponseBody
+    public Result getInfo2check(@RequestBody SearchWheelParam param){
+        Integer page = Integer.parseInt(param.getPage());
+        Integer size = Integer.parseInt(param.getSize());
+        List<WheelAll> data = null;
+        data = manageService.findWheelAllByCondition2Check(param);
+        int total = (int) new PageInfo(data).getTotal();
+        PageHelper.startPage(page,size);
+        data = manageService.findWheelAllByCondition2Check(param);
+        PageInfo result = new PageInfo(data);
+        result.setTotal(total);
+        return  new Result(result,"整改成功",100);
+    }
+
+
     @RequestMapping("/test")
     @ResponseBody
     public Result findINfo(Integer id){

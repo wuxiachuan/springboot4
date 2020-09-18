@@ -217,12 +217,60 @@
                 AND #{takeInDateTo} >= w.takeInDate
             </if>
             <if test="infoTakeFinishTimeFrom != null ">
-                AND r.finishTime >= #{infoTakeFinishTimeFrom}
+                AND r.qualityInspectFinishTime >= #{infoTakeFinishTimeFrom}
             </if>
             <if test="infoTakeFinishTimeTo != null ">
-                AND  #{infoTakeFinishTimeTo} >= r.finishTime
+                AND  #{infoTakeFinishTimeTo} >= r.qualityInspectFinishTime
             </if>
         </where>
+    </select>
+
+    <select id="findWheelInfoByCondition2Check" resultType="WheelInfo">
+        select w.* from wheelinfo w
+            JOIN wheelDispatch r ON w.`WheelId` = r.`wheelId`
+            where w.isreMeasureFinish = '1'
+            <if test="wheelId != ''">
+                AND  w.wheelId = #{wheelId}
+            </if>
+            <if test="isprocessFinish != ''">
+                AND  w.isprocessFinish = #{isprocessFinish}
+            </if>
+            <if test="axleNumber != ''">
+                AND w.axleNumber = #{axleNumber}
+            </if>
+            <if test="axleType != ''">
+                AND w.axleType = #{axleType}
+            </if>
+            <if test="vehicleNumber != ''">
+                AND w.vehicleNumber = #{vehicleNumber}
+            </if>
+            <if test="takeInReason != ''">
+                AND w.takeInReason = #{takeInReason}
+            </if>
+            <if test="status != null and status != ''">
+                AND w.state = #{status}
+            </if>
+            <if test="dipatchVehicleNumber != null and dipatchVehicleNumber != ''">
+                AND w.dipatchVehicleNumber = #{dipatchVehicleNumber}
+            </if>
+            <if test="dispatchDateFrom != null ">
+                AND w.dispatchDate >= #{dispatchDateFrom}
+            </if>
+            <if test="dispatchDateTo != null ">
+                AND #{dispatchDateTo} >= w.dispatchDate
+            </if>
+            <if test="takeInDateFrom != null ">
+                AND w.takeInDate >= #{takeInDateFrom}
+            </if>
+            <if test="takeInDateTo != null ">
+                AND #{takeInDateTo} >= w.takeInDate
+            </if>
+            <if test="infoTakeFinishTimeFrom != null ">
+                AND r.qualityInspectFinishTime >= #{infoTakeFinishTimeFrom}
+            </if>
+            <if test="infoTakeFinishTimeTo != null ">
+                AND  #{infoTakeFinishTimeTo} >= r.qualityInspectFinishTime
+            </if>
     </select>
 
 </mapper>

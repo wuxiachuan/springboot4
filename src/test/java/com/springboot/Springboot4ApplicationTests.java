@@ -1,11 +1,14 @@
 package com.springboot;
 
 import com.mysql.cj.util.TimeUtil;
+import com.springboot.service.WheelRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.test.context.junit4.SpringRunner;
 import redis.clients.jedis.Jedis;
 
 import javax.sql.DataSource;
@@ -16,45 +19,51 @@ import java.util.List;
 import java.util.Random;
 
 import static java.time.Duration.*;
-
+@RunWith(SpringRunner.class)
 @SpringBootTest
 class Springboot4ApplicationTests {
     @Autowired
     DataSource dataSource;
     @Autowired
     RedisTemplate redisTemplate;
+    @Autowired
+    WheelRepository wheelRepository;
     Random random = new Random(47);
     @Test
     void contextLoads() {
         System.out.println(dataSource.getClass());
     }
     @Test
-    public  void testredis(){
-        Jedis jedis = new Jedis("127.0.0.1",6379);
-        List<String> list = jedis.lrange("list", 0, -1);
-        System.out.println(list);
+    public  void createQualifiedWheelRepository(){
+        for (int i=0;i<10;i++){
+            redisTemplate.opsForList().rightPush("qualifiedRepository",100);
+        }
+        for (int i=0;i<10;i++){
+            String name = "qualified"+i;
+            for (int j=0;j<100;j++){
+                redisTemplate.opsForList().rightPush(name,"null");
+            }
+        }
+    }
+    @Test
+    public  void createDiscardWheelRepository(){
+        for (int i=0;i<3;i++){
+            redisTemplate.opsForList().rightPush("discardRepository",100);
+        }
+        for (int i=0;i<3;i++){
+            String name = "discard"+i;
+            for (int j=0;j<100;j++){
+                redisTemplate.opsForList().rightPush(name,"null");
+            }
+        }
+    }
+    @Test
+    public void testStoreWheel(){
+        List<Integer> position = wheelRepository.putAxleInPosition("003");
+        System.out.println(position.get(0));
+        System.out.println(position.get(1));
     }
 
-    @Test
-    public  void testredisTemplate(){
-//        String te = "team2";
-//        String name = "name";
-//        redisTemplate.opsForHash().put(te,name,name);
-//        redisTemplate.opsForHash().put("team2","sex","femal");
-//        redisTemplate.opsForList().leftPush("users","zhangshang");
-//        redisTemplate.opsForList().leftPush("users","lisi");
-          redisTemplate.opsForValue().set("token","value",Duration.ofMinutes(10L));
-          String value = (String) redisTemplate.opsForValue().get("token");
-//        String na = (String) redisTemplate.opsForHash().get(te,"name");
-//        String sex = (String) redisTemplate.opsForHash().get("team2","sex");
-//        String u = (String) redisTemplate.opsForList().index("users",1);
-//        List<String> l = redisTemplate.opsForList().range("users", 0, -1);
-//        redisTemplate.opsForHash().put("team2","user","users");
-          System.out.println(value);
-//        System.out.println(sex);
-//        System.out.println(u);
-//        System.out.println(l);
-    }
     @Test
     public void dateFormate(){
         SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-M-d");

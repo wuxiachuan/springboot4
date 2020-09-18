@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/wheelDispatch")
@@ -76,8 +77,11 @@ public class WheelDispatchController {
 
     @RequestMapping("/getvehicleNum")
     @ResponseBody
-    public Result getvehicleNum(){
-        List<VehicleInfo> list = wheelDispatchDao.findvehicleNum();
+    public Result getvehicleNum(@RequestBody Map<String,String> map){
+        String vnum = map.get("vehicleNum");
+        String takeInDateFrom = map.get("takeInDateFrom");
+        String takeInDateTo = map.get("takeInDateTo");
+        List<VehicleInfo> list = wheelDispatchDao.findvehicleNum(vnum,takeInDateFrom,takeInDateTo);
         return new Result(list,"添加成功",100);
     }
     
