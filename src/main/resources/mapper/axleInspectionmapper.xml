@@ -164,10 +164,10 @@
             AND #{takeInDateTo} >= w.takeInDate
         </if>
         <if test="infoTakeFinishTimeFrom != null ">
-            AND r.finishTime >= #{infoTakeFinishTimeFrom}
+            AND r.ultfinishTime >= #{infoTakeFinishTimeFrom}
         </if>
         <if test="infoTakeFinishTimeTo != null ">
-            AND  #{infoTakeFinishTimeTo} >= r.finishTime
+            AND  #{infoTakeFinishTimeTo} >= r.ultfinishTime
         </if>
     </select>
 
@@ -210,10 +210,10 @@
             AND #{takeInDateTo} >= w.takeInDate
         </if>
         <if test="infoTakeFinishTimeFrom != null ">
-            AND r.finishTime >= #{infoTakeFinishTimeFrom}
+            AND r.magfinishTime >= #{infoTakeFinishTimeFrom}
         </if>
         <if test="infoTakeFinishTimeTo != null ">
-            AND  #{infoTakeFinishTimeTo} >= r.finishTime
+            AND  #{infoTakeFinishTimeTo} >= r.magfinishTime
         </if>
     </select>
 

@@ -95,7 +95,8 @@
                 axleNeckDiameterRightAvgB 	,
                 axleNeckDiameterLeftAvg  	,
                 axleNeckDiameterRightAvg    ,
-                repairSaved
+                repairSaved,
+                loaderLeft
         )
         VALUES
         (
@@ -188,7 +189,8 @@
                 #{	axleNeckDiameterRightAvgB 	},
                 #{	axleNeckDiameterLeftAvg  	},
                 #{	axleNeckDiameterRightAvg 	},
-                #{ repairSaved }
+                #{ repairSaved },
+                #{loaderLeft}
         )
     </insert>
     <update id="updateBearingLoad" parameterType="BearingLoad">
@@ -281,7 +283,8 @@
                 axleNeckDiameterRightAvgB 	=	#{	axleNeckDiameterRightAvgB 	},
                 axleNeckDiameterLeftAvg  	=	#{	axleNeckDiameterLeftAvg  	},
                 axleNeckDiameterRightAvg 	=	#{	axleNeckDiameterRightAvg 	},
-                repairSaved  =  #{ repairSaved }
+                repairSaved  =  #{ repairSaved },
+                loaderLeft =  #{loaderLeft}
                 where wheelId	=	#{	wheelId	}
     </update>
         <select id="findWheelInfoToBearingLoad" resultType="WheelInfo">

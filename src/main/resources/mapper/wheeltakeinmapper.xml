@@ -30,7 +30,7 @@
         reserve1,
         reserve2,
         reserve3,
-        reserve4,
+        dispatchVehicleType,
         isreMeasureFinish
         )
         VALUES
@@ -59,7 +59,7 @@
         #{reserve1},
         #{reserve2},
         #{reserve3},
-        #{reserve4},
+        #{dispatchVehicleType},
         #{isreMeasureFinish}
         )
     </insert>
@@ -90,7 +90,7 @@
         reserve1 = #{reserve1},
         reserve2 = #{reserve2},
         reserve3 = #{reserve3},
-        reserve4 = #{reserve4},
+        dispatchVehicleType = #{dispatchVehicleType},
         isreMeasureFinish = #{isreMeasureFinish}
         where wheelId=#{wheelId}
     </update>

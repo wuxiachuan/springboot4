@@ -25,14 +25,18 @@ public class WheelInterceptor implements HandlerInterceptor {
         System.out.println(request.getServletPath());
         String url = request.getServletPath();
         String token = request.getHeader("Authorization");
+        //检测用户是否登录
         String name = (String) redisTemplate.opsForValue().get(token);
         if (name == null) {
             return false;
         }
+        //检测用户状态是否正常
         String status = (String) redisTemplate.opsForHash().get(name+"token","status");
         if ("0".equals(status)){
             return false;
         }
+        //120分钟未发起请求自动下线
+        redisTemplate.expire(token,Duration.ofMinutes(120));
         String ipaddr = request.getRemoteAddr();
         redisTemplate.opsForHash().putIfAbsent(name+"token","ip",ipaddr);
         redisTemplate.opsForList().leftPush(name+"log",url+"="+dateFormater.format(new Date())+"="+ipaddr);

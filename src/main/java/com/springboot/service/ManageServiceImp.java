@@ -224,7 +224,7 @@ public class ManageServiceImp implements ManageService{
         //WheelDispatch wheelDispatch = new WheelDispatch();
         WheelDispatch wheelDispatch = null;
         Integer id = wh.getWheelId();
-        String isFinish = wh.getIswheelDispatchFinish();
+        String isFinish = wh.getIsreMeasureFinish();
         if ("1".equals(isFinish)){
             wheelDispatch = wheelDispatchDao.findWheelDispatchByWheelId(id);
         }

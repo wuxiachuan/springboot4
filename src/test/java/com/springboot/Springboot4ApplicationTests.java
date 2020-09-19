@@ -14,6 +14,7 @@ import redis.clients.jedis.Jedis;
 import javax.sql.DataSource;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -134,6 +135,13 @@ class Springboot4ApplicationTests {
         System.out.println(arr[1]);
         System.out.println(arr[2]);
 
+    }
+    @Test
+    public void testHash(){
+        List<String> list = new ArrayList<>();
+        list.add("hello");
+        list.add("world");
+        System.out.println(list.get(3));
     }
 
 }

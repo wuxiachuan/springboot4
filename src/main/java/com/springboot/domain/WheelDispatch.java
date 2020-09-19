@@ -41,7 +41,21 @@ public class WheelDispatch implements Serializable {
     private String  	finishTime	;
     private String  	worker	;
 
+    private String      storePositionX;
+    private String      storePositionY;
+    private String      wheelStatus;
+    private String      vehicleType;
+    private String      vehicleNumber;
+    private String      matcher;
+    private String      foreMan;
+    private String      qualityInspector;
+    private String      Inspector;
+    private String      dispatchFinishTime;
+    private String      qualityInspectFinishTime;
+    private String      axleDispatchPosition;
+
     public WheelDispatch() {
+        wheelStatus = "0";
     }
 
     public Integer getId() {
@@ -268,22 +282,6 @@ public class WheelDispatch implements Serializable {
         this.wheelAssemblelastIn = wheelAssemblelastIn;
     }
 
-    public String getIsFinish() {
-        return isFinish;
-    }
-
-    public void setIsFinish(String isFinish) {
-        this.isFinish = isFinish;
-    }
-
-    public String getFinishTime() {
-        return finishTime;
-    }
-
-    public void setFinishTime(String finishTime) {
-        this.finishTime = finishTime;
-    }
-
     public String getBearingTypeLeft() {
         return bearingTypeLeft;
     }
@@ -332,54 +330,123 @@ public class WheelDispatch implements Serializable {
         this.bearingMadeInRight = bearingMadeInRight;
     }
 
-    public String getworker() {
+    public String getIsFinish() {
+        return isFinish;
+    }
+
+    public void setIsFinish(String isFinish) {
+        this.isFinish = isFinish;
+    }
+
+    public String getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(String finishTime) {
+        this.finishTime = finishTime;
+    }
+
+    public String getWorker() {
         return worker;
     }
 
-    public void setworker(String worker) {
+    public void setWorker(String worker) {
         this.worker = worker;
     }
 
-    @Override
-    public String toString() {
-        return "WheelDispatch{" +
-                "id=" + id +
-                ", wheelId=" + wheelId +
-                ", axleDiameter='" + axleDiameter + '\'' +
-                ", wheelDiameterLeft='" + wheelDiameterLeft + '\'' +
-                ", wheelDiameterRight='" + wheelDiameterRight + '\'' +
-                ", treadWearLeft='" + treadWearLeft + '\'' +
-                ", treadWearRight='" + treadWearRight + '\'' +
-                ", rimWideLeft='" + rimWideLeft + '\'' +
-                ", rimWideRight='" + rimWideRight + '\'' +
-                ", flangeThickLeft='" + flangeThickLeft + '\'' +
-                ", flangeThickRight='" + flangeThickRight + '\'' +
-                ", rimThickLeft='" + rimThickLeft + '\'' +
-                ", rimThickRight='" + rimThickRight + '\'' +
-                ", internalDistance1='" + internalDistance1 + '\'' +
-                ", internalDistance2='" + internalDistance2 + '\'' +
-                ", internalDistance3='" + internalDistance3 + '\'' +
-                ", axleNumber='" + axleNumber + '\'' +
-                ", axleType='" + axleType + '\'' +
-                ", axleMaterial='" + axleMaterial + '\'' +
-                ", axleMadeDate='" + axleMadeDate + '\'' +
-                ", axleMadeIn='" + axleMadeIn + '\'' +
-                ", wheelType='" + wheelType + '\'' +
-                ", wheelMaterial='" + wheelMaterial + '\'' +
-                ", wheelMadeIn='" + wheelMadeIn + '\'' +
-                ", wheelAssemblefirst='" + wheelAssemblefirst + '\'' +
-                ", wheelAssemblefirstIn='" + wheelAssemblefirstIn + '\'' +
-                ", wheelAssemblelast='" + wheelAssemblelast + '\'' +
-                ", wheelAssemblelastIn='" + wheelAssemblelastIn + '\'' +
-                ", bearingTypeLeft='" + bearingTypeLeft + '\'' +
-                ", bearingAssembleDateLeft='" + bearingAssembleDateLeft + '\'' +
-                ", bearingMadeInLeft='" + bearingMadeInLeft + '\'' +
-                ", bearingTypeRight='" + bearingTypeRight + '\'' +
-                ", bearingAssembleDateRight='" + bearingAssembleDateRight + '\'' +
-                ", bearingMadeInRight='" + bearingMadeInRight + '\'' +
-                ", isFinish='" + isFinish + '\'' +
-                ", finishTime='" + finishTime + '\'' +
-                ", worker='" + worker + '\'' +
-                '}';
+    public String getStorePositionX() {
+        return storePositionX;
+    }
+
+    public void setStorePositionX(String storePositionX) {
+        this.storePositionX = storePositionX;
+    }
+
+    public String getStorePositionY() {
+        return storePositionY;
+    }
+
+    public void setStorePositionY(String storePositionY) {
+        this.storePositionY = storePositionY;
+    }
+
+    public String getWheelStatus() {
+        return wheelStatus;
+    }
+
+    public void setWheelStatus(String wheelStatus) {
+        this.wheelStatus = wheelStatus;
+    }
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
+    }
+
+    public String getVehicleNumber() {
+        return vehicleNumber;
+    }
+
+    public void setVehicleNumber(String vehicleNumber) {
+        this.vehicleNumber = vehicleNumber;
+    }
+
+    public String getMatcher() {
+        return matcher;
+    }
+
+    public void setMatcher(String matcher) {
+        this.matcher = matcher;
+    }
+
+    public String getForeMan() {
+        return foreMan;
+    }
+
+    public void setForeMan(String foreMan) {
+        this.foreMan = foreMan;
+    }
+
+    public String getQualityInspector() {
+        return qualityInspector;
+    }
+
+    public void setQualityInspector(String qualityInspector) {
+        this.qualityInspector = qualityInspector;
+    }
+
+    public String getInspector() {
+        return Inspector;
+    }
+
+    public void setInspector(String inspector) {
+        Inspector = inspector;
+    }
+
+    public String getDispatchFinishTime() {
+        return dispatchFinishTime;
+    }
+
+    public void setDispatchFinishTime(String dispatchFinishTime) {
+        this.dispatchFinishTime = dispatchFinishTime;
+    }
+
+    public String getQualityInspectFinishTime() {
+        return qualityInspectFinishTime;
+    }
+
+    public void setQualityInspectFinishTime(String qualityInspectFinishTime) {
+        this.qualityInspectFinishTime = qualityInspectFinishTime;
+    }
+
+    public String getAxleDispatchPosition() {
+        return axleDispatchPosition;
+    }
+
+    public void setAxleDispatchPosition(String axleDispatchPosition) {
+        this.axleDispatchPosition = axleDispatchPosition;
     }
 }

@@ -38,6 +38,13 @@ public class UserServiceImp implements UserService{
         UserInfo user =  userDao.findUserByNameAndPassword(name,password);
         if (user == null) return null;
         if ("0".equals(user.getStatus())) return null;
+
+        //检测是否重复登录,重复登录强制前者下线
+        String oldtoken = (String) redisTemplate.opsForHash().get(name+"token","token");
+        if (oldtoken != null){
+            redisTemplate.delete(oldtoken);
+        }
+
         Map<String,Object> resmap = getUserRightMap(user);
         String token = UUID.randomUUID().toString();
         resmap.put("token",token);
@@ -47,9 +54,11 @@ public class UserServiceImp implements UserService{
         redisTemplate.opsForHash().put(name+"token","status",status);
         redisTemplate.opsForHash().put(name+"token","loginTime",dateFormater.format(new Date()));
         redisTemplate.opsForList().leftPush(name+"log","/userManage/login="+dateFormater.format(new Date())+"=login");
+        redisTemplate.opsForSet().add("loginUser",name);
         userDao.login(name);
         return resmap;
     }
+
     public Map<String,Object> getUserRightMap(UserInfo user){
         Map<String,Object> resmap = new HashMap<>();
         List<Right> rights = new ArrayList<>();
@@ -88,6 +97,7 @@ public class UserServiceImp implements UserService{
 
     @Override
     public List<UserInfo> findAllUserLog(String online) {
+        clearUserOffLine();
         List<UserInfo> list = userDao.findAllUser(online);
         String addr = null;
         String name = null;
@@ -100,6 +110,20 @@ public class UserServiceImp implements UserService{
             user.setLoginTime(logintime);
         }
         return list;
+    }
+    //清理超时掉线用户
+    public void clearUserOffLine(){
+        Set<String> loginUsers = redisTemplate.opsForSet().members("loginUser");
+        for (String name : loginUsers){
+            String token = (String) redisTemplate.opsForHash().get(name+"token","token");
+            if (token==null) continue;
+            String userName = (String) redisTemplate.opsForValue().get(token);
+            if (userName==null){
+                userDao.logout(name);
+                redisTemplate.delete(name+"token");
+                redisTemplate.opsForSet().remove("loginUser",name);
+            }
+        }
     }
 
     @Override

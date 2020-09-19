@@ -24,6 +24,7 @@ public class WheelTakeInController {
         try{
             result = wheelService.insertWheelInfo(wheelInfo);
         }catch(Exception e){
+            System.out.println(e);
             return new Result(null,"添加失败",101);
         }
         return new Result(result,"添加成功",100);

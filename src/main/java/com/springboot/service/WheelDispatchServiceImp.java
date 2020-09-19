@@ -92,13 +92,13 @@ public class WheelDispatchServiceImp implements WheelDispatchService{
     public void receiveResult(List<VehicleInfo> resultlist,String matcher) {
             String dispatchFinishTime = dateFormater2.format(new Date());
             for (VehicleInfo vec : resultlist){
-                int axlepos = 1;
+                int axlepos = 0;
                 for (WheelDispatch des : vec.getAxleOut()){
                     wheelDispatchDao.updateDispatchStatus(
                             des.getWheelId(),
                             vec.getVehicleType(),
                             vec.getVehicleNumber(),
-                            axlepos++,
+                            ++axlepos,
                             dispatchFinishTime,
                             matcher);
                     wheelDispatchDao.flushWheelInfoWheelDispatchFinish(

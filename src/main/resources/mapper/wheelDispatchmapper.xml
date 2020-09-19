@@ -46,6 +46,8 @@
                 worker ,
                 isFinish	,
                 finishTime
+
+
         )
         VALUES
         (
@@ -86,6 +88,8 @@
                 #{ worker },
                 #{	isFinish	},
                 #{	finishTime	}
+
+
         )
     </insert>
     <update id="updateWheelDispatch" parameterType="WheelDispatch">
@@ -125,6 +129,8 @@
                 worker = #{ worker },
                 isFinish	=	#{	isFinish	},
                 finishTime	=	#{	finishTime	}
+
+
                 where wheelId	=	#{	wheelId	}
     </update>
 

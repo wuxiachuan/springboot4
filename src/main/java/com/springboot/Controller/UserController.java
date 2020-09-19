@@ -77,6 +77,7 @@ public class UserController {
         redisTemplate.delete(token);
         redisTemplate.delete(name+"token");
         redisTemplate.opsForList().leftPush(name+"log",url+"="+dateFormater.format(new Date()));
+        redisTemplate.opsForSet().remove("loginUser",name);
         userDao.logout(name);
         return new Result(null,"退出成功",100);
     }
@@ -133,9 +134,19 @@ public class UserController {
         for (String str : list){
             String[] arr = str.split("=");
             HashMap<String,String> map = new HashMap<>();
-            map.put("url",arr[0]);
-            map.put("time",arr[1]);
-            map.put("ip",arr[2]);
+            for (int i=0;i<arr.length;i++){
+                if (i==0){
+                    map.put("url",arr[0]);
+                    continue;
+                }
+                if (i==1){
+                    map.put("time",arr[1]);
+                    continue;
+                }
+                if (i==2){
+                    map.put("ip",arr[2]);
+                }
+            }
             logmap.add(map);
         }
         UserLogIn userLogIn = new UserLogIn();
