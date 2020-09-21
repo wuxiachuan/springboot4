@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class WheelMeasureServiceImp implements WheelMeasureService{
@@ -16,6 +17,9 @@ public class WheelMeasureServiceImp implements WheelMeasureService{
     private MeasureDao measureDao;
     @Autowired
     private WheelDao wheelDao;
+    @Autowired
+    private WheelRepository wheelRepository;
+
     @Override
     public void addMeasure(WheelMeasure wheelMeasure) {
         Integer count =  measureDao.findWheelIdCount(wheelMeasure.getWheelId());
@@ -23,6 +27,7 @@ public class WheelMeasureServiceImp implements WheelMeasureService{
             updateWheelMeasure(wheelMeasure);
         }else{
             measureDao.insertWheelMeasure(wheelMeasure);
+            isdiscard(wheelMeasure);
         }
         measureDao.flushWheelInfoMeasureFinish(wheelMeasure.getWheelId());
         flushWheelInfo(wheelMeasure);
@@ -36,6 +41,29 @@ public class WheelMeasureServiceImp implements WheelMeasureService{
     @Override
     public void updateWheelMeasure(WheelMeasure wheelMeasure) {
         measureDao.updateWheelMeasure(wheelMeasure);
+        //报废轮对，解决存在多次存入问题！
+        String repairProgress = wheelMeasure.getRepairProcess();
+        //查找报废轮对是否已存在
+        Map position = wheelRepository.getPosition(String.valueOf(wheelMeasure.getWheelId()));
+        if (position != null){
+            //已报废过
+            if ("4".equals(repairProgress)){
+                System.out.println("have discard");
+            }else {
+                //不再报废则取出
+                wheelRepository.getDiscardAxleOutPosition(String.valueOf(wheelMeasure.getWheelId()));
+            }
+        }else {
+            //第一次报废
+            if ("4".equals(repairProgress)){
+                isdiscard(wheelMeasure);
+            }
+        }
+        if ("4".equals(repairProgress)){
+            wheelDao.discardWheel(wheelMeasure.getWheelId(),"3");
+        }else {
+            wheelDao.discardWheel(wheelMeasure.getWheelId(),"0");
+        }
         fresh(wheelMeasure.getWheelId());
         flushWheelInfo(wheelMeasure);
     }
@@ -96,5 +124,15 @@ public class WheelMeasureServiceImp implements WheelMeasureService{
         wheelDao.rollbackWheelInfoqualityInspectionFinish(id);
         wheelDao.rollbackWheelInfoverifyFinish(id);
         wheelDao.rollbackWheelInfoprocessFinish(id);
+    }
+    //报废轮对
+    public void isdiscard(WheelMeasure wh){
+        String repairProgress = wh.getRepairProcess();
+        if ("4".equals(repairProgress)){
+            //修改状态
+            wheelDao.discardWheel(wh.getWheelId(),"3");
+            //存入轮场
+            wheelRepository.discardAxleInPosition(String.valueOf(wh.getWheelId()));
+        }
     }
 }

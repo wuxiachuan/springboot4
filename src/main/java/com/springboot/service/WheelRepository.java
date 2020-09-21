@@ -12,14 +12,27 @@ public class WheelRepository {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    public List<Integer> putAxleInPosition(String axleNum){
-        List<Integer> res = putInPosition(axleNum,"qualified");
+    public List<Integer> putAxleInPosition(String wheelId){
+        List<Integer> res = putInPosition(wheelId,"qualified");
         return res;
     }
     public List<Integer> discardAxleInPosition(String axleNum){
         List<Integer> res = putInPosition(axleNum,"discard");
         return res;
     }
+    public Map<String,Integer> getPosition(String wheelId){
+        Map<String,Integer> position = new HashMap<>();
+        Integer x = (Integer) redisTemplate.opsForHash().get("position"+wheelId,"x");
+        Integer y = (Integer) redisTemplate.opsForHash().get("position"+wheelId,"y");
+        if (x == null || y == null){
+            return null;
+        }
+        position.put("x",x);
+        position.put("y",y);
+        return position;
+    }
+
+
     public List<Integer> putInPosition(String axleNum,String op){
         List<Integer> res = new ArrayList<>();
         List<Integer> xlist = redisTemplate.opsForList().range(op+"Repository",0,-1);
@@ -65,6 +78,8 @@ public class WheelRepository {
         //修改容量
         Integer count = (Integer) redisTemplate.opsForList().index(op+"Repository",x);
         redisTemplate.opsForList().set(op+"Repository",x,++count);
+        //销毁坐标
+        redisTemplate.delete("position"+axleNum);
     }
 
 

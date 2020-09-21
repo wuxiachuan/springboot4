@@ -32,7 +32,7 @@ public interface WheelDispatchDao {
                                            @Param("dispatchDate") String dispatchDate);
     void rollbackWheelInfoWheelDispatchFinish(Integer wheelId);
 
-    void flushWheelInfoqualityInspectionFinish(Integer wheelId);
+    void flushWheelInfoqualityInspectionFinish(@Param("wheelId") Integer wheelId,@Param("time") String time);
 
     void finishInspection(@Param("inspector") String inspector,
                           @Param("wheelId") Integer wheelId,

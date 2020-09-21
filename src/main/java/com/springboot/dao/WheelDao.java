@@ -66,4 +66,21 @@ public interface WheelDao {
     void rollbackWheelInfoqualityInspectionFinish(Integer wheelId);
     void rollbackWheelInfoverifyFinish(Integer wheelId);
     void rollbackWheelInfoprocessFinish(Integer wheelId);
+
+    List<WheelInfo> findWheelMeasure();
+    List<WheelInfo> findBearingRepair();
+    List<WheelInfo> findMagInspect();
+    List<WheelInfo> findUtrInspect();
+    List<WheelInfo> findWheelRound();
+    List<WheelInfo> findWheelLoad();
+    WheelInfo findBearingCap(Integer wheelId);
+    WheelInfo findBearingCap2(Integer wheelId);
+    WheelInfo findBearingTest(Integer wheelId);
+    WheelInfo findBearingTest2(Integer wheelId);
+    WheelInfo findBearingTest3(Integer wheelId);
+    List<WheelInfo> findWheelRemeasure();
+    List<WheelInfo> findWheelQalityInspect();
+    void discardWheel(@Param("wheelId") Integer wheelId,@Param("state") String state);
+
+
 }

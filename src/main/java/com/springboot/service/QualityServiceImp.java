@@ -94,6 +94,6 @@ public class QualityServiceImp implements QualityService{
         }else {
             wheelDispatchDao.finishInspection(name,Integer.parseInt(id),time,"null","null");
         }
-        wheelDispatchDao.flushWheelInfoqualityInspectionFinish(Integer.parseInt(id));
+        wheelDispatchDao.flushWheelInfoqualityInspectionFinish(Integer.parseInt(id),time);
     }
 }

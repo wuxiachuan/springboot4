@@ -52,8 +52,9 @@ public class WheelInfo implements Serializable {
 
     private String   reserve1;
     private String   reserve2;
-    private String   reserve3;
+    private String   isprocessFinishTime;
     private String   isreMeasureFinish;
+    private String   finishTime;
 
     public WheelInfo() {
         init();
@@ -447,12 +448,12 @@ public class WheelInfo implements Serializable {
         this.reserve2 = reserve2;
     }
 
-    public String getReserve3() {
-        return reserve3;
+    public String getIsprocessFinishTime() {
+        return isprocessFinishTime;
     }
 
-    public void setReserve3(String reserve3) {
-        this.reserve3 = reserve3;
+    public void setIsprocessFinishTime(String isprocessFinishTime) {
+        this.isprocessFinishTime = isprocessFinishTime;
     }
 
     public String getDispatchVehicleType() {
@@ -471,6 +472,14 @@ public class WheelInfo implements Serializable {
         this.isreMeasureFinish = isreMeasureFinish;
     }
 
+    public String getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(String finishTime) {
+        this.finishTime = finishTime;
+    }
+
     @Override
     public String toString() {
         return "WheelInfo{" +
@@ -485,6 +494,7 @@ public class WheelInfo implements Serializable {
                 ", axleMaterial='" + axleMaterial + '\'' +
                 ", axleMadeDate='" + axleMadeDate + '\'' +
                 ", axleMadeIn='" + axleMadeIn + '\'' +
+                ", axlePosition='" + axlePosition + '\'' +
                 ", wheelType='" + wheelType + '\'' +
                 ", wheelMaterial='" + wheelMaterial + '\'' +
                 ", wheelMadeIn='" + wheelMadeIn + '\'' +
@@ -494,9 +504,33 @@ public class WheelInfo implements Serializable {
                 ", wheelAssemblelastIn='" + wheelAssemblelastIn + '\'' +
                 ", wheelMarkLeft='" + wheelMarkLeft + '\'' +
                 ", wheelMarkRight='" + wheelMarkRight + '\'' +
-                ", infoCollector='" + worker + '\'' +
+                ", worker='" + worker + '\'' +
                 ", infoTakeFinish='" + infoTakeFinish + '\'' +
                 ", infoTakeFinishTime='" + infoTakeFinishTime + '\'' +
+                ", isMeasureFinish='" + isMeasureFinish + '\'' +
+                ", isbearingRepairFinish='" + isbearingRepairFinish + '\'' +
+                ", isaxleInspectionFinish='" + isaxleInspectionFinish + '\'' +
+                ", isWheelRoundingFinish='" + isWheelRoundingFinish + '\'' +
+                ", isbearingLoadFinish='" + isbearingLoadFinish + '\'' +
+                ", ismagnetInspectionFinish='" + ismagnetInspectionFinish + '\'' +
+                ", isbearingCapFinish='" + isbearingCapFinish + '\'' +
+                ", isbearingrollTestFinish='" + isbearingrollTestFinish + '\'' +
+                ", iswheelDispatchFinish='" + iswheelDispatchFinish + '\'' +
+                ", isqualityInspectionFinish='" + isqualityInspectionFinish + '\'' +
+                ", isverifyFinish='" + isverifyFinish + '\'' +
+                ", isbearingCapFinishW='" + isbearingCapFinishW + '\'' +
+                ", isbearingCapFinishL='" + isbearingCapFinishL + '\'' +
+                ", isprocessFinish='" + isprocessFinish + '\'' +
+                ", state='" + state + '\'' +
+                ", dispatchVehicleType='" + dispatchVehicleType + '\'' +
+                ", dipatchVehicleNumber='" + dipatchVehicleNumber + '\'' +
+                ", dispatchDate='" + dispatchDate + '\'' +
+                ", dipatchAxlePosition='" + dipatchAxlePosition + '\'' +
+                ", reserve1='" + reserve1 + '\'' +
+                ", reserve2='" + reserve2 + '\'' +
+                ", isprocessFinishTime='" + isprocessFinishTime + '\'' +
+                ", isreMeasureFinish='" + isreMeasureFinish + '\'' +
+                ", finishTime='" + finishTime + '\'' +
                 '}';
     }
 }

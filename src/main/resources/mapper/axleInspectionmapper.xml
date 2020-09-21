@@ -158,10 +158,10 @@
             AND  w.axleNumber = #{axleNumber}
         </if>
         <if test="takeInDateFrom != null ">
-            AND w.takeInDate >= #{takeInDateFrom}
+            AND w.infoTakeFinishTime >= #{takeInDateFrom}
         </if>
         <if test="takeInDateTo != null ">
-            AND #{takeInDateTo} >= w.takeInDate
+            AND #{takeInDateTo} >= w.infoTakeFinishTime
         </if>
         <if test="infoTakeFinishTimeFrom != null ">
             AND r.ultfinishTime >= #{infoTakeFinishTimeFrom}
@@ -204,10 +204,10 @@
             AND  w.axleNumber = #{axleNumber}
         </if>
         <if test="takeInDateFrom != null ">
-            AND w.takeInDate >= #{takeInDateFrom}
+            AND w.infoTakeFinishTime >= #{takeInDateFrom}
         </if>
         <if test="takeInDateTo != null ">
-            AND #{takeInDateTo} >= w.takeInDate
+            AND #{takeInDateTo} >= w.infoTakeFinishTime
         </if>
         <if test="infoTakeFinishTimeFrom != null ">
             AND r.magfinishTime >= #{infoTakeFinishTimeFrom}

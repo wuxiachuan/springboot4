@@ -46,8 +46,6 @@
                 worker ,
                 isFinish	,
                 finishTime
-
-
         )
         VALUES
         (
@@ -88,8 +86,6 @@
                 #{ worker },
                 #{	isFinish	},
                 #{	finishTime	}
-
-
         )
     </insert>
     <update id="updateWheelDispatch" parameterType="WheelDispatch">
@@ -129,8 +125,6 @@
                 worker = #{ worker },
                 isFinish	=	#{	isFinish	},
                 finishTime	=	#{	finishTime	}
-
-
                 where wheelId	=	#{	wheelId	}
     </update>
 
@@ -153,9 +147,14 @@
         storePositionY = #{storePositionY}
         WHERE wheelId = #{wheelId}
     </update>
-
-    <update id="flushWheelInfoqualityInspectionFinish" parameterType="int">
-        UPDATE wheelinfo SET isqualityInspectionFinish = '1',isprocessFinish = '1',state = '1' where wheelId = #{wheelId}
+    <!--    完成质量检查WheelInfo登记-->
+    <update id="flushWheelInfoqualityInspectionFinish" >
+        UPDATE wheelinfo SET
+        isqualityInspectionFinish = '1',
+        isprocessFinish = '1',
+        state = '1',
+        isprocessFinishTime =  #{time}
+        where wheelId = #{wheelId}
     </update>
 
     <update id="flushWheelInfowheelRemeasureFinish" >
@@ -196,10 +195,10 @@
             AND  w.axleNumber = #{axleNumber}
         </if>
         <if test="takeInDateFrom != null ">
-            AND w.takeInDate >= #{takeInDateFrom}
+            AND w.infoTakeFinishTime >= #{takeInDateFrom}
         </if>
         <if test="takeInDateTo != null ">
-            AND #{takeInDateTo} >= w.takeInDate
+            AND #{takeInDateTo} >= w.infoTakeFinishTime
         </if>
         <if test="infoTakeFinishTimeFrom != null ">
             AND r.finishTime >= #{infoTakeFinishTimeFrom}
@@ -244,10 +243,10 @@
         SELECT DISTINCT vehiclenumber,vehicleType FROM `wheelinfo` w
         WHERE  isMeasureFinish = '1'
         <if test="takeInDateFrom != null ">
-            AND w.takeInDate >= #{takeInDateFrom}
+            AND w.infoTakeFinishTime >= #{takeInDateFrom}
         </if>
         <if test="takeInDateTo != null ">
-            AND #{takeInDateTo} >= w.takeInDate
+            AND #{takeInDateTo} >= w.infoTakeFinishTime
         </if>
         <if test="vehicleNum != ''">
             AND w.vehiclenumber = #{vehicleNum}

@@ -87,29 +87,39 @@ public class UserServiceImp implements UserService{
 
     @Override
     public List<UserInfo> findUserByName(String name) {
-        return userDao.findUserByName("%"+name+"%");
+        List<UserInfo> list = userDao.findUserByName("%"+name+"%");
+        for (UserInfo user : list){
+            appendLogInfo(user);
+        }
+        return list;
     }
 
+    //查找所有用户
     @Override
     public List<UserInfo> findAllUser(String online) {
+        clearUserOffLine();
         return userDao.findAllUser(online);
     }
-
+    //查找所有用户带日志登录信息
     @Override
     public List<UserInfo> findAllUserLog(String online) {
-        clearUserOffLine();
         List<UserInfo> list = userDao.findAllUser(online);
+        for (UserInfo user : list){
+            appendLogInfo(user);
+        }
+        return list;
+    }
+    //添加日志信息
+    public UserInfo appendLogInfo(UserInfo user){
         String addr = null;
         String name = null;
         String logintime = null;
-        for (UserInfo user : list){
-            name = user.getUsername();
-            addr = (String) redisTemplate.opsForHash().get(name+"token","ip");
-            logintime = (String) redisTemplate.opsForHash().get(name+"token","loginTime");
-            user.setIpAddr(addr);
-            user.setLoginTime(logintime);
-        }
-        return list;
+        name = user.getUsername();
+        addr = (String) redisTemplate.opsForHash().get(name+"token","ip");
+        logintime = (String) redisTemplate.opsForHash().get(name+"token","loginTime");
+        user.setIpAddr(addr);
+        user.setLoginTime(logintime);
+        return user;
     }
     //清理超时掉线用户
     public void clearUserOffLine(){

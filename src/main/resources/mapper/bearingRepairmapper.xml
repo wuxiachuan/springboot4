@@ -168,7 +168,7 @@
     <select id="searchWheelInfoByconditionRepair" parameterType="String" resultType="WheelInfo">
         SELECT w.* FROM wheelinfo w
             JOIN bearingRepair r ON w.`WheelId` = r.`wheelId`
-            where w.isMeasureFinish = '1'
+            where w.isMeasureFinish = '1' and (w.state != '3' or w.state != '4')
             <if test="wheelId != ''">
                 AND  w.wheelId = #{wheelId}
             </if>

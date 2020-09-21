@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.springboot.domain.Result;
 import com.springboot.domain.SearchWheelParam;
 import com.springboot.domain.WheelAll;
+import com.springboot.domain.WheelInfo;
 import com.springboot.service.ManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.ParseException;
 import java.util.List;
 
 @Controller
@@ -49,6 +51,23 @@ public class ManageController {
         result.setTotal(total);
         return  new Result(result,"整改成功",100);
     }
+
+    @RequestMapping("/getWheelList")
+    @ResponseBody
+    public Result getWheelMeasure(String name){
+        List<WheelInfo> data = null;
+        try {
+            data = manageService.findWheels(name);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return  new Result(null,"添加失败",101);
+        }
+        return  new Result(data,"添加成功",100);
+    }
+
+
+
+
 
 
     @RequestMapping("/test")

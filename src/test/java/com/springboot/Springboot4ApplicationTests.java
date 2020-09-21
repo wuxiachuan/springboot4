@@ -12,12 +12,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import redis.clients.jedis.Jedis;
 
 import javax.sql.DataSource;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static java.time.Duration.*;
 @RunWith(SpringRunner.class)
@@ -142,6 +141,19 @@ class Springboot4ApplicationTests {
         list.add("hello");
         list.add("world");
         System.out.println(list.get(3));
+    }
+    @Test
+    public void testTime() throws ParseException {
+        String t1 = "2020-09-21 08:58:18";
+        String t2 = "2020-09-21 10:48:38";
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date1 = dateFormat.parse(t1);
+        Date date2= dateFormat.parse(t2);
+        Long date = (date2.getTime()-date1.getTime())/1000;
+        int hour = (int) (date/3600);
+        int minute = (int) (date%3600/60);
+        int second = (int) (date%3600%60);
+        System.out.println(hour+":"+minute+":"+second);
     }
 
 }

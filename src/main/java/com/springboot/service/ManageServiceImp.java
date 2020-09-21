@@ -6,7 +6,11 @@ import com.springboot.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,6 +33,11 @@ public class ManageServiceImp implements ManageService{
     private BearingLoadDao bearingLoadDao;
     @Autowired
     private BearingRepairDao bearingRepairDao;
+    private DateFormat dateFormat;
+
+    public ManageServiceImp(){
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    }
     @Override
     public List<WheelAll> findWheelAllByCondition(SearchWheelParam param) {
         String id = param.getWheelId();
@@ -149,7 +158,6 @@ public class ManageServiceImp implements ManageService{
         return findWheelAllByWheelInfo(wh);
     }
 
-
     private WheelRound findWheelRoundById(WheelInfo wh){
         //WheelRound wheelRound = new WheelRound();
         WheelRound wheelRound = null;
@@ -229,5 +237,91 @@ public class ManageServiceImp implements ManageService{
             wheelDispatch = wheelDispatchDao.findWheelDispatchByWheelId(id);
         }
         return wheelDispatch;
+    }
+
+    @Override
+    public List<WheelInfo> findWheels(String name) throws ParseException {
+        List<WheelInfo> list = null;
+        if ("wm".equals(name)) list = findWheelMeasure();
+        if ("br".equals(name)) list = findBearingRepair();
+        if ("mi".equals(name)) list = findMagInspect();
+        if ("ui".equals(name)) list = wheelDao.findUtrInspect();
+        if ("wr".equals(name)) list = wheelDao.findWheelRound();
+        if ("bl".equals(name)) list = wheelDao.findWheelLoad();
+        if ("bc".equals(name)) list = findBearingCap();
+        if ("bt".equals(name)) list = findBearingTest();
+        if ("rm".equals(name)) list = wheelDao.findWheelRemeasure();
+        if ("qc".equals(name)) list = wheelDao.findWheelQalityInspect();
+        for (WheelInfo wh : list){
+            appendTime(wh);
+        }
+        return list;
+    }
+
+    List<WheelInfo> findWheelMeasure(){
+        List<WheelInfo> list = wheelDao.findWheelMeasure();
+        for (WheelInfo wh : list){
+            wh.setFinishTime(wh.getInfoTakeFinishTime());
+        }
+        return list;
+    }
+    List<WheelInfo> findBearingRepair(){
+        List<WheelInfo> list = wheelDao.findBearingRepair();
+        return list;
+    }
+    List<WheelInfo> findMagInspect(){
+        List<WheelInfo> list = wheelDao.findMagInspect();
+        return list;
+    }
+    List<WheelInfo> findBearingCap() {
+        List<WheelInfo> list = bearingCapDao.findWheelInfoToBearingCap();
+        List<WheelInfo> res = new ArrayList<>();
+        System.out.println(list);
+        String isBearingLoad =  null;
+        for (WheelInfo wh : list){
+            isBearingLoad = wh.getIsbearingLoadFinish();
+            if ("-1".equals(isBearingLoad)){
+                wh = wheelDao.findBearingCap2(wh.getWheelId());
+             }else {
+                wh = wheelDao.findBearingCap(wh.getWheelId());
+            }
+            res.add(wh);
+        }
+        System.out.println(res);
+        return res;
+    }
+    List<WheelInfo> findBearingTest(){
+        List<WheelInfo> list = bearingTestDao.findWheelInfoToBearingTest();
+        List<WheelInfo> res = new ArrayList<>();
+        System.out.println(list);
+        String isBearingCap =  null;
+        String isUrlInspect =  null;
+        for (WheelInfo wh : list){
+            isBearingCap = wh.getIsbearingCapFinish();
+            isUrlInspect = wh.getIsaxleInspectionFinish();
+            if ("1".equals(isBearingCap)){
+                wh = wheelDao.findBearingTest(wh.getWheelId());
+                System.out.println(wh);
+            }else if ("1".equals(isUrlInspect)){
+                wh = wheelDao.findBearingTest2(wh.getWheelId());
+            }else {
+                wh = wheelDao.findBearingTest3(wh.getWheelId());
+            }
+            res.add(wh);
+        }
+        System.out.println(res);
+        return res;
+    }
+    public void appendTime(WheelInfo wh) throws ParseException {
+        String t1 = wh.getFinishTime();
+        if (t1 == null) return;
+        Date date1 = dateFormat.parse(t1);
+        Date date2 = new Date();
+        Long date = (date2.getTime()-date1.getTime())/1000;
+        int hour = (int) (date/3600);
+        int minute = (int) (date%3600/60);
+        int second = (int) (date%3600%60);
+        String time = new String(hour+":"+minute+":"+second);
+        wh.setReserve1(time);
     }
 }

@@ -29,7 +29,7 @@
         dipatchAxlePosition,
         reserve1,
         reserve2,
-        reserve3,
+        isprocessFinishTime,
         dispatchVehicleType,
         isreMeasureFinish
         )
@@ -58,7 +58,7 @@
         #{dipatchAxlePosition},
         #{reserve1},
         #{reserve2},
-        #{reserve3},
+        #{isprocessFinishTime},
         #{dispatchVehicleType},
         #{isreMeasureFinish}
         )
@@ -89,7 +89,7 @@
         dipatchAxlePosition = #{dipatchAxlePosition},
         reserve1 = #{reserve1},
         reserve2 = #{reserve2},
-        reserve3 = #{reserve3},
+        isprocessFinishTime = #{isprocessFinishTime},
         dispatchVehicleType = #{dispatchVehicleType},
         isreMeasureFinish = #{isreMeasureFinish}
         where wheelId=#{wheelId}
@@ -108,8 +108,11 @@
         select * from wheelinfo where isMeasureFinish = '0'
     </select>
     <select id="findWheelInfoToBearing" resultType="WheelInfo">
-        select * from wheelinfo where isbearingRepairFinish = '0' and isMeasureFinish = '1'
+        select * from wheelinfo  where isbearingRepairFinish = '0' and isMeasureFinish = '1' and state != '3' and state != '4'
     </select>
+    <update id="discardWheel">
+        UPDATE wheelinfo SET state = #{state} where wheelId = #{wheelId}
+    </update>
 
     <update id="robackWheelInfoMeasureFinish" parameterType="int">
         UPDATE wheelinfo SET isMeasureFinish = '0' where wheelId = #{wheelId}
@@ -163,10 +166,10 @@
                 AND vehicleNumber = #{vehicleNumber}
             </if>
             <if test="takeInDateFrom != null ">
-                AND takeInDate >= #{takeInDateFrom}
+                AND infoTakeFinishTime >= #{takeInDateFrom}
             </if>
             <if test="takeInDateTo != null ">
-                AND #{takeInDateTo} >= takeInDate
+                AND #{takeInDateTo} >= infoTakeFinishTime
             </if>
             <if test="infoTakeFinishTimeFrom != null ">
                 AND infoTakeFinishTime >= #{infoTakeFinishTimeFrom}
@@ -176,9 +179,9 @@
             </if>
         </where>
     </select>
+<!--    查询条件轮对-->
     <select id="findWheelInfoByCondition" resultType="WheelInfo">
         select w.* from wheelinfo w
-              JOIN wheelDispatch r ON w.`WheelId` = r.`wheelId`
         <where>
             <if test="wheelId != ''">
                 AND  w.wheelId = #{wheelId}
@@ -211,24 +214,24 @@
                 AND #{dispatchDateTo} >= w.dispatchDate
             </if>
             <if test="takeInDateFrom != null ">
-                AND w.takeInDate >= #{takeInDateFrom}
+                AND w.infoTakeFinishTime >= #{takeInDateFrom}
             </if>
             <if test="takeInDateTo != null ">
-                AND #{takeInDateTo} >= w.takeInDate
+                AND #{takeInDateTo} >= w.infoTakeFinishTime
             </if>
             <if test="infoTakeFinishTimeFrom != null ">
-                AND r.qualityInspectFinishTime >= #{infoTakeFinishTimeFrom}
+                AND w.isprocessFinishTime >= #{infoTakeFinishTimeFrom}
             </if>
             <if test="infoTakeFinishTimeTo != null ">
-                AND  #{infoTakeFinishTimeTo} >= r.qualityInspectFinishTime
+                AND  #{infoTakeFinishTimeTo} >= w.isprocessFinishTime
             </if>
         </where>
     </select>
-
+    <!--    查询可以质量检查的条件轮对-->
     <select id="findWheelInfoByCondition2Check" resultType="WheelInfo">
         select w.* from wheelinfo w
             JOIN wheelDispatch r ON w.`WheelId` = r.`wheelId`
-            where w.isreMeasureFinish = '1'
+            where w.isreMeasureFinish = '1' and (w.state != '3' or w.state != '4')
             <if test="wheelId != ''">
                 AND  w.wheelId = #{wheelId}
             </if>
@@ -260,10 +263,10 @@
                 AND #{dispatchDateTo} >= w.dispatchDate
             </if>
             <if test="takeInDateFrom != null ">
-                AND w.takeInDate >= #{takeInDateFrom}
+                AND w.infoTakeFinishTime >= #{takeInDateFrom}
             </if>
             <if test="takeInDateTo != null ">
-                AND #{takeInDateTo} >= w.takeInDate
+                AND #{takeInDateTo} >= w.infoTakeFinishTime
             </if>
             <if test="infoTakeFinishTimeFrom != null ">
                 AND r.qualityInspectFinishTime >= #{infoTakeFinishTimeFrom}
@@ -273,4 +276,67 @@
             </if>
     </select>
 
+    <select id="findWheelMeasure" resultType="WheelInfo">
+        SELECT * FROM wheelinfo w WHERE w.`InfoTakeFinish`='1' AND w.`ismeasurefinish`='0'
+    </select>
+    <select id="findBearingRepair" resultType="WheelInfo">
+        SELECT w.*,r.`finishTime` FROM wheelinfo w
+        JOIN `wheelmeasure` r ON w.`WheelId` = r.`wheelId`
+        WHERE w.`ismeasurefinish`='1' AND w.`isbearingRepairFinish`='0' and w.state != '3' and w.state != '4'
+    </select>
+    <select id="findMagInspect" resultType="WheelInfo">
+        SELECT w.*,r.`finishTime` FROM wheelinfo w
+        join  `bearingrepair` r on w.`WheelId` = r.`wheelId`
+        WHERE w.`isbearingRepairFinish`='1' AND w.`ismagnetInspectionFinish`='0'
+    </select>
+    <select id="findUtrInspect" resultType="WheelInfo">
+        SELECT w.*,r.`magfinishTime` finishTime FROM wheelinfo w
+        JOIN  `axleinspection` r ON w.`WheelId` = r.`wheelId`
+        WHERE w.`ismagnetInspectionFinish` ='1' AND w.`isaxleInspectionFinish`='0'
+    </select>
+    <select id="findWheelRound" resultType="WheelInfo">
+        SELECT w.*,r.`finishTime` FROM wheelinfo w
+        join  `bearingrepair` r on w.`WheelId` = r.`wheelId`
+        WHERE w.`isbearingRepairFinish`='1' AND w.`isWheelRoundingFinish`='0'
+    </select>
+    <select id="findWheelLoad" resultType="WheelInfo">
+        select w.* ,r.`finishTime` from wheelinfo w
+        join  `bearingrepair` r on w.`WheelId` = r.`wheelId`
+        where w.isbearingLoadFinish != '-1' and w.isbearingLoadFinish != '4' and w.isbearingRepairFinish = '1'
+    </select>
+    <select id="findBearingCap" resultType="WheelInfo">
+        select w.*,r.`finishTime` from wheelinfo w
+            join bearingload r on w.`WheelId` = r.`wheelId`
+        where w.wheelId = #{wheelId}
+    </select>
+    <select id="findBearingCap2" resultType="WheelInfo">
+        select w.*,r.`finishTime` from wheelinfo w
+            join wheelrounding r on w.`WheelId` = r.`wheelId`
+        where w.wheelId = #{wheelId}
+    </select>
+    <select id="findBearingTest" resultType="WheelInfo">
+        SELECT w.*,r.finishTime FROM wheelinfo w
+                join bearingcap r on w.`WheelId` = r.`wheelId`
+                where w.wheelId = #{wheelId}
+    </select>
+    <select id="findBearingTest2" resultType="WheelInfo">
+        SELECT w.*,r.ultfinishTime finishTime FROM wheelinfo w
+                join axleinspection r on w.`WheelId` = r.`wheelId`
+                where w.wheelId = #{wheelId}
+    </select>
+    <select id="findBearingTest3" resultType="WheelInfo">
+        SELECT w.*,r.finishTime FROM wheelinfo w
+                join bearingrepair r on w.`WheelId` = r.`wheelId`
+                where w.wheelId = #{wheelId}
+    </select>
+    <select id="findWheelRemeasure" resultType="WheelInfo">
+         select w.*,r.finishTime from wheelinfo w
+                join rolltest r on w.`WheelId` = r.`wheelId`
+         where  w.isbearingrollTestFinish = '1' and w.isreMeasureFinish = '0'
+    </select>
+    <select id="findWheelQalityInspect" resultType="WheelInfo">
+        select w.*,r.finishTime from wheelinfo w
+                JOIN wheelDispatch r ON w.`WheelId` = r.`wheelId`
+                where w.isreMeasureFinish = '1' and w.`isqualityInspectionFinish`='0'
+    </select>
 </mapper>
