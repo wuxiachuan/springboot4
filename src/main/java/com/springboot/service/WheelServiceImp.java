@@ -1,8 +1,10 @@
 package com.springboot.service;
 
+import com.springboot.dao.QRcodeDao;
 import com.springboot.dao.WheelDao;
 import com.springboot.domain.SearchWheelParam;
 import com.springboot.domain.WheelInfo;
+import com.springboot.qrcode.QRCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import java.util.List;
 public class WheelServiceImp implements WheelService{
     @Autowired
     private WheelDao wheelDao;
+    @Autowired
+    private QRcodeDao qRcodeDao;
     @Override
     public WheelInfo insertWheelInfo(WheelInfo wheelInfo) {
         wheelDao.insertWheelInfo(wheelInfo);
@@ -38,5 +42,18 @@ public class WheelServiceImp implements WheelService{
     @Override
     public void deleteWheelInfo(String id) {
         wheelDao.deleteWheelInfo(Integer.parseInt(id));
+    }
+
+    @Override
+    public String generateQRcode(String wheelId) throws Exception {
+        // 存放在二维码中的内容
+        String text = wheelId;
+        String name = "QR"+wheelId+".jpg";
+        // 生成的二维码的路径及名称
+        String destPath = "I:/wheelqrcode/"+name;
+        //生成二维码
+        QRCodeUtil.encode(text,null, destPath, true);
+        qRcodeDao.insertQRcode(Integer.parseInt(wheelId),name,destPath);
+        return name;
     }
 }

@@ -1,15 +1,21 @@
 package com.springboot.Controller;
 
+import com.springboot.dao.QRcodeDao;
+import com.springboot.domain.FileContent;
 import com.springboot.domain.Result;
 import com.springboot.domain.SearchWheelParam;
 import com.springboot.domain.WheelInfo;
 import com.springboot.service.WheelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.http.HttpHeaders;
 import java.util.List;
 
 @Controller
@@ -17,12 +23,17 @@ import java.util.List;
 public class WheelTakeInController {
     @Autowired
     private WheelService wheelService;
+    @Autowired
+    private QRcodeDao qRcodeDao;
+
     @RequestMapping("/addWheel")
     @ResponseBody
     public Result addWheel(@RequestBody WheelInfo wheelInfo){
         WheelInfo result = null;
+        String path = null;
         try{
             result = wheelService.insertWheelInfo(wheelInfo);
+            path = wheelService.generateQRcode(result.getWheelId().toString());
         }catch(Exception e){
             System.out.println(e);
             return new Result(null,"添加失败",101);
@@ -63,4 +74,31 @@ public class WheelTakeInController {
         }
         return new Result(null,"删除成功",100);
     }
+    @RequestMapping("/getQRcode")
+    @ResponseBody
+    public Result generateQRcode(String id){
+        String path = null;
+        path = qRcodeDao.findQRcode(Integer.parseInt(id));
+        try {
+            if (path == null){
+                path = wheelService.generateQRcode(id);
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return new Result(null,"二维码生成",101);
+        }
+        return new Result(path,"二维码生成",100);
+    }
+//    @RequestMapping("/read/image")
+//    public ResponseEntity<byte[]> getImageContent(HttpServletRequest request){
+//        HttpHeaders responseHeaders = new HttpHeaders();
+//
+//        String imageUrl=request.getParameter("imageUrl");
+//        FileContent file= FileContent.getImageByte(imageUrl);
+//
+//        responseHeaders.set("Access-Control-Allow-Origin","*");
+//        responseHeaders.set("Content-Type",file.getContent_type());
+//
+//        return new ResponseEntity<>(file.getContent(), responseHeaders, HttpStatus.OK);
+//    }
 }

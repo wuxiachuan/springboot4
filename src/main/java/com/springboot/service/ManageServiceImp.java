@@ -33,44 +33,63 @@ public class ManageServiceImp implements ManageService{
     private BearingLoadDao bearingLoadDao;
     @Autowired
     private BearingRepairDao bearingRepairDao;
+    @Autowired
+    private ProblemDao problemDao;
     private DateFormat dateFormat;
 
     public ManageServiceImp(){
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
+
     @Override
-    public List<WheelAll> findWheelAllByCondition(SearchWheelParam param) {
+    public List<WheelInfo> findWheelInfoByCondition(SearchWheelParam param) {
         String id = param.getWheelId();
-        String takeInDate = param.getTakeInDate();
-        String dispatchDate = param.getDispatchDate();
+        String takeInDateFrom = null;
+        takeInDateFrom = param.getTakeInDateFrom();
+        String takeInDateTo = null;
+        takeInDateTo = param.getTakeInDateTo();
+        String dispatchDateFrom = null;
+        dispatchDateFrom = param.getDispatchDateFrom();
+        String dispatchDateTo = null;
+        dispatchDateTo = param.getDispatchDateTo();
+
         String takeInReason = param.getTakeInReason();
         String axleNumber = param.getAxleNumber();
         String axleType = param.getAxleType();
         String vehicleNumber = param.getVehicleNumber();
         String dipatchVehicleNumber = param.getDipatchVehicleNumber();
-        String infoTakeFinishTime = param.getInfoTakeFinishTime();
+        String infoTakeFinishTimeFrom = param.getInfoTakeFinishTimeFrom();
+        String infoTakeFinishTimeTo = param.getInfoTakeFinishTimeTo();
         String status = param.getStatus();
         String isprocessFinish = param.getIsprocessFinish();
         List<WheelInfo> wheelInfoList = wheelDao.findWheelInfoByCondition(
-                                    param.getWheelId(),
-                                    param.getTakeInDateFrom(),
-                                    param.getTakeInDateTo(),
-                                    param.getAxleNumber(),
-                                    param.getVehicleNumber(),
-                                    param.getInfoTakeFinishTimeFrom(),
-                                    param.getInfoTakeFinishTimeTo(),
-                                    param.getDispatchDateFrom(),
-                                    param.getDispatchDateTo(),
-                                    dipatchVehicleNumber,
-                                    status,
-                                    axleType,
-                                    takeInReason,
-                                    isprocessFinish);
+                id,
+                takeInDateFrom,
+                takeInDateTo,
+                axleNumber,
+                vehicleNumber,
+                infoTakeFinishTimeFrom,
+                infoTakeFinishTimeTo,
+                dispatchDateFrom,
+                dispatchDateTo,
+                dipatchVehicleNumber,
+                status,
+                axleType,
+                takeInReason,
+                isprocessFinish,
+                param.getInfoTakeFinishTime(),
+                param.getDispatchDate());
+        return wheelInfoList;
+    }
+
+    @Override
+    public List<WheelAll> findWheelAllByCondition(SearchWheelParam param) {
+        List<WheelInfo> wheelInfoList = findWheelInfoByCondition(param);
         return findWheelAllByInfoList(wheelInfoList);
     }
 
     @Override
-    public List<WheelAll> findWheelAllByCondition2Check(SearchWheelParam param) {
+    public List<WheelInfo> findWheelInfoByCondition2Check(SearchWheelParam param) {
         String id = param.getWheelId();
         String takeInDate = param.getTakeInDate();
         String dispatchDate = param.getDispatchDate();
@@ -96,7 +115,15 @@ public class ManageServiceImp implements ManageService{
                 status,
                 axleType,
                 takeInReason,
-                isprocessFinish);
+                isprocessFinish,
+                param.getInfoTakeFinishTime(),
+                param.getDispatchDate());
+        return wheelInfoList;
+    }
+
+    @Override
+    public List<WheelAll> findWheelAllByCondition2Check(SearchWheelParam param) {
+        List<WheelInfo> wheelInfoList = findWheelInfoByCondition2Check(param);
         return findWheelAllByInfoList(wheelInfoList);
     }
 
@@ -126,6 +153,7 @@ public class ManageServiceImp implements ManageService{
         BearingLoad bearingLoad = null;
         BearingRepair bearingRepair = null;
         BearingCap bearingCap = null;
+        List<Problem> problem = null;
 
         wheelRound = findWheelRoundById(wh);
         wheelDispatch = findWheelDispatchById(wh);
@@ -136,6 +164,7 @@ public class ManageServiceImp implements ManageService{
         bearingLoad = findBearingLoadById(wh);
         bearingRepair = findBearingRepairById(wh);
         bearingCap = findBearingCapById(wh);
+        problem = findProblemById(wh);
 
         WheelAll wheelAll = new WheelAll();
         wheelAll.setAxleInspection(axleInspection);
@@ -148,7 +177,9 @@ public class ManageServiceImp implements ManageService{
         wheelAll.setWheelMeasure(wheelMeasure);
         wheelAll.setBearingTest(bearingTest);
         wheelAll.setWheelInfo(wh);
+        wheelAll.setProblem(problem);
         wheelAll.setWheelId(wh.getWheelId());
+
         return wheelAll;
     }
 
@@ -237,6 +268,12 @@ public class ManageServiceImp implements ManageService{
             wheelDispatch = wheelDispatchDao.findWheelDispatchByWheelId(id);
         }
         return wheelDispatch;
+    }
+    private List<Problem> findProblemById(WheelInfo wh){
+        List<Problem> problem = null;
+        Integer id = wh.getWheelId();
+        problem = problemDao.findProblemByWheelId(id);
+        return problem;
     }
 
     @Override

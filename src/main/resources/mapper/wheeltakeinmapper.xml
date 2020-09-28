@@ -207,25 +207,31 @@
             <if test="dipatchVehicleNumber != null and dipatchVehicleNumber != ''">
                 AND w.dipatchVehicleNumber = #{dipatchVehicleNumber}
             </if>
-            <if test="dispatchDateFrom != null ">
+            <if test="infoTakeFinishTime != null and infoTakeFinishTime != ''">
+                AND  #{infoTakeFinishTime} = w.AxleMadeIn
+            </if>
+            <if test="dispatchDate != null and dispatchDate != ''">
+                AND  #{dispatchDate} = w.WheelMadeIn
+            </if>
+            <if test="dispatchDateFrom != null and dispatchDateFrom != ''">
                 AND w.dispatchDate >= #{dispatchDateFrom}
             </if>
-            <if test="dispatchDateTo != null ">
+            <if test="dispatchDateTo != null and dispatchDateTo != ''">
                 AND #{dispatchDateTo} >= w.dispatchDate
             </if>
-            <if test="takeInDateFrom != null ">
+            <if test="takeInDateFrom != null and takeInDateFrom != ''">
                 AND w.infoTakeFinishTime >= #{takeInDateFrom}
             </if>
-            <if test="takeInDateTo != null ">
+            <if test="takeInDateTo != null and takeInDateTo != ''">
                 AND #{takeInDateTo} >= w.infoTakeFinishTime
             </if>
-            <if test="infoTakeFinishTimeFrom != null ">
+            <if test="infoTakeFinishTimeFrom != null and infoTakeFinishTimeFrom != ''">
                 AND w.isprocessFinishTime >= #{infoTakeFinishTimeFrom}
             </if>
-            <if test="infoTakeFinishTimeTo != null ">
+            <if test="infoTakeFinishTimeTo != null and infoTakeFinishTimeTo != ''">
                 AND  #{infoTakeFinishTimeTo} >= w.isprocessFinishTime
             </if>
-        </where>
+           </where>
     </select>
     <!--    查询可以质量检查的条件轮对-->
     <select id="findWheelInfoByCondition2Check" resultType="WheelInfo">
@@ -255,6 +261,12 @@
             </if>
             <if test="dipatchVehicleNumber != null and dipatchVehicleNumber != ''">
                 AND w.dipatchVehicleNumber = #{dipatchVehicleNumber}
+            </if>
+            <if test="infoTakeFinishTime != null and infoTakeFinishTime != ''">
+                AND  #{infoTakeFinishTime} = w.AxleMadeIn
+            </if>
+            <if test="dispatchDate != null and dispatchDate != ''">
+                AND  #{dispatchDate} = w.WheelMadeIn
             </if>
             <if test="dispatchDateFrom != null ">
                 AND w.dispatchDate >= #{dispatchDateFrom}

@@ -12,4 +12,5 @@ public interface WheelService {
     List<WheelInfo> findWheelInfo(SearchWheelParam param);
     WheelInfo updateWheelInfo(WheelInfo wheelInfo);
     void deleteWheelInfo(String id);
+    String generateQRcode(String wheelId) throws Exception;
 }

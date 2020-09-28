@@ -18,6 +18,8 @@ public interface ProblemDao {
     List<Problem> findProblemByWheelId(Integer wheelId);
     List<Problem> findProblemByFinder(String name);
     List<Problem> findProblemByworker(String name);
+    List<Problem> findProblemByFinderUnFinish(String name);
+    List<Problem> findProblemByworkerUnFinish(String name);
     List<Problem> findProblemByCond(
             @Param("axleNumber") String axleNumber,
             @Param("axleType") String axleType,

@@ -102,6 +102,8 @@ public class BearingLoad implements Serializable {
     private  String	finishTime	;
     private  String repairProgress;
     private  String repairSaved;
+    private  String neckFootDiameterLeftAvg ;
+    private  String neckFootDiameterRightAvg ;
 
     public BearingLoad() {
     }
@@ -848,5 +850,21 @@ public class BearingLoad implements Serializable {
 
     public void setRepairSaved(String repairSaved) {
         this.repairSaved = repairSaved;
+    }
+
+    public String getNeckFootDiameterLeftAvg() {
+        return neckFootDiameterLeftAvg;
+    }
+
+    public void setNeckFootDiameterLeftAvg(String neckFootDiameterLeftAvg) {
+        this.neckFootDiameterLeftAvg = neckFootDiameterLeftAvg;
+    }
+
+    public String getNeckFootDiameterRightAvg() {
+        return neckFootDiameterRightAvg;
+    }
+
+    public void setNeckFootDiameterRightAvg(String neckFootDiameterRightAvg) {
+        this.neckFootDiameterRightAvg = neckFootDiameterRightAvg;
     }
 }

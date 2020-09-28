@@ -1,6 +1,9 @@
 package com.springboot;
 
 import com.mysql.cj.util.TimeUtil;
+import com.springboot.dao.WheelDao;
+import com.springboot.domain.WheelInfo;
+import com.springboot.qrcode.QRCodeUtil;
 import com.springboot.service.WheelRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +29,8 @@ class Springboot4ApplicationTests {
     DataSource dataSource;
     @Autowired
     RedisTemplate redisTemplate;
+    @Autowired
+    private WheelDao wheelDao;
     @Autowired
     WheelRepository wheelRepository;
     Random random = new Random(47);
@@ -154,6 +159,45 @@ class Springboot4ApplicationTests {
         int minute = (int) (date%3600/60);
         int second = (int) (date%3600%60);
         System.out.println(hour+":"+minute+":"+second);
+    }
+    @Test
+    public void testQrcode() throws Exception {
+        // 存放在二维码中的内容
+        String text = "我是二维码";
+        // 嵌入二维码的图片路径
+        // String imgPath = "I:/qrCode/dog.jpg";
+        // 生成的二维码的路径及名称
+        String destPath = "I:/jam.jpg";
+        //生成二维码
+        QRCodeUtil.encode(text,null, destPath, true);
+        // 解析二维码
+        String str = QRCodeUtil.decode(destPath);
+        // 打印出解析出的内容
+        System.out.println(str);
+
+    }
+    @Test
+    public void testquery(){
+        List<WheelInfo> data = null;
+        data = wheelDao.findWheelInfoByCondition("",
+                "",
+                null,
+                "",
+                "4567128",
+                null,
+                null,
+                null,
+                null,
+                "",
+                "",
+                "",
+                "",
+                "",
+                //车轴制造单位
+                "",
+                //车轮制造单位
+                "");
+        System.out.println(data);
     }
 
 }

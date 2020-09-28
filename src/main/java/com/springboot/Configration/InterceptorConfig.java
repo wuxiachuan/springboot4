@@ -24,7 +24,9 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 "/**/*.css",             //css静态资源
                 "/**/*.woff",
                 "/**/*.ttf",
-                "/userManage/login"
+                "/userManage/login",     //登录路径
+                "/mob/**",                 //移动端访问
+                "/wheelqrcode/**"
         );
     }
 }

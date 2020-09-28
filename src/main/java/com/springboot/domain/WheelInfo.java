@@ -50,6 +50,9 @@ public class WheelInfo implements Serializable {
     private String   dispatchDate;
     private String   dipatchAxlePosition;
 
+    private String   storePositionX;
+    private String   storePositionY;
+
     private String   reserve1;
     private String   reserve2;
     private String   isprocessFinishTime;
@@ -478,6 +481,22 @@ public class WheelInfo implements Serializable {
 
     public void setFinishTime(String finishTime) {
         this.finishTime = finishTime;
+    }
+
+    public String getStorePositionX() {
+        return storePositionX;
+    }
+
+    public void setStorePositionX(String storePositionX) {
+        this.storePositionX = storePositionX;
+    }
+
+    public String getStorePositionY() {
+        return storePositionY;
+    }
+
+    public void setStorePositionY(String storePositionY) {
+        this.storePositionY = storePositionY;
     }
 
     @Override

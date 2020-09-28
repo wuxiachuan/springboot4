@@ -100,6 +100,7 @@ public class AxleInspectionServiceImp implements AxleInspectionService{
     }
     private void fresh(Integer id){
         wheelDao.rollbackWheelInforollTestFinish(id);
+        wheelDao.rollbackWheelInfowheelRemeasureFinish(id);
         wheelDao.rollbackWheelInfowheelDispatchFinish(id);
         wheelDao.rollbackWheelInfoqualityInspectionFinish(id);
         wheelDao.rollbackWheelInfoverifyFinish(id);

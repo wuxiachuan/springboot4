@@ -86,14 +86,14 @@ public class QualityServiceImp implements QualityService{
     public void finishInspection(String name, String id) {
         SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = dateFormater.format(new Date());
+        String storePositionX = "null";
+        String storePositionY = "null";
         List<Integer> position = wheelRepository.putAxleInPosition(id);
         if (position!=null) {
-            String storePositionX = String.valueOf(position.get(0));
-            String storePositionY = String.valueOf(position.get(1));
-            wheelDispatchDao.finishInspection(name,Integer.parseInt(id),time,storePositionX,storePositionY);
-        }else {
-            wheelDispatchDao.finishInspection(name,Integer.parseInt(id),time,"null","null");
+            storePositionX = String.valueOf(position.get(0));
+            storePositionY = String.valueOf(position.get(1));
         }
-        wheelDispatchDao.flushWheelInfoqualityInspectionFinish(Integer.parseInt(id),time);
+        wheelDispatchDao.finishInspection(name,Integer.parseInt(id),time,storePositionX,storePositionY);
+        wheelDispatchDao.flushWheelInfoqualityInspectionFinish(Integer.parseInt(id),time,storePositionX,storePositionY);
     }
 }

@@ -23,33 +23,35 @@ import java.util.List;
 public class ManageController {
     @Autowired
     private ManageService manageService;
+
     @RequestMapping("/query")
     @ResponseBody
-   public Result findInfo(@RequestBody SearchWheelParam param){
+    public Result findInfo(@RequestBody SearchWheelParam param){
         Integer page = Integer.parseInt(param.getPage());
         Integer size = Integer.parseInt(param.getSize());
-        List<WheelAll> data = null;
-        data = manageService.findWheelAllByCondition(param);
-        int total = (int) new PageInfo(data).getTotal();
+        List<WheelInfo> data = null;
         PageHelper.startPage(page,size);
-        data = manageService.findWheelAllByCondition(param);
+        data = manageService.findWheelInfoByCondition(param);
         PageInfo result = new PageInfo(data);
-        result.setTotal(total);
-        return  new Result(result,"添加成功",100);
+        return  new Result(result,"查询成功",100);
+    }
+
+    @RequestMapping("/queryAll")
+    @ResponseBody
+   public Result findInfoAll(@RequestBody WheelInfo wh){
+        WheelAll data = manageService.findWheelAllByWheelInfo(wh);
+        return  new Result(data,"查询成功",100);
     }
     @RequestMapping("/getInfo2check")
     @ResponseBody
     public Result getInfo2check(@RequestBody SearchWheelParam param){
         Integer page = Integer.parseInt(param.getPage());
         Integer size = Integer.parseInt(param.getSize());
-        List<WheelAll> data = null;
-        data = manageService.findWheelAllByCondition2Check(param);
-        int total = (int) new PageInfo(data).getTotal();
+        List<WheelInfo> data = null;
         PageHelper.startPage(page,size);
-        data = manageService.findWheelAllByCondition2Check(param);
+        data = manageService.findWheelInfoByCondition2Check(param);
         PageInfo result = new PageInfo(data);
-        result.setTotal(total);
-        return  new Result(result,"整改成功",100);
+        return  new Result(result,"查询成功",100);
     }
 
     @RequestMapping("/getWheelList")

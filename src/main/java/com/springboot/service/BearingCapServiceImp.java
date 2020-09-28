@@ -63,6 +63,7 @@ public class BearingCapServiceImp implements BearingCapService{
         wheelDao.rollbackWheelInforollTestFinish(id);
         wheelDao.rollbackWheelInfowheelDispatchFinish(id);
         wheelDao.rollbackWheelInfoqualityInspectionFinish(id);
+        wheelDao.rollbackWheelInfowheelRemeasureFinish(id);
         wheelDao.rollbackWheelInfoverifyFinish(id);
         wheelDao.rollbackWheelInfoprocessFinish(id);
     }

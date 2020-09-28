@@ -62,6 +62,7 @@ public class BearingTestServiceImp implements BearingTestService{
     public void fresh(Integer id){
         wheelDao.rollbackWheelInfowheelDispatchFinish(id);
         wheelDao.rollbackWheelInfoqualityInspectionFinish(id);
+        wheelDao.rollbackWheelInfowheelRemeasureFinish(id);
         wheelDao.rollbackWheelInfoverifyFinish(id);
         wheelDao.rollbackWheelInfoprocessFinish(id);
     }

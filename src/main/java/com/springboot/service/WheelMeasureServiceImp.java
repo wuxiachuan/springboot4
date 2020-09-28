@@ -121,6 +121,7 @@ public class WheelMeasureServiceImp implements WheelMeasureService{
         wheelDao.rollbackWheelInfobearingCapFinish(id);
         wheelDao.rollbackWheelInforollTestFinish(id);
         wheelDao.rollbackWheelInfowheelDispatchFinish(id);
+        wheelDao.rollbackWheelInfowheelRemeasureFinish(id);
         wheelDao.rollbackWheelInfoqualityInspectionFinish(id);
         wheelDao.rollbackWheelInfoverifyFinish(id);
         wheelDao.rollbackWheelInfoprocessFinish(id);

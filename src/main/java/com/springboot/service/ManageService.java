@@ -8,7 +8,10 @@ import java.text.ParseException;
 import java.util.List;
 
 public interface ManageService {
+    List<WheelInfo> findWheelInfoByCondition(SearchWheelParam param);
+    WheelAll findWheelAllByWheelInfo(WheelInfo wh);
     List<WheelAll> findWheelAllByCondition(SearchWheelParam param);
+    List<WheelInfo> findWheelInfoByCondition2Check(SearchWheelParam param);
     List<WheelAll> findWheelAllByCondition2Check(SearchWheelParam param);
     List<WheelAll> findAllWheelAll();
     WheelAll findWheelAllByWheelId(Integer id);

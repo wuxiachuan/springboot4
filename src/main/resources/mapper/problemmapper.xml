@@ -77,10 +77,20 @@
         JOIN wheelinfo w ON p.`wheelId` = w.`WheelId`
         where p.problemFinder = #{name}
     </select>
+    <select id="findProblemByFinderUnFinish" parameterType="String" resultType="Problem">
+        SELECT p.*,w.`AxleNumber`,w.`AxleType` FROM problems p
+        JOIN wheelinfo w ON p.`wheelId` = w.`WheelId`
+        where p.problemFinder = #{name} and p.confirm = '0'
+    </select>
     <select id="findProblemByworker" parameterType="String" resultType="Problem">
         SELECT p.*,w.`AxleNumber`,w.`AxleType` FROM problems p
         JOIN wheelinfo w ON p.`wheelId` = w.`WheelId`
-        where p.worker = #{name} and problemStatus = '0'
+        where p.worker = #{name} and p.problemStatus = '0'
+    </select>
+    <select id="findProblemByworkerUnFinish" parameterType="String" resultType="Problem">
+        SELECT p.*,w.`AxleNumber`,w.`AxleType` FROM problems p
+        JOIN wheelinfo w ON p.`wheelId` = w.`WheelId`
+        where p.worker = #{name} and p.problemStatus = '0'
     </select>
     <select id="findProblemByCond" resultType="Problem">
             SELECT p.*,w.`AxleNumber`,w.`AxleType` FROM problems p

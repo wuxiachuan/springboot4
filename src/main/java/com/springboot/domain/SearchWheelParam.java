@@ -35,8 +35,10 @@ public class SearchWheelParam {
         vehicleNumber = "";
         dipatchVehicleNumber = "";
         infoTakeFinishTime = null;
+        infoTakeFinishTimeFrom=null;
+        infoTakeFinishTimeTo=null;
         status = "";
-        isprocessFinish = "0";
+        isprocessFinish = "";
     }
 
     public String getWheelId() {
@@ -199,12 +201,16 @@ public class SearchWheelParam {
                 ", takeInDateFrom='" + takeInDateFrom + '\'' +
                 ", takeInDateTo='" + takeInDateTo + '\'' +
                 ", dispatchDate='" + dispatchDate + '\'' +
+                ", dispatchDateFrom='" + dispatchDateFrom + '\'' +
+                ", dispatchDateTo='" + dispatchDateTo + '\'' +
                 ", takeInReason='" + takeInReason + '\'' +
                 ", axleNumber='" + axleNumber + '\'' +
                 ", axleType='" + axleType + '\'' +
                 ", vehicleNumber='" + vehicleNumber + '\'' +
                 ", dipatchVehicleNumber='" + dipatchVehicleNumber + '\'' +
                 ", infoTakeFinishTime='" + infoTakeFinishTime + '\'' +
+                ", infoTakeFinishTimeFrom='" + infoTakeFinishTimeFrom + '\'' +
+                ", infoTakeFinishTimeTo='" + infoTakeFinishTimeTo + '\'' +
                 ", status='" + status + '\'' +
                 ", isprocessFinish='" + isprocessFinish + '\'' +
                 ", page='" + page + '\'' +

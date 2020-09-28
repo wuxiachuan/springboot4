@@ -10,5 +10,4 @@ public class Springboot4Application {
     public static void main(String[] args) {
         SpringApplication.run(Springboot4Application.class, args);
     }
-
 }

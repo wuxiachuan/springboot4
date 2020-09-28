@@ -1,6 +1,7 @@
 package com.springboot.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class WheelAll  implements Serializable {
     private Integer wheelId;
@@ -13,6 +14,7 @@ public class WheelAll  implements Serializable {
     private BearingLoad bearingLoad;
     private BearingRepair bearingRepair;
     private WheelDispatch wheelDispatch;
+    private List<Problem> problem;
 
     public WheelAll() {
     }
@@ -95,5 +97,13 @@ public class WheelAll  implements Serializable {
 
     public void setWheelDispatch(WheelDispatch wheelDispatch) {
         this.wheelDispatch = wheelDispatch;
+    }
+
+    public List<Problem> getProblem() {
+        return problem;
+    }
+
+    public void setProblem(List<Problem> problem) {
+        this.problem = problem;
     }
 }

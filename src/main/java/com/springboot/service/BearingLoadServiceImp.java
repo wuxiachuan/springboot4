@@ -68,6 +68,7 @@ public class BearingLoadServiceImp implements BearingLoadService{
         bearingCapDao.rollbackWheelInfoCapFinish(id);
         wheelDao.rollbackWheelInforollTestFinish(id);
         wheelDao.rollbackWheelInfowheelDispatchFinish(id);
+        wheelDao.rollbackWheelInfowheelRemeasureFinish(id);
         wheelDao.rollbackWheelInfoqualityInspectionFinish(id);
         wheelDao.rollbackWheelInfoverifyFinish(id);
         wheelDao.rollbackWheelInfoprocessFinish(id);
