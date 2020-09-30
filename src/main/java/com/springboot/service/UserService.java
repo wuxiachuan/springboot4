@@ -10,6 +10,7 @@ import java.util.Map;
 
 public interface UserService {
     Map<String,Object> login(String name, String password);
+    Map<String,Object> mobilelogin(String name, String password);
     UserInfo findUserById(Integer id);
     List<UserInfo> findUserByName (String name);
     List<UserInfo> findAllUser(String online);

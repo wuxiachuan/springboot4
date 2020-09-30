@@ -33,6 +33,7 @@ public class UserServiceImp implements UserService{
     public UserServiceImp(){
          this.dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
+
     @Override
     public Map<String,Object> login(String name, String password) {
         UserInfo user =  userDao.findUserByNameAndPassword(name,password);
@@ -56,6 +57,33 @@ public class UserServiceImp implements UserService{
         redisTemplate.opsForList().leftPush(name+"log","/userManage/login="+dateFormater.format(new Date())+"=login");
         redisTemplate.opsForSet().add("loginUser",name);
         userDao.login(name);
+        return resmap;
+    }
+
+    @Override
+    public Map<String,Object> mobilelogin(String name, String password){
+        UserInfo user =  userDao.findUserByNameAndPassword(name,password);
+        if (user == null) return null;
+        if ("0".equals(user.getStatus())) return null;
+
+        //检测是否重复登录,已登录无法再登录
+        String oldtoken = (String) redisTemplate.opsForHash().get(name+"mobtoken","token");
+        if (oldtoken != null){
+            redisTemplate.delete(oldtoken);
+        }
+
+        Map<String,Object> resmap = getUserRightMap(user);
+        resmap.put("userid",user.getId());
+        resmap.put("username",user.getUsername());
+        String token = UUID.randomUUID().toString();
+        resmap.put("token",token);
+        String status = user.getStatus();
+        redisTemplate.opsForValue().set(token,name);
+        redisTemplate.opsForHash().put(name+"mobtoken","token",token);
+        redisTemplate.opsForHash().put(name+"mobtoken","status",status);
+        redisTemplate.opsForHash().put(name+"mobtoken","loginTime",dateFormater.format(new Date()));
+        redisTemplate.opsForList().leftPush(name+"moblog","login="+dateFormater.format(new Date()));
+        redisTemplate.opsForSet().add("mobloginUser",name);
         return resmap;
     }
 
