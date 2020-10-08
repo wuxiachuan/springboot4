@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.springboot.dao.ProblemDao;
+import com.springboot.dao.WheelDao;
 import com.springboot.dao.WheelDispatchDao;
 import com.springboot.domain.*;
+import com.springboot.service.ManageService;
 import com.springboot.service.ProblemService;
 import com.springboot.service.QualityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,10 @@ public class QualityController {
     private ProblemDao problemDao;
     @Autowired
     private WheelDispatchDao wheelDispatchDao;
+    @Autowired
+    private WheelDao wheelDao;
+    @Autowired
+    private ManageService manageService;
 
     private SimpleDateFormat dateFormater;
 
@@ -48,6 +54,42 @@ public class QualityController {
     @RequestMapping("/addProblem")
     @ResponseBody
     public Result addProblem(@RequestBody Problem problem){
+        Integer wheelid = problem.getWheelId();
+        String process = problem.getProcessBelong();
+        WheelInfo wh = wheelDao.findWheelInfoById(wheelid);
+        WheelAll result = manageService.findWheelAllByWheelInfo(wh);
+        String worker = "";
+        if ("0".equals(process)){
+            worker = result.getWheelInfo().getWorker();
+        }
+        if ("1".equals(process)){
+            worker = result.getWheelMeasure().getworker();
+        }
+        if ("2".equals(process)){
+            worker = result.getBearingRepair().getworker();
+        }
+        if ("3".equals(process)){
+            worker = result.getAxleInspection().getMagInspector();
+        }
+        if ("4".equals(process)){
+            worker = result.getAxleInspection().getWorker();
+        }
+        if ("5".equals(process)){
+            worker = result.getWheelRound().getWorker();
+        }
+        if ("6".equals(process)){
+            worker = result.getBearingLoad().getWorker();
+        }
+        if ("7".equals(process)){
+            worker = result.getBearingCap().getworker();
+        }
+        if ("8".equals(process)){
+            worker = result.getBearingTest().getworker();
+        }
+        if ("9".equals(process)){
+            worker = result.getWheelDispatch().getWorker();
+        }
+        problem.setWorker(worker);
         problemDao.insertProblem(problem);
         return  new Result(problem,"添加成功",100);
     }

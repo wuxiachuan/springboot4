@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -25,10 +27,12 @@ public class WheelMeasureController {
     private WheelDao wheelDao;
     @Autowired
     private MeasureDao measureDao;
+    private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @RequestMapping("/addMeasure")
     @ResponseBody
     public Result addMeasure(@RequestBody WheelMeasure wheelMeasure){
+        wheelMeasure.setFinishTime(dateFormater.format(new Date()));
         wheelMeasureService.addMeasure(wheelMeasure);
         return new Result(wheelMeasure,"添加成功",100);
     }
@@ -59,6 +63,7 @@ public class WheelMeasureController {
     @RequestMapping("/modifyMeasure")
     @ResponseBody
     public Result modifyMeasure(@RequestBody WheelMeasure wheelMeasure){
+        wheelMeasure.setFinishTime(dateFormater.format(new Date()));
         wheelMeasureService.updateWheelMeasure(wheelMeasure);
         return new Result(null,"添加成功",100);
     }

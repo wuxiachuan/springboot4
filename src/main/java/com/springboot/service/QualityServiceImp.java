@@ -46,7 +46,6 @@ public class QualityServiceImp implements QualityService{
         }
         else if ("wheelmeasure".equals(database)){
             WheelMeasure info = JSON.parseObject(JSON.toJSONString(data),WheelMeasure.class);
-            System.out.println(info);
             measureDao.updateWheelMeasure(info);
         }
         else if ("bearingRepair".equals(database)){

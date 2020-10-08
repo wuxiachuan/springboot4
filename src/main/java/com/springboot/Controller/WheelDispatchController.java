@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,10 +24,12 @@ public class WheelDispatchController {
     private WheelDispatchService wheelDispatchService;
     @Autowired
     private WheelDispatchDao wheelDispatchDao;
+    private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @RequestMapping("/addWheelDispatch")
     @ResponseBody
     public Result addWheelDispatchRemeasure(@RequestBody WheelDispatch wheelDispatch){
+        wheelDispatch.setFinishTime(dateFormater.format(new Date()));
         wheelDispatchService.addWheelDispatchRemeasure(wheelDispatch);
         return new Result(wheelDispatch,"添加成功",100);
     }
@@ -33,6 +37,7 @@ public class WheelDispatchController {
     @RequestMapping("/modifyWheelDispatch")
     @ResponseBody
     public Result modifyWheelDispatchRemeasure(@RequestBody WheelDispatch wheelDispatch){
+        wheelDispatch.setFinishTime(dateFormater.format(new Date()));
         wheelDispatchService.updateWheelDispatchRemeasure(wheelDispatch);
         return new Result(wheelDispatch,"添加成功",100);
     }

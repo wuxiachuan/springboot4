@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -18,16 +20,19 @@ public class BearingLoadController {
     private BearingLoadService bearingLoadService;
     @Autowired
     private BearingLoadDao bearingLoadDao;
+    private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @RequestMapping("/addBearingLoad")
     @ResponseBody
     public Result addBearingLoad(@RequestBody BearingLoad bearingLoad){
+        bearingLoad.setFinishTime(dateFormater.format(new Date()));
         bearingLoadService.addBearingLoad(bearingLoad);
         return new Result(bearingLoad,"添加成功",100);
     }
     @RequestMapping("/modifyBearingLoad")
     @ResponseBody
     public Result updateBearingLoad(@RequestBody BearingLoad bearingLoad ){
+        bearingLoad.setFinishTime(dateFormater.format(new Date()));
         bearingLoadService.updateBearingLoad(bearingLoad);
         return new Result(bearingLoad,"添加成功",100);
     }

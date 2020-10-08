@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -18,10 +20,12 @@ public class WheelRoundController {
     private WheelRoundDao wheelRoundDao;
     @Autowired
     private WheelRoundService wheelRoundService;
+    private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @RequestMapping("/addWheelRound")
     @ResponseBody
     public Result addbearingCap(@RequestBody WheelRound wheelRound){
+        wheelRound.setFinishTime(dateFormater.format(new Date()));
         wheelRoundService.addWheelRound(wheelRound);
         return new Result(wheelRound,"添加成功",100);
     }
@@ -29,6 +33,7 @@ public class WheelRoundController {
     @RequestMapping("/modifyWheelRound")
     @ResponseBody
     public Result modifyBearingCap(@RequestBody WheelRound wheelRound){
+        wheelRound.setFinishTime(dateFormater.format(new Date()));
         wheelRoundService.updateWheelRound(wheelRound);
         return new Result(wheelRound,"添加成功",100);
     }

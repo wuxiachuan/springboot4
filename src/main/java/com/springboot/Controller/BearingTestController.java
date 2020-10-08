@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -18,10 +20,12 @@ public class BearingTestController {
     private BearingTestService bearingTestService;
     @Autowired
     private BearingTestDao bearingTestDao;
+    private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @RequestMapping("/addbearingTest")
     @ResponseBody
     public Result addbearingCap(@RequestBody BearingTest bearingTest){
+        bearingTest.setFinishTime(dateFormater.format(new Date()));
         bearingTestService.addBearingTest(bearingTest);
         return new Result(bearingTest,"添加成功",100);
     }
@@ -29,6 +33,7 @@ public class BearingTestController {
     @RequestMapping("/modifyBearingTest")
     @ResponseBody
     public Result modifyBearingCap(@RequestBody BearingTest bearingTest){
+        bearingTest.setFinishTime(dateFormater.format(new Date()));
         bearingTestService.updateBearingTest(bearingTest);
         return new Result(bearingTest,"添加成功",100);
     }

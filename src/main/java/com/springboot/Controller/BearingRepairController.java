@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -24,10 +26,12 @@ public class BearingRepairController {
     private BearingRepairDao bearingRepairDao;
     @Autowired
     private WheelDao wheelDao;
+    private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @RequestMapping("/addBearing")
     @ResponseBody
    public Result addBearing(@RequestBody BearingRepair bearingRepair){
+        bearingRepair.setFinishTime(dateFormater.format(new Date()));
         BearingRepair result = bearingRepairService.addBearingRepair(bearingRepair);
         return new Result(result,"添加成功",100);
     };
@@ -41,6 +45,7 @@ public class BearingRepairController {
    @RequestMapping("/modifyBearing")
    @ResponseBody
    public Result modifyBearing(@RequestBody BearingRepair bearingRepair){
+       bearingRepair.setFinishTime(dateFormater.format(new Date()));
        bearingRepairService.updateBearingRepair(bearingRepair);
        return new Result(bearingRepair,"添加成功",100);
    }

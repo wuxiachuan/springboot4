@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -21,10 +23,12 @@ public class BearingCapController {
     private BearingCapService bearingCapService;
     @Autowired
     private BearingCapDao bearingCapDao;
+    private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @RequestMapping("/addbearingCap")
     @ResponseBody
     public Result addbearingCap(@RequestBody BearingCap bearingCap){
+        bearingCap.setFinishTime(dateFormater.format(new Date()));
         bearingCapService.addBearingCap(bearingCap);
         return new Result(bearingCap,"添加成功",100);
     }
@@ -32,6 +36,7 @@ public class BearingCapController {
     @RequestMapping("/modifyBearingCap")
     @ResponseBody
     public Result modifyBearingCap(@RequestBody BearingCap bearingCap){
+        bearingCap.setFinishTime(dateFormater.format(new Date()));
         bearingCapService.updateBearingCap(bearingCap);
         return new Result(bearingCap,"添加成功",100);
     }

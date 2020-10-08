@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.http.HttpHeaders;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -26,9 +28,16 @@ public class WheelTakeInController {
     @Autowired
     private QRcodeDao qRcodeDao;
 
+    private SimpleDateFormat dateFormater;
+
+    public WheelTakeInController(){
+         this.dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    }
+
     @RequestMapping("/addWheel")
     @ResponseBody
     public Result addWheel(@RequestBody WheelInfo wheelInfo){
+        wheelInfo.setInfoTakeFinishTime(dateFormater.format(new Date()));
         WheelInfo result = null;
         String path = null;
         try{
@@ -56,6 +65,7 @@ public class WheelTakeInController {
     @RequestMapping("/modifyWheel")
     @ResponseBody
     public Result modifyWheel(@RequestBody WheelInfo wheelInfo){
+        wheelInfo.setInfoTakeFinishTime(dateFormater.format(new Date()));
         WheelInfo result = null;
         try{
             result = wheelService.updateWheelInfo(wheelInfo);

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -18,10 +20,13 @@ public class AxleInspectionController {
     private AxleInspectionDao axleInspectionDao;
     @Autowired
     private AxleInspectionService axleInspectionService;
+    private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     //超探
     @RequestMapping("/addaxleInspection")
     @ResponseBody
     public Result magneticInspection(@RequestBody AxleInspection axleInspection){
+        axleInspection.setUltfinishTime(dateFormater.format(new Date()));
+        axleInspection.setReultfinishTime(dateFormater.format(new Date()));
         axleInspectionService.addAxleInspection(axleInspection);
         return new Result(axleInspection,"添加成功",100);
     }
@@ -29,6 +34,8 @@ public class AxleInspectionController {
     @RequestMapping("/modifyAxleInspection")
     @ResponseBody
     public Result modifyAxleInspection(@RequestBody AxleInspection axleInspection){
+        axleInspection.setUltfinishTime(dateFormater.format(new Date()));
+        axleInspection.setReultfinishTime(dateFormater.format(new Date()));
         axleInspectionService.updateAxleInspection(axleInspection);
         return new Result(axleInspection,"添加成功",100);
     }
@@ -68,14 +75,15 @@ public class AxleInspectionController {
     @RequestMapping("/addMagInspection")
     @ResponseBody
     public Result addMagInspection(@RequestBody AxleInspection axleInspection){
+        axleInspection.setMagfinishTime(dateFormater.format(new Date()));
         axleInspectionService.addMagInspection(axleInspection);
-        System.out.println(axleInspection);
         return new Result(axleInspection,"添加成功",100);
     }
 
     @RequestMapping("/modifyMagInspection")
     @ResponseBody
     public Result modifyMagInspection(@RequestBody AxleInspection axleInspection){
+        axleInspection.setMagfinishTime(dateFormater.format(new Date()));
         axleInspectionService.updateMagInspection(axleInspection);
         return new Result(axleInspection,"添加成功",100);
     }
