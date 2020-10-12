@@ -1,21 +1,20 @@
 package com.springboot.Controller;
 
 import com.springboot.dao.BearingTestDao;
+import com.springboot.dao.WheelDao;
 import com.springboot.dao.WheelDispatchDao;
 import com.springboot.domain.*;
 import com.springboot.service.BearingTestService;
 import com.springboot.service.WheelDispatchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/wheelDispatch")
@@ -24,6 +23,10 @@ public class WheelDispatchController {
     private WheelDispatchService wheelDispatchService;
     @Autowired
     private WheelDispatchDao wheelDispatchDao;
+    @Autowired
+    private WheelDao wheelDao;
+    @Autowired
+    private RedisTemplate redisTemplate;
     private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @RequestMapping("/addWheelDispatch")
@@ -31,6 +34,7 @@ public class WheelDispatchController {
     public Result addWheelDispatchRemeasure(@RequestBody WheelDispatch wheelDispatch){
         wheelDispatch.setFinishTime(dateFormater.format(new Date()));
         wheelDispatchService.addWheelDispatchRemeasure(wheelDispatch);
+        redisTemplate.opsForSet().add("preQualityCheck",wheelDispatch.getWheelId());
         return new Result(wheelDispatch,"添加成功",100);
     }
 
@@ -47,6 +51,54 @@ public class WheelDispatchController {
     public Result unFinishWheelDispatch(){
         List<WheelInfo> wheelInfoList = wheelDispatchDao.findWheelInfoToWheelDispatchRemeasure();
         return new Result(wheelInfoList,"添加成功",100);
+    }
+
+    @RequestMapping("/unFinishWheelDispatch2")
+    @ResponseBody
+    public Result unFinishBearing2(){
+        List<WheelInfo> wheelInfoList = new ArrayList<>();
+        Set<Integer> set = redisTemplate.opsForSet().members("preRemeasure");
+        for (Integer id:set){
+            WheelInfo wheelInfo = wheelDao.findWheelInfoById(id);
+            wheelInfoList.add(wheelInfo);
+        }
+        return new Result(wheelInfoList,"添加成功",100);
+    }
+    @RequestMapping("/chooseWheel")
+    @ResponseBody
+    public Result chooseWheel(String id){
+        Integer wheelId = Integer.parseInt(id);
+        Boolean res = redisTemplate.opsForSet().isMember("preRemeasure",wheelId);
+        if (res){
+            redisTemplate.opsForSet().remove("preRemeasure",wheelId);
+            return new Result(null,"添加成功",100);
+        }else {
+            return new Result(null,"添加失败",101);
+        }
+    }
+
+    @RequestMapping("/turnBack")
+    @ResponseBody
+    public Result turnBack(String id){
+        Integer wheelId = Integer.parseInt(id);
+        redisTemplate.opsForSet().add("preRemeasure", wheelId);
+        return new Result(null,"添加成功",100);
+    }
+
+    @RequestMapping("/savedWheelInfo")
+    @ResponseBody
+    public Result savedWheelInfo(@RequestBody Map<String,String> map){
+        String name = map.get("name");
+        String data = map.get("data");
+        redisTemplate.opsForValue().set(name+"savedRemeasureInfo",data);
+        return new Result(null,"添加成功",100);
+    }
+
+    @RequestMapping("/getSavedWheelInfo")
+    @ResponseBody
+    public Result getSavedWheelInfo(String name){
+        String data = (String) redisTemplate.opsForValue().get(name+"savedRemeasureInfo");
+        return new Result(data,"添加成功",100);
     }
 
     @RequestMapping("/findWheelDispatchById")
@@ -75,7 +127,6 @@ public class WheelDispatchController {
     @RequestMapping("/dispatch")
     @ResponseBody
     public Result dodispatch(@RequestBody List<VehicleInfo> numlist){
-        System.out.println(numlist);
         List<VehicleInfo> res = wheelDispatchService.dispatch(numlist);
         return new Result(res,"添加成功",100);
     }

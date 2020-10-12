@@ -114,12 +114,10 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    public List<UserInfo> findUserByName(String name) {
-        List<UserInfo> list = userDao.findUserByName("%"+name+"%");
-        for (UserInfo user : list){
-            appendLogInfo(user);
-        }
-        return list;
+    public UserInfo findUserByName(String name) {
+        UserInfo userInfo = userDao.findUserByName("%"+name+"%");
+        appendLogInfo(userInfo);
+        return userInfo;
     }
 
     //查找所有用户
@@ -149,16 +147,25 @@ public class UserServiceImp implements UserService{
         user.setLoginTime(logintime);
         return user;
     }
+    //添加移动端日志信息
+    public UserInfo appendMobileLogInfo(UserInfo user){
+        String addr = null;
+        String name = null;
+        String logintime = null;
+        name = user.getUsername();
+        addr = (String) redisTemplate.opsForHash().get(name+"mobtoken","ip");
+        logintime = (String) redisTemplate.opsForHash().get(name+"mobtoken","loginTime");
+        user.setIpAddr(addr);
+        user.setLoginTime(logintime);
+        return user;
+    }
     //清理超时掉线用户
     public void clearUserOffLine(){
         Set<String> loginUsers = redisTemplate.opsForSet().members("loginUser");
         for (String name : loginUsers){
-            String token = (String) redisTemplate.opsForHash().get(name+"token","token");
-            if (token==null) continue;
-            String userName = (String) redisTemplate.opsForValue().get(token);
-            if (userName==null){
+            Boolean isexist = redisTemplate.hasKey(name + "token");
+            if (!isexist) {
                 userDao.logout(name);
-                redisTemplate.delete(name+"token");
                 redisTemplate.opsForSet().remove("loginUser",name);
             }
         }

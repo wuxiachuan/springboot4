@@ -9,14 +9,14 @@ import com.springboot.domain.WheelMeasure;
 import com.springboot.service.WheelMeasureService;
 import com.springboot.service.WheelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/wheelTakein")
@@ -27,6 +27,9 @@ public class WheelMeasureController {
     private WheelDao wheelDao;
     @Autowired
     private MeasureDao measureDao;
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @RequestMapping("/addMeasure")
@@ -34,6 +37,9 @@ public class WheelMeasureController {
     public Result addMeasure(@RequestBody WheelMeasure wheelMeasure){
         wheelMeasure.setFinishTime(dateFormater.format(new Date()));
         wheelMeasureService.addMeasure(wheelMeasure);
+        if (!"4".equals(wheelMeasure.getRepairProcess())){
+            redisTemplate.opsForSet().add("preBearingRepair",wheelMeasure.getWheelId());
+        }
         return new Result(wheelMeasure,"添加成功",100);
     }
 
@@ -42,6 +48,55 @@ public class WheelMeasureController {
     public Result findUnFinishMeasure(){
         List<WheelInfo> wheelInfoList = wheelDao.findWheelInfoToMeasure();
         return new Result(wheelInfoList,"添加成功",100);
+    }
+
+    @RequestMapping("/unFinishMeasure2")
+    @ResponseBody
+    public Result findUnFinishMeasure2(){
+        List<WheelInfo> wheelInfoList = new ArrayList<>();
+        Set<Integer> set = redisTemplate.opsForSet().members("preMeasure");
+        for (Integer id:set){
+            WheelInfo wheelInfo = wheelDao.findWheelInfoById(id);
+            wheelInfoList.add(wheelInfo);
+        }
+        return new Result(wheelInfoList,"添加成功",100);
+    }
+
+    @RequestMapping("/chooseWheel")
+    @ResponseBody
+    public Result chooseWheel(String id){
+        Integer wheelId = Integer.parseInt(id);
+        Boolean res = redisTemplate.opsForSet().isMember("preMeasure",wheelId);
+        if (res){
+            redisTemplate.opsForSet().remove("preMeasure",wheelId);
+            return new Result(null,"添加成功",100);
+        }else {
+            return new Result(null,"添加失败",101);
+        }
+    }
+
+    @RequestMapping("/turnBack")
+    @ResponseBody
+    public Result turnBack(String id){
+        Integer wheelId = Integer.parseInt(id);
+        redisTemplate.opsForSet().add("preMeasure", wheelId);
+        return new Result(null,"添加成功",100);
+    }
+
+    @RequestMapping("/savedWheelInfo")
+    @ResponseBody
+    public Result savedMeasureInfo(@RequestBody Map<String,String> map){
+        String name = map.get("name");
+        String data = map.get("data");
+        redisTemplate.opsForValue().set(name+"savedMeasureInfo",data);
+        return new Result(null,"添加成功",100);
+    }
+
+    @RequestMapping("/getSavedWheelInfo")
+    @ResponseBody
+    public Result getSavedWheelInfoFromSession(String name){
+        String data = (String) redisTemplate.opsForValue().get(name+"savedMeasureInfo");
+        return new Result(data,"添加成功",100);
     }
 
     @RequestMapping("/findMeasureById")

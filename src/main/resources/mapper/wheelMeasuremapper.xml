@@ -119,7 +119,7 @@
         JOIN wheelmeasure r ON w.`WheelId` = r.`wheelId`
         <where>
             <if test="wheelId != ''">
-                w.wheelId = #{wheelId}
+                AND w.wheelId = #{wheelId}
             </if>
             <if test="vehicleNumber != ''">
                 AND w.vehicleNumber = #{vehicleNumber}

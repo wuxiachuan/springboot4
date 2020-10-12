@@ -128,8 +128,9 @@ public class WheelDispatchServiceImp implements WheelDispatchService{
         double high = vehicleInfo.getHigh();
         String axleLife = vehicleInfo.getAxleLife();
         String bearingLife = vehicleInfo.getBearingLife();
+        String axleType = vehicleInfo.getAxleType();
         //查找
-        List<WheelDispatch> res = findMatchedWheel(String.valueOf(low),String.valueOf(high),axleLife,bearingLife);
+        List<WheelDispatch> res = findMatchedWheel(String.valueOf(low),String.valueOf(high),axleLife,bearingLife,axleType);
         return res;
     }
 
@@ -139,12 +140,8 @@ public class WheelDispatchServiceImp implements WheelDispatchService{
         if (vehicleInfo==null) return null;
         preparVehicleInfo(vehicleInfo);
         List<WheelDispatch> axleOut = new ArrayList<>();
-        double low = vehicleInfo.getLow();
-        double high = vehicleInfo.getHigh();
-        String axleLife = vehicleInfo.getAxleLife();
-        String bearingLife = vehicleInfo.getBearingLife();
         //查找
-        List<WheelDispatch>res = findMatchedWheel(String.valueOf(low),String.valueOf(high),axleLife,bearingLife);
+        List<WheelDispatch>res = find2match(vehicleInfo);
         if (res != null && res.size() >= 4){
             WheelDispatch choose = null;
             int size = res.size()/2-2;
@@ -163,9 +160,9 @@ public class WheelDispatchServiceImp implements WheelDispatchService{
         return vehicleInfo;
     }
     //按条件查找轮对
-    public List<WheelDispatch> findMatchedWheel(String low,String high,String axleLife,String bearingLife){
+    public List<WheelDispatch> findMatchedWheel(String low,String high,String axleLife,String bearingLife,String axleType){
         List<WheelDispatch> wheelDispatchList = null;
-        wheelDispatchList = wheelDispatchDao.findTarget(low,high,axleLife,bearingLife);
+        wheelDispatchList = wheelDispatchDao.findTarget(low,high,axleLife,bearingLife,axleType);
         return wheelDispatchList;
     }
     //准备车辆车型、轮径、轴承寿命、轴寿命
@@ -182,7 +179,8 @@ public class WheelDispatchServiceImp implements WheelDispatchService{
             sum += Integer.parseInt(w.getWheelDiameterRight());
             num++;
         }
-        avgDiameter = sum/num;
+        //理想轮径=平均轮径+调整高度
+        avgDiameter = sum/num + vehicleInfo.getOffset();
         int low = avgDiameter - 15;
         int high = avgDiameter + 15;
         String axleLife = dateFormate(0,"axle");

@@ -149,7 +149,7 @@
             JOIN axleinspection r ON w.`WheelId` = r.`wheelId`
         WHERE (w.isaxleInspectionFinish != '-1' and w.ismagnetInspectionFinish = '1' and w.isbearingRepairFinish = '1')
         <if test="wheelId != ''">
-            w.wheelId = #{wheelId}
+            AND w.wheelId = #{wheelId}
         </if>
         <if test="vehicleNumber != ''">
             AND w.vehicleNumber = #{vehicleNumber}
@@ -195,7 +195,7 @@
             JOIN axleinspection r ON w.`WheelId` = r.`wheelId`
         WHERE (w.ismagnetInspectionFinish != '-1' and w.isbearingRepairFinish = '1')
         <if test="wheelId != ''">
-            w.wheelId = #{wheelId}
+            AND w.wheelId = #{wheelId}
         </if>
         <if test="vehicleNumber != ''">
             AND w.vehicleNumber = #{vehicleNumber}

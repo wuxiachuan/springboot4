@@ -76,7 +76,7 @@
             JOIN rollTest r ON w.`WheelId` = r.`wheelId`
         WHERE w.isbearingCapFinish != '0'  and w.isbearingRepairFinish = '1'  and w.isaxleInspectionFinish !='0'
         <if test="wheelId != ''">
-            w.wheelId = #{wheelId}
+            AND w.wheelId = #{wheelId}
         </if>
         <if test="vehicleNumber != ''">
             AND w.vehicleNumber = #{vehicleNumber}

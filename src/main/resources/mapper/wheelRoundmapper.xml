@@ -87,7 +87,7 @@
          JOIN wheelRounding r ON w.`WheelId` = r.`wheelId`
          WHERE (w.isWheelRoundingFinish != '-1' and isbearingRepairFinish = '1')
         <if test="wheelId != ''">
-            w.wheelId = #{wheelId}
+            AND w.wheelId = #{wheelId}
         </if>
         <if test="vehicleNumber != ''">
             AND w.vehicleNumber = #{vehicleNumber}

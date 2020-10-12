@@ -7,6 +7,7 @@ import com.springboot.dao.UserDao;
 import com.springboot.domain.*;
 import com.springboot.service.RoleService;
 import com.springboot.service.UserService;
+import com.springboot.service.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,9 @@ public class UserController {
     private UserService userService;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private UserServiceImp userServiceImp;
+
     private SimpleDateFormat dateFormater;
 
     public UserController(){
@@ -91,7 +95,7 @@ public class UserController {
         }
         return new Result(null,"菜单获取失败",101);
     }
-    //获取用户在线列表
+    //获取用户列表
     @RequestMapping("/getusers")
     @ResponseBody
     public Result getusers(@RequestBody Map<String,Object> map){
@@ -106,27 +110,49 @@ public class UserController {
         }
         return new Result(null,"用户获取失败",101);
     }
-    //获取用户在线列表
+    //获取用户，带登录基本信息
     @RequestMapping("/getusersWithLog")
     @ResponseBody
     public Result getusersWithLog(@RequestBody Map<String,Object> map){
         Integer page = (Integer) map.get("currentPage");
         Integer size = (Integer) map.get("pagesize");
         String online = (String) map.get("isonline");
-        PageHelper.startPage(page,size);
-        List<UserInfo> list =  userService.findAllUserLog(online);
-        if (list != null){
-            PageInfo pageInfo = new PageInfo(list);
-            return new Result(pageInfo,"用户获取成功",100);
+        String ismobile = (String) map.get("ismobile");
+        if ("0".equals(ismobile)&&"1".equals(online)){
+            Set<String> set = redisTemplate.opsForSet().members("mobloginUser");
+            PageHelper.startPage(page,size);
+            List<UserInfo> list =  new ArrayList<>();
+            for (String name : set){
+                UserInfo userInfo = userService.findUserByName(name);
+                userInfo = userServiceImp.appendMobileLogInfo(userInfo);
+                userInfo.setIsOnline("1");
+                list.add(userInfo);
+            }
+            if (list != null){
+                PageInfo pageInfo = new PageInfo(list);
+                return new Result(pageInfo,"用户获取成功",100);
+            }
+        }else {
+            PageHelper.startPage(page,size);
+            List<UserInfo> list =  userService.findAllUserLog(online);
+            if (list != null){
+                PageInfo pageInfo = new PageInfo(list);
+                return new Result(pageInfo,"用户获取成功",100);
+            }
         }
         return new Result(null,"用户获取失败",101);
     }
     //获取用户登录日志
     @RequestMapping("/getusersLog")
     @ResponseBody
-    public Result getusersLog(@RequestBody UserInfo userInfo,HttpServletRequest request){
+    public Result getusersLog(@RequestBody UserInfo userInfo,String ismobile,String isonline,HttpServletRequest request){
         String name = userInfo.getUsername();
-        List<String> list = redisTemplate.opsForList().range(name+"log",0,-1);
+        List<String> list = null;
+        if ("1".equals(isonline)&&"0".equals(ismobile)){
+            list = redisTemplate.opsForList().range(name+"moblog",0,-1);
+        }else {
+            list = redisTemplate.opsForList().range(name+"log",0,-1);
+        }
         if (list==null){
             return new Result(null,"日志获取失败",101);
         }
@@ -170,9 +196,9 @@ public class UserController {
     @ResponseBody
     public Result searchusers(@RequestBody Map<String,Object> map){
         String username = (String) map.get("username");
-        List<UserInfo> list =  userService.findUserByName(username);
-        if (list != null){
-            return new Result(list,"用户查询成功",100);
+        UserInfo userInfo =  userService.findUserByName(username);
+        if (userInfo != null){
+            return new Result(userInfo,"用户查询成功",100);
         }
         return new Result(null,"用户查询失败",101);
     }

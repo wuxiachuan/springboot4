@@ -49,7 +49,8 @@ public interface WheelDispatchDao {
     List<WheelDispatch> findTarget(@Param("low") String low,
                                    @Param("high")String high,
                                    @Param("axleLife")String axleLife,
-                                   @Param("bearingLife")String bearingLife);
+                                   @Param("bearingLife")String bearingLife,
+                                   @Param("axleType")String axleType);
 
     List<VehicleInfo> findvehicleNum(@Param("vehicleNum") String vehicleNum,
                                     @Param("takeInDateFrom")String takeInDateFrom,

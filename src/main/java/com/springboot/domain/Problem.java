@@ -17,6 +17,7 @@ public class Problem implements Serializable {
         private String confirmTime ;
         private String axleNumber;
         private String axleType;
+        private String axleMadeIn;
 
 
         public Problem() {
@@ -134,6 +135,14 @@ public class Problem implements Serializable {
 
     public void setAxleType(String axleType) {
         this.axleType = axleType;
+    }
+
+    public String getAxleMadeIn() {
+        return axleMadeIn;
+    }
+
+    public void setAxleMadeIn(String axleMadeIn) {
+        this.axleMadeIn = axleMadeIn;
     }
 
     @Override

@@ -25,7 +25,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 "/**/*.woff",
                 "/**/*.ttf",
                 "/userManage/login",     //登录路径
-                "/mob/**",                 //移动端访问
+                "/mob/login",                 //移动端访问登录
                 "/wheelqrcode/**"
         );
     }

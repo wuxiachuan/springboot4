@@ -91,7 +91,8 @@ public class AxleInspectionServiceImp implements AxleInspectionService{
 
     @Override
     public List<WheelInfo> searchWheelInfoMagInspection(SearchWheelParam param) {
-        return axleInspectionDao.searchWheelInfoByconditionMagInspection(param.getWheelId(),
+        return axleInspectionDao.searchWheelInfoByconditionMagInspection(
+                param.getWheelId(),
                 param.getTakeInDateFrom(),
                 param.getTakeInDateTo(),
                 param.getAxleNumber(),param.getVehicleNumber(),

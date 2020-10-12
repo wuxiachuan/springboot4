@@ -195,7 +195,7 @@
             or (w.isWheelRoundingFinish = '1' and  w.isbearingLoadFinish = '-1')
             or (w.isWheelRoundingFinish = '-1' and  w.isbearingLoadFinish = '4'))
         <if test="wheelId != ''">
-            w.wheelId = #{wheelId}
+            AND w.wheelId = #{wheelId}
         </if>
         <if test="vehicleNumber != ''">
             AND w.vehicleNumber = #{vehicleNumber}

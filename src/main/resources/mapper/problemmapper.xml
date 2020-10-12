@@ -51,12 +51,12 @@
                 where id	=	#{	id	}
     </update>
     <select id="findProblemById" parameterType="int" resultType="Problem">
-        SELECT p.*,w.`AxleNumber`,w.`AxleType` FROM problems p
+        SELECT p.*,w.`AxleNumber`,w.`AxleType`,w.`axleMadeIn` FROM problems p
         JOIN wheelinfo w ON p.`wheelId` = w.`WheelId`
         WHERE p.id  =	#{	id	}
     </select>
     <select id="findProblemByWheelId" parameterType="int" resultType="Problem">
-        SELECT p.*,w.`AxleNumber`,w.`AxleType` FROM problems p
+        SELECT p.*,w.`AxleNumber`,w.`AxleType`,w.`axleMadeIn` FROM problems p
         JOIN wheelinfo w ON p.`wheelId` = w.`WheelId`
         where p.wheelId = #{wheelId}
     </select>
@@ -73,27 +73,27 @@
         update problems set confirm = '1',confirmTime = #{ time } where id = #{id}
     </update>
     <select id="findProblemByFinder" parameterType="String" resultType="Problem">
-        SELECT p.*,w.`AxleNumber`,w.`AxleType` FROM problems p
+        SELECT p.*,w.`AxleNumber`,w.`AxleType`,w.`axleMadeIn` FROM problems p
         JOIN wheelinfo w ON p.`wheelId` = w.`WheelId`
         where p.problemFinder = #{name}
     </select>
     <select id="findProblemByFinderUnFinish" parameterType="String" resultType="Problem">
-        SELECT p.*,w.`AxleNumber`,w.`AxleType` FROM problems p
+        SELECT p.*,w.`AxleNumber`,w.`AxleType`,w.`axleMadeIn` FROM problems p
         JOIN wheelinfo w ON p.`wheelId` = w.`WheelId`
         where p.problemFinder = #{name} and p.confirm = '0'
     </select>
     <select id="findProblemByworker" parameterType="String" resultType="Problem">
-        SELECT p.*,w.`AxleNumber`,w.`AxleType` FROM problems p
+        SELECT p.*,w.`AxleNumber`,w.`AxleType`,w.`axleMadeIn` FROM problems p
         JOIN wheelinfo w ON p.`wheelId` = w.`WheelId`
         where p.worker = #{name} and p.problemStatus = '0'
     </select>
     <select id="findProblemByworkerUnFinish" parameterType="String" resultType="Problem">
-        SELECT p.*,w.`AxleNumber`,w.`AxleType` FROM problems p
+        SELECT p.*,w.`AxleNumber`,w.`AxleType`,w.`axleMadeIn` FROM problems p
         JOIN wheelinfo w ON p.`wheelId` = w.`WheelId`
         where p.worker = #{name} and p.problemStatus = '0'
     </select>
     <select id="findProblemByCond" resultType="Problem">
-            SELECT p.*,w.`AxleNumber`,w.`AxleType` FROM problems p
+            SELECT p.*,w.`AxleNumber`,w.`AxleType`,w.`axleMadeIn` FROM problems p
             JOIN wheelinfo w ON p.`wheelId` = w.`WheelId`
             <where>
                 <if test="axleNumber != ''">

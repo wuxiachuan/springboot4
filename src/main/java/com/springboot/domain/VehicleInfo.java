@@ -18,6 +18,8 @@ public class VehicleInfo implements Serializable {
     private double low;
     private double high;
     private boolean isShow;
+    private Integer offset;
+    private String  axleType;
 
     public VehicleInfo() {
         this.isShow = false;
@@ -135,6 +137,22 @@ public class VehicleInfo implements Serializable {
         isShow = show;
     }
 
+    public Integer getOffset() {
+        return offset;
+    }
+
+    public void setOffset(Integer offset) {
+        this.offset = offset;
+    }
+
+    public String getAxleType() {
+        return axleType;
+    }
+
+    public void setAxleType(String axleType) {
+        this.axleType = axleType;
+    }
+
     @Override
     public String toString() {
         return "VehicleInfo{" +
@@ -151,7 +169,8 @@ public class VehicleInfo implements Serializable {
                 ", bearingLife='" + bearingLife + '\'' +
                 ", low=" + low +
                 ", high=" + high +
-                ", isShow='" + isShow + '\'' +
+                ", isShow=" + isShow +
+                ", offset=" + offset +
                 '}';
     }
 }

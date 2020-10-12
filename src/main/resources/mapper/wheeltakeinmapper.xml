@@ -157,7 +157,7 @@
         SELECT * FROM wheelinfo
         <where>
             <if test="wheelId != ''">
-                wheelId = #{wheelId}
+                AND wheelId = #{wheelId}
             </if>
             <if test="axleNumber != ''">
                 AND axleNumber = #{axleNumber}

@@ -188,7 +188,7 @@
             JOIN wheelDispatch r ON w.`WheelId` = r.`wheelId`
         where  w.isbearingrollTestFinish = '1'
         <if test="wheelId != ''">
-            w.wheelId = #{wheelId}
+            AND w.wheelId = #{wheelId}
         </if>
         <if test="vehicleNumber != ''">
             AND w.vehicleNumber = #{vehicleNumber}
@@ -219,7 +219,8 @@
     <select id="findTarget" parameterType="String" resultType="WheelDispatch">
         SELECT * FROM wheeldispatch d
             JOIN `wheelinfo` w ON w.`WheelId` = d.`wheelId`
-            WHERE d.wheelDiameterLeft >= #{low}
+            WHERE w.axleType = #{axleType}
+            AND  d.wheelDiameterLeft >= #{low}
             AND  #{high} >= d.wheelDiameterLeft
             AND  d.axlemadedate > #{axleLife}
             AND  d.bearingAssembleDateLeft > #{bearingLife}
@@ -242,7 +243,7 @@
     </update>
 <!--        查找可以支出的车辆-->
     <select id="findvehicleNum" resultType="VehicleInfo">
-        SELECT DISTINCT vehiclenumber,vehicleType FROM `wheelinfo` w
+        SELECT DISTINCT vehiclenumber,vehicleType,axleType FROM `wheelinfo` w
         WHERE  isMeasureFinish = '1'
         <if test="takeInDateFrom != null ">
             AND w.infoTakeFinishTime >= #{takeInDateFrom}
