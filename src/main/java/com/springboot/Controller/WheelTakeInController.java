@@ -97,12 +97,19 @@ public class WheelTakeInController {
     @ResponseBody
     public Result modifyWheel(@RequestBody WheelInfo wheelInfo){
         wheelInfo.setInfoTakeFinishTime(dateFormater.format(new Date()));
+        System.out.println(wheelInfo);
         WheelInfo result = null;
-        try{
-            result = wheelService.updateWheelInfo(wheelInfo);
-        }catch(Exception e){
-            return new Result(null,"修改失败",101);
-        }
+        result = wheelService.updateWheelInfo(wheelInfo);
+        redisTemplate.opsForSet().add("preMeasure",result.getWheelId());
+        redisTemplate.opsForSet().remove("preBearingRepair",result.getWheelId());
+        redisTemplate.opsForSet().remove("preMagInspection",result.getWheelId());
+        redisTemplate.opsForSet().remove("preAxleInspection",result.getWheelId());
+        redisTemplate.opsForSet().remove("preWheelRounding",result.getWheelId());
+        redisTemplate.opsForSet().remove("preBearingLoad",result.getWheelId());
+        redisTemplate.opsForSet().remove("preBearingrCap",result.getWheelId());
+        redisTemplate.opsForSet().remove("preBearingrollTest",result.getWheelId());
+        redisTemplate.opsForSet().remove("preRemeasure",result.getWheelId());
+        redisTemplate.opsForSet().remove("preQualityCheck",result.getWheelId());
         return new Result(result,"修改成功",100);
     }
     @RequestMapping("/deleteWheel")

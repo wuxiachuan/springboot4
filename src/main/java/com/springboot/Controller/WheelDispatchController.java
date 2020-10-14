@@ -43,6 +43,7 @@ public class WheelDispatchController {
     public Result modifyWheelDispatchRemeasure(@RequestBody WheelDispatch wheelDispatch){
         wheelDispatch.setFinishTime(dateFormater.format(new Date()));
         wheelDispatchService.updateWheelDispatchRemeasure(wheelDispatch);
+        redisTemplate.opsForSet().add("preQualityCheck",wheelDispatch.getWheelId());
         return new Result(wheelDispatch,"添加成功",100);
     }
 

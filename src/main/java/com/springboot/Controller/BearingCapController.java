@@ -44,6 +44,9 @@ public class BearingCapController {
     public Result modifyBearingCap(@RequestBody BearingCap bearingCap){
         bearingCap.setFinishTime(dateFormater.format(new Date()));
         bearingCapService.updateBearingCap(bearingCap);
+        redisTemplate.opsForSet().add("preBearingrollTest",bearingCap.getWheelId());
+        redisTemplate.opsForSet().remove("preRemeasure",bearingCap.getWheelId());
+        redisTemplate.opsForSet().remove("preQualityCheck",bearingCap.getWheelId());
         return new Result(bearingCap,"添加成功",100);
     }
 

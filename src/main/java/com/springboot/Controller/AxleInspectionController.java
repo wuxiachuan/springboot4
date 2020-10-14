@@ -51,6 +51,25 @@ public class AxleInspectionController {
         axleInspection.setUltfinishTime(dateFormater.format(new Date()));
         axleInspection.setReultfinishTime(dateFormater.format(new Date()));
         axleInspectionService.updateAxleInspection(axleInspection);
+        WheelInfo wheelInfo = wheelDao.findWheelInfoById(axleInspection.getWheelId());
+        if("0".equals(wheelInfo.getIsWheelRoundingFinish())){
+            redisTemplate.opsForSet().add("preWheelRounding",wheelInfo.getWheelId());
+            redisTemplate.opsForSet().remove("preBearingLoad",axleInspection.getWheelId());
+            redisTemplate.opsForSet().remove("preBearingrCap",axleInspection.getWheelId());
+            redisTemplate.opsForSet().remove("preBearingrollTest",axleInspection.getWheelId());
+            redisTemplate.opsForSet().remove("preRemeasure",axleInspection.getWheelId());
+            redisTemplate.opsForSet().remove("preQualityCheck",axleInspection.getWheelId());
+        }else if("1".equals(wheelInfo.getIsbearingLoadFinish())||"2".equals(wheelInfo.getIsbearingLoadFinish())||"3".equals(wheelInfo.getIsbearingLoadFinish())){
+            redisTemplate.opsForSet().add("preBearingLoad",wheelInfo.getWheelId());
+            redisTemplate.opsForSet().remove("preBearingrCap",axleInspection.getWheelId());
+            redisTemplate.opsForSet().remove("preBearingrollTest",axleInspection.getWheelId());
+            redisTemplate.opsForSet().remove("preRemeasure",axleInspection.getWheelId());
+            redisTemplate.opsForSet().remove("preQualityCheck",axleInspection.getWheelId());
+        }else {
+            redisTemplate.opsForSet().add("preBearingrollTest",wheelInfo.getWheelId());
+            redisTemplate.opsForSet().remove("preRemeasure",axleInspection.getWheelId());
+            redisTemplate.opsForSet().remove("preQualityCheck",axleInspection.getWheelId());
+        }
         return new Result(axleInspection,"添加成功",100);
     }
 
@@ -147,6 +166,13 @@ public class AxleInspectionController {
     public Result modifyMagInspection(@RequestBody AxleInspection axleInspection){
         axleInspection.setMagfinishTime(dateFormater.format(new Date()));
         axleInspectionService.updateMagInspection(axleInspection);
+        redisTemplate.opsForSet().add("preAxleInspection",axleInspection.getWheelId());
+        redisTemplate.opsForSet().remove("preWheelRounding",axleInspection.getWheelId());
+        redisTemplate.opsForSet().remove("preBearingLoad",axleInspection.getWheelId());
+        redisTemplate.opsForSet().remove("preBearingrCap",axleInspection.getWheelId());
+        redisTemplate.opsForSet().remove("preBearingrollTest",axleInspection.getWheelId());
+        redisTemplate.opsForSet().remove("preRemeasure",axleInspection.getWheelId());
+        redisTemplate.opsForSet().remove("preQualityCheck",axleInspection.getWheelId());
         return new Result(axleInspection,"添加成功",100);
     }
 

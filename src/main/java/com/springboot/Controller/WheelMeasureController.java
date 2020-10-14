@@ -120,6 +120,17 @@ public class WheelMeasureController {
     public Result modifyMeasure(@RequestBody WheelMeasure wheelMeasure){
         wheelMeasure.setFinishTime(dateFormater.format(new Date()));
         wheelMeasureService.updateWheelMeasure(wheelMeasure);
+        if (!"4".equals(wheelMeasure.getRepairProcess())){
+            redisTemplate.opsForSet().add("preBearingRepair",wheelMeasure.getWheelId());
+            redisTemplate.opsForSet().remove("preMagInspection",wheelMeasure.getWheelId());
+            redisTemplate.opsForSet().remove("preAxleInspection",wheelMeasure.getWheelId());
+            redisTemplate.opsForSet().remove("preWheelRounding",wheelMeasure.getWheelId());
+            redisTemplate.opsForSet().remove("preBearingLoad",wheelMeasure.getWheelId());
+            redisTemplate.opsForSet().remove("preBearingrCap",wheelMeasure.getWheelId());
+            redisTemplate.opsForSet().remove("preBearingrollTest",wheelMeasure.getWheelId());
+            redisTemplate.opsForSet().remove("preRemeasure",wheelMeasure.getWheelId());
+            redisTemplate.opsForSet().remove("preQualityCheck",wheelMeasure.getWheelId());
+        }
         return new Result(null,"添加成功",100);
     }
 

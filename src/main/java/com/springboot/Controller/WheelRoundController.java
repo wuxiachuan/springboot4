@@ -46,6 +46,19 @@ public class WheelRoundController {
     public Result modifyBearingCap(@RequestBody WheelRound wheelRound){
         wheelRound.setFinishTime(dateFormater.format(new Date()));
         wheelRoundService.updateWheelRound(wheelRound);
+        WheelInfo wheelInfo = wheelDao.findWheelInfoById(wheelRound.getWheelId());
+        if("1".equals(wheelInfo.getIsbearingLoadFinish())||"2".equals(wheelInfo.getIsbearingLoadFinish())||"3".equals(wheelInfo.getIsbearingLoadFinish())){
+            redisTemplate.opsForSet().add("preBearingLoad",wheelInfo.getWheelId());
+            redisTemplate.opsForSet().remove("preBearingrCap",wheelInfo.getWheelId());
+            redisTemplate.opsForSet().remove("preBearingrollTest",wheelInfo.getWheelId());
+            redisTemplate.opsForSet().remove("preRemeasure",wheelInfo.getWheelId());
+            redisTemplate.opsForSet().remove("preQualityCheck",wheelInfo.getWheelId());
+        }else {
+            redisTemplate.opsForSet().add("preBearingrCap",wheelInfo.getWheelId());
+            redisTemplate.opsForSet().remove("preBearingrollTest",wheelInfo.getWheelId());
+            redisTemplate.opsForSet().remove("preRemeasure",wheelInfo.getWheelId());
+            redisTemplate.opsForSet().remove("preQualityCheck",wheelInfo.getWheelId());
+        }
         return new Result(wheelRound,"添加成功",100);
     }
 

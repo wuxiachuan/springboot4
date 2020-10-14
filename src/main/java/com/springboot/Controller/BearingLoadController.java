@@ -40,6 +40,10 @@ public class BearingLoadController {
     public Result updateBearingLoad(@RequestBody BearingLoad bearingLoad ){
         bearingLoad.setFinishTime(dateFormater.format(new Date()));
         bearingLoadService.updateBearingLoad(bearingLoad);
+        redisTemplate.opsForSet().add("preBearingrCap",bearingLoad.getWheelId());
+        redisTemplate.opsForSet().remove("preBearingrollTest",bearingLoad.getWheelId());
+        redisTemplate.opsForSet().remove("preRemeasure",bearingLoad.getWheelId());
+        redisTemplate.opsForSet().remove("preQualityCheck",bearingLoad.getWheelId());
         return new Result(bearingLoad,"添加成功",100);
     }
 

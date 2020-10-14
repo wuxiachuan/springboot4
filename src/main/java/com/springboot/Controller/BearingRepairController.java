@@ -108,6 +108,34 @@ public class BearingRepairController {
    public Result modifyBearing(@RequestBody BearingRepair bearingRepair){
        bearingRepair.setFinishTime(dateFormater.format(new Date()));
        bearingRepairService.updateBearingRepair(bearingRepair);
+       WheelInfo wheelInfo = wheelDao.findWheelInfoById(bearingRepair.getWheelId());
+       if("0".equals(wheelInfo.getIsmagnetInspectionFinish())){
+           redisTemplate.opsForSet().add("preMagInspection",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preAxleInspection",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preWheelRounding",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preBearingLoad",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preBearingrCap",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preBearingrollTest",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preRemeasure",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preQualityCheck",wheelInfo.getWheelId());
+       }else if("0".equals(wheelInfo.getIsWheelRoundingFinish())){
+           redisTemplate.opsForSet().add("preWheelRounding",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preBearingLoad",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preBearingrCap",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preBearingrollTest",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preRemeasure",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preQualityCheck",wheelInfo.getWheelId());
+       }else if("1".equals(wheelInfo.getIsbearingLoadFinish())||"2".equals(wheelInfo.getIsbearingLoadFinish())||"3".equals(wheelInfo.getIsbearingLoadFinish())){
+           redisTemplate.opsForSet().add("preBearingLoad",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preBearingrCap",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preBearingrollTest",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preRemeasure",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preQualityCheck",wheelInfo.getWheelId());
+       }else {
+           redisTemplate.opsForSet().add("preBearingrollTest",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preRemeasure",wheelInfo.getWheelId());
+           redisTemplate.opsForSet().remove("preQualityCheck",wheelInfo.getWheelId());
+       }
        return new Result(bearingRepair,"添加成功",100);
    }
 
