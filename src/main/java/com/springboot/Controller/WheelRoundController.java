@@ -27,7 +27,7 @@ public class WheelRoundController {
     private RedisTemplate redisTemplate;
     private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @RequestMapping("/addWheelRound")
+    @RequestMapping("/add")
     @ResponseBody
     public Result addbearingCap(@RequestBody WheelRound wheelRound){
         wheelRound.setFinishTime(dateFormater.format(new Date()));
@@ -41,7 +41,7 @@ public class WheelRoundController {
         return new Result(wheelRound,"添加成功",100);
     }
 
-    @RequestMapping("/modifyWheelRound")
+    @RequestMapping("/modify")
     @ResponseBody
     public Result modifyBearingCap(@RequestBody WheelRound wheelRound){
         wheelRound.setFinishTime(dateFormater.format(new Date()));
@@ -68,7 +68,7 @@ public class WheelRoundController {
         List<WheelInfo> wheelInfoList = wheelRoundDao.findWheelInfoToWheelRound();
         return new Result(wheelInfoList,"添加成功",100);
     }
-    @RequestMapping("/unFinishWheelRound2")
+    @RequestMapping("/unFinish")
     @ResponseBody
     public Result unFinishBearing2(){
         List<WheelInfo> wheelInfoList = new ArrayList<>();
@@ -117,21 +117,21 @@ public class WheelRoundController {
     }
 
 
-    @RequestMapping("/findWheelRoundById")
+    @RequestMapping("/findById")
     @ResponseBody
     public Result findWheelRoundById(String id){
         WheelRound wheelRound = wheelRoundDao.findWheelRoundByWheelId(Integer.parseInt(id));
         return new Result(wheelRound,"添加成功",100);
     }
 
-    @RequestMapping("/deleteWheelRound")
+    @RequestMapping("/delete")
     @ResponseBody
     public Result deleteBearingCap(String id){
         wheelRoundService.deleteWheelRound(id);
         return new Result(null,"添加成功",100);
     }
 
-    @RequestMapping("/searchWheelInfoByconditionWheelRound")
+    @RequestMapping("/searchBycondition")
     @ResponseBody
     public Result searchWheelInfoBycondition(@RequestBody SearchWheelParam param){
         List<WheelInfo> wheelInfoList = wheelRoundService.searchWheelInfoWheelRound(param);
@@ -147,7 +147,7 @@ public class WheelRoundController {
         System.out.println(id);
         WheelMeasure wheelMeasure = wheelRoundDao.getoriginwheelround(Integer.parseInt(id));
         if (wheelMeasure==null){
-            return new Result(null,"添加失败",101);
+            return new Result(new WheelMeasure(),"添加失败",101);
         }
         return new Result(wheelMeasure,"添加成功",100);
     }

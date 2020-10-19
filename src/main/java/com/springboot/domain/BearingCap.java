@@ -51,6 +51,8 @@ public class BearingCap implements Serializable {
     private  String boltTorqueRight1;
     private  String boltTorqueRight2;
     private  String boltTorqueRight3;
+    private  String boltTorqueLeftAvg;
+    private  String boltTorqueRightAvg;
 
     public BearingCap() {
     }
@@ -437,6 +439,22 @@ public class BearingCap implements Serializable {
 
     public void setBoltTorqueRight3(String boltTorqueRight3) {
         this.boltTorqueRight3 = boltTorqueRight3;
+    }
+
+    public String getBoltTorqueLeftAvg() {
+        return boltTorqueLeftAvg;
+    }
+
+    public void setBoltTorqueLeftAvg(String boltTorqueLeftAvg) {
+        this.boltTorqueLeftAvg = boltTorqueLeftAvg;
+    }
+
+    public String getBoltTorqueRightAvg() {
+        return boltTorqueRightAvg;
+    }
+
+    public void setBoltTorqueRightAvg(String boltTorqueRightAvg) {
+        this.boltTorqueRightAvg = boltTorqueRightAvg;
     }
 
     @Override

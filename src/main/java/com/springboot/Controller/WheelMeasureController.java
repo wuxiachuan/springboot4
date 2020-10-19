@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
-@RequestMapping("/wheelTakein")
+@RequestMapping("/measure")
 public class WheelMeasureController {
     @Autowired
     private WheelMeasureService wheelMeasureService;
@@ -32,7 +32,7 @@ public class WheelMeasureController {
 
     private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @RequestMapping("/addMeasure")
+    @RequestMapping("/add")
     @ResponseBody
     public Result addMeasure(@RequestBody WheelMeasure wheelMeasure){
         wheelMeasure.setFinishTime(dateFormater.format(new Date()));
@@ -50,7 +50,7 @@ public class WheelMeasureController {
         return new Result(wheelInfoList,"添加成功",100);
     }
 
-    @RequestMapping("/unFinishMeasure2")
+    @RequestMapping("/unFinish")
     @ResponseBody
     public Result findUnFinishMeasure2(){
         List<WheelInfo> wheelInfoList = new ArrayList<>();
@@ -99,7 +99,7 @@ public class WheelMeasureController {
         return new Result(data,"添加成功",100);
     }
 
-    @RequestMapping("/findMeasureById")
+    @RequestMapping("/findById")
     @ResponseBody
     public Result findMeasureById(String id){
         WheelMeasure wheelMeasure = wheelMeasureService.findWheelMeasureByWheelId(Integer.parseInt(id));
@@ -115,7 +115,7 @@ public class WheelMeasureController {
         return new Result(null,"添加失败",101);
     }
 
-    @RequestMapping("/modifyMeasure")
+    @RequestMapping("/modify")
     @ResponseBody
     public Result modifyMeasure(@RequestBody WheelMeasure wheelMeasure){
         wheelMeasure.setFinishTime(dateFormater.format(new Date()));
@@ -134,14 +134,14 @@ public class WheelMeasureController {
         return new Result(null,"添加成功",100);
     }
 
-    @RequestMapping("/deleteMeasure")
+    @RequestMapping("/delete")
     @ResponseBody
     public Result deleteMeasure(String id){
         wheelMeasureService.deleteWheelMeasure(id);
         return new Result(null,"添加成功",100);
     }
 
-    @RequestMapping("/searchWheelInfoByconditionMeasure")
+    @RequestMapping("/searchBycondition")
     @ResponseBody
     public Result searchWheelInfoBycondition(@RequestBody SearchWheelParam param){
         List<WheelInfo> wheelInfoList = wheelMeasureService.searchWheelInfoMeasure(param);

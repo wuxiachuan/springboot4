@@ -27,7 +27,7 @@ public class BearingTestController {
     private RedisTemplate redisTemplate;
     private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @RequestMapping("/addbearingTest")
+    @RequestMapping("/add")
     @ResponseBody
     public Result addbearingCap(@RequestBody BearingTest bearingTest){
         bearingTest.setFinishTime(dateFormater.format(new Date()));
@@ -36,7 +36,7 @@ public class BearingTestController {
         return new Result(bearingTest,"添加成功",100);
     }
 
-    @RequestMapping("/modifyBearingTest")
+    @RequestMapping("/modify")
     @ResponseBody
     public Result modifyBearingCap(@RequestBody BearingTest bearingTest){
         bearingTest.setFinishTime(dateFormater.format(new Date()));
@@ -52,7 +52,7 @@ public class BearingTestController {
         List<WheelInfo> wheelInfoList = bearingTestDao.findWheelInfoToBearingTest();
         return new Result(wheelInfoList,"添加成功",100);
     }
-    @RequestMapping("/unFinishBearingTest2")
+    @RequestMapping("/unFinish")
     @ResponseBody
     public Result unFinishBearing2(){
         List<WheelInfo> wheelInfoList = new ArrayList<>();
@@ -100,21 +100,21 @@ public class BearingTestController {
         return new Result(data,"添加成功",100);
     }
 
-    @RequestMapping("/findBearingTestById")
+    @RequestMapping("/findById")
     @ResponseBody
     public Result findBearingCapById(String id){
         BearingTest bearingTest = bearingTestDao.findBearingTestByWheelId(Integer.parseInt(id));
         return new Result(bearingTest,"添加成功",100);
     }
 
-    @RequestMapping("/deleteBearingTest")
+    @RequestMapping("/delete")
     @ResponseBody
     public Result deleteBearingCap(String id){
         bearingTestService.deleteBearingTest(id);
         return new Result(null,"添加成功",100);
     }
 
-    @RequestMapping("/searchWheelInfoByconditionTest")
+    @RequestMapping("/searchBycondition")
     @ResponseBody
     public Result searchWheelInfoBycondition(@RequestBody SearchWheelParam param){
         List<WheelInfo> wheelInfoList = bearingTestService.searchWheelInfoTest(param);

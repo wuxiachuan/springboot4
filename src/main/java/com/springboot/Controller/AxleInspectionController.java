@@ -27,7 +27,7 @@ public class AxleInspectionController {
     private RedisTemplate redisTemplate;
     private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     //超探
-    @RequestMapping("/addaxleInspection")
+    @RequestMapping("/add")
     @ResponseBody
     public Result magneticInspection(@RequestBody AxleInspection axleInspection){
         axleInspection.setUltfinishTime(dateFormater.format(new Date()));
@@ -45,7 +45,7 @@ public class AxleInspectionController {
         return new Result(axleInspection,"添加成功",100);
     }
 
-    @RequestMapping("/modifyAxleInspection")
+    @RequestMapping("/modify")
     @ResponseBody
     public Result modifyAxleInspection(@RequestBody AxleInspection axleInspection){
         axleInspection.setUltfinishTime(dateFormater.format(new Date()));
@@ -79,7 +79,7 @@ public class AxleInspectionController {
         List<WheelInfo> wheelInfoList = axleInspectionDao.findWheelInfoToAxleInspection();
         return new Result(wheelInfoList,"添加成功",100);
     }
-    @RequestMapping("/unFinishAxleInspection2")
+    @RequestMapping("/unFinish")
     @ResponseBody
     public Result unFinishAxleInspection2(){
         List<WheelInfo> wheelInfoList = new ArrayList<>();
@@ -90,7 +90,7 @@ public class AxleInspectionController {
         }
         return new Result(wheelInfoList,"添加成功",100);
     }
-    @RequestMapping("/chooseWheelA")
+    @RequestMapping("/chooseWheel")
     @ResponseBody
     public Result chooseWheelA(String id){
         Integer wheelId = Integer.parseInt(id);
@@ -103,7 +103,7 @@ public class AxleInspectionController {
         }
     }
 
-    @RequestMapping("/turnBackA")
+    @RequestMapping("/turnBack")
     @ResponseBody
     public Result turnBackA(String id){
         Integer wheelId = Integer.parseInt(id);
@@ -111,7 +111,7 @@ public class AxleInspectionController {
         return new Result(null,"添加成功",100);
     }
 
-    @RequestMapping("/savedWheelInfoA")
+    @RequestMapping("/savedWheelInfo")
     @ResponseBody
     public Result savedWheelInfoA(@RequestBody Map<String,String> map){
         String name = map.get("name");
@@ -120,28 +120,28 @@ public class AxleInspectionController {
         return new Result(null,"添加成功",100);
     }
 
-    @RequestMapping("/getSavedWheelInfoA")
+    @RequestMapping("/getSavedWheelInfo")
     @ResponseBody
     public Result getSavedWheelInfoA(String name){
         String data = (String) redisTemplate.opsForValue().get(name+"savedAxleInspectionInfo");
         return new Result(data,"添加成功",100);
     }
 
-    @RequestMapping("/findAxleInspectionById")
+    @RequestMapping("/findById")
     @ResponseBody
     public Result findAxleInspectionById(String id){
         AxleInspection axleInspection = axleInspectionDao.findAxleInspectionByWheelId(Integer.parseInt(id));
         return new Result(axleInspection,"添加成功",100);
     }
 
-    @RequestMapping("/deleteAxleInspection")
+    @RequestMapping("/delete")
     @ResponseBody
     public Result deleteAxleInspection(String id){
         axleInspectionService.deleteBearingAxleInspection(id);
         return new Result(null,"添加成功",100);
     }
 
-    @RequestMapping("/searchWheelInfoByconditionAxleInspection")
+    @RequestMapping("/searchBycondition")
     @ResponseBody
     public Result searchWheelInfoBycondition(@RequestBody SearchWheelParam param){
         List<WheelInfo> wheelInfoList = axleInspectionService.searchWheelInfoAxleInspection(param);
@@ -150,108 +150,4 @@ public class AxleInspectionController {
         }
         return new Result(wheelInfoList,"添加成功",100);
     }
-
-    //磁探
-    @RequestMapping("/addMagInspection")
-    @ResponseBody
-    public Result addMagInspection(@RequestBody AxleInspection axleInspection){
-        axleInspection.setMagfinishTime(dateFormater.format(new Date()));
-        axleInspectionService.addMagInspection(axleInspection);
-        redisTemplate.opsForSet().add("preAxleInspection",axleInspection.getWheelId());
-        return new Result(axleInspection,"添加成功",100);
-    }
-
-    @RequestMapping("/modifyMagInspection")
-    @ResponseBody
-    public Result modifyMagInspection(@RequestBody AxleInspection axleInspection){
-        axleInspection.setMagfinishTime(dateFormater.format(new Date()));
-        axleInspectionService.updateMagInspection(axleInspection);
-        redisTemplate.opsForSet().add("preAxleInspection",axleInspection.getWheelId());
-        redisTemplate.opsForSet().remove("preWheelRounding",axleInspection.getWheelId());
-        redisTemplate.opsForSet().remove("preBearingLoad",axleInspection.getWheelId());
-        redisTemplate.opsForSet().remove("preBearingrCap",axleInspection.getWheelId());
-        redisTemplate.opsForSet().remove("preBearingrollTest",axleInspection.getWheelId());
-        redisTemplate.opsForSet().remove("preRemeasure",axleInspection.getWheelId());
-        redisTemplate.opsForSet().remove("preQualityCheck",axleInspection.getWheelId());
-        return new Result(axleInspection,"添加成功",100);
-    }
-
-    @RequestMapping("/unFinishMagInspection")
-    @ResponseBody
-    public Result unFinishMagInspection(){
-        List<WheelInfo> wheelInfoList = axleInspectionDao.findWheelInfoToMagInspection();
-        return new Result(wheelInfoList,"添加成功",100);
-    }
-    @RequestMapping("/unFinishMagInspection2")
-    @ResponseBody
-    public Result unFinishMagInspection2(){
-        List<WheelInfo> wheelInfoList = new ArrayList<>();
-        Set<Integer> set = redisTemplate.opsForSet().members("preMagInspection");
-        for (Integer id:set){
-            WheelInfo wheelInfo = wheelDao.findWheelInfoById(id);
-            wheelInfoList.add(wheelInfo);
-        }
-        return new Result(wheelInfoList,"添加成功",100);
-    }
-    @RequestMapping("/chooseWheelM")
-    @ResponseBody
-    public Result chooseWheelM(String id){
-        Integer wheelId = Integer.parseInt(id);
-        Boolean res = redisTemplate.opsForSet().isMember("preMagInspection",wheelId);
-        if (res){
-            redisTemplate.opsForSet().remove("preMagInspection",wheelId);
-            return new Result(null,"添加成功",100);
-        }else {
-            return new Result(null,"添加失败",101);
-        }
-    }
-
-    @RequestMapping("/turnBackM")
-    @ResponseBody
-    public Result turnBackM(String id){
-        Integer wheelId = Integer.parseInt(id);
-        redisTemplate.opsForSet().add("preMagInspection", wheelId);
-        return new Result(null,"添加成功",100);
-    }
-
-    @RequestMapping("/savedWheelInfoM")
-    @ResponseBody
-    public Result savedWheelInfoM(@RequestBody Map<String,String> map){
-        String name = map.get("name");
-        String data = map.get("data");
-        redisTemplate.opsForValue().set(name+"savedMagInspectionInfo",data);
-        return new Result(null,"添加成功",100);
-    }
-
-    @RequestMapping("/getSavedWheelInfoM")
-    @ResponseBody
-    public Result getSavedWheelInfoM(String name){
-        String data = (String) redisTemplate.opsForValue().get(name+"savedMagInspectionInfo");
-        return new Result(data,"添加成功",100);
-    }
-
-    @RequestMapping("/findMagInspectionById")
-    @ResponseBody
-    public Result findMagInspectionById(String id){
-        AxleInspection axleInspection = axleInspectionDao.findMagInspectionByWheelId(Integer.parseInt(id));
-        return new Result(axleInspection,"添加成功",100);
-    }
-
-    @RequestMapping("/deleteMagInspection")
-    @ResponseBody
-    public Result deleteMagInspection(String id){
-        axleInspectionService.deleteBearingMagInspection(id);
-        return new Result(null,"添加成功",100);
-    }
-
-    @RequestMapping("/searchWheelInfoByconditionMagInspection")
-    @ResponseBody
-    public Result searchWheelInfoByconditionMagInspection(@RequestBody SearchWheelParam param){
-        List<WheelInfo> wheelInfoList = axleInspectionService.searchWheelInfoMagInspection(param);
-        if (wheelInfoList==null){
-            return new Result(null,"添加失败",101);
-        }
-        return new Result(wheelInfoList,"添加成功",100);
-    }
-
 }

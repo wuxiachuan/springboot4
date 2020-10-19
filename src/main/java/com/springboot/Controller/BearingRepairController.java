@@ -30,7 +30,7 @@ public class BearingRepairController {
     private RedisTemplate redisTemplate;
     private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @RequestMapping("/addBearing")
+    @RequestMapping("/add")
     @ResponseBody
    public Result addBearing(@RequestBody BearingRepair bearingRepair){
         bearingRepair.setFinishTime(dateFormater.format(new Date()));
@@ -54,7 +54,7 @@ public class BearingRepairController {
        return new Result(wheelInfoList,"添加成功",100);
    }
 
-    @RequestMapping("/unFinishBearing2")
+    @RequestMapping("/unFinish")
     @ResponseBody
     public Result unFinishBearing2(){
         List<WheelInfo> wheelInfoList = new ArrayList<>();
@@ -103,7 +103,7 @@ public class BearingRepairController {
     }
 
 
-   @RequestMapping("/modifyBearing")
+   @RequestMapping("/modify")
    @ResponseBody
    public Result modifyBearing(@RequestBody BearingRepair bearingRepair){
        bearingRepair.setFinishTime(dateFormater.format(new Date()));
@@ -139,7 +139,7 @@ public class BearingRepairController {
        return new Result(bearingRepair,"添加成功",100);
    }
 
-   @RequestMapping("/findBearingById")
+   @RequestMapping("/findById")
     @ResponseBody
     public Result findBearingById(String id){
        BearingRepair bearingRepair = bearingRepairDao.findBearingRepairByWheelId(Integer.parseInt(id));
@@ -149,7 +149,7 @@ public class BearingRepairController {
        return new Result(bearingRepair,"添加成功",100);
    }
 
-   @RequestMapping("/deleteBearing")
+   @RequestMapping("/delete")
     @ResponseBody
     public Result deleteBearing(String id){
         bearingRepairService.deleteBearing(id);
@@ -162,7 +162,7 @@ public class BearingRepairController {
         return new Result(null,"添加失败",101);
     }
 
-    @RequestMapping("/searchWheelInfoByconditionRepair")
+    @RequestMapping("/searchBycondition")
     @ResponseBody
     public Result searchWheelInfoByconditionRepair(@RequestBody SearchWheelParam param){
         List<WheelInfo> wheelInfoList = bearingRepairService.searchWheelInfoRepairCondition(param);

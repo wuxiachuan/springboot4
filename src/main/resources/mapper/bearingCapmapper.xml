@@ -7,7 +7,6 @@
         INSERT INTO bearingCap
         (
                 wheelId	,
-
                 bearingAssemble1stLeft	,
                 bearingLevelLeft	,
                 bearingmadeInLeft	,
@@ -52,12 +51,13 @@
                 boltTorqueLeft3,
                 boltTorqueRight1,
                 boltTorqueRight2,
-                boltTorqueRight3
+                boltTorqueRight3,
+                boltTorqueLeftAvg,
+                boltTorqueRightAvg
         )
         VALUES
         (
                 #{	wheelId	},
-
                 #{	bearingAssemble1stLeft	},
                 #{	bearingLevelLeft	},
                 #{	bearingmadeInLeft	},
@@ -102,7 +102,9 @@
                 #{boltTorqueLeft3},
                 #{boltTorqueRight1},
                 #{boltTorqueRight2},
-                #{boltTorqueRight3}
+                #{boltTorqueRight3},
+                #{boltTorqueLeftAvg},
+                #{boltTorqueRightAvg}
         )
     </insert>
     <update id="updateBearingCap" parameterType="BearingCap">
@@ -151,7 +153,9 @@
               boltTorqueLeft3 = #{boltTorqueLeft3},
               boltTorqueRight1 = #{boltTorqueRight1},
               boltTorqueRight2 = #{boltTorqueRight2},
-              boltTorqueRight3 =  #{boltTorqueRight3}
+              boltTorqueRight3 =  #{boltTorqueRight3},
+              boltTorqueLeftAvg = #{boltTorqueLeftAvg},
+              boltTorqueRightAvg = #{boltTorqueRightAvg}
                 where wheelId	=	#{	wheelId	}
     </update>
 <!--    <select id="findWheelInfoToBearingCap" resultType="WheelInfo">-->

@@ -30,7 +30,7 @@ public class BearingCapController {
     private RedisTemplate redisTemplate;
     private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @RequestMapping("/addbearingCap")
+    @RequestMapping("/add")
     @ResponseBody
     public Result addbearingCap(@RequestBody BearingCap bearingCap){
         bearingCap.setFinishTime(dateFormater.format(new Date()));
@@ -39,7 +39,7 @@ public class BearingCapController {
         return new Result(bearingCap,"添加成功",100);
     }
 
-    @RequestMapping("/modifyBearingCap")
+    @RequestMapping("/modify")
     @ResponseBody
     public Result modifyBearingCap(@RequestBody BearingCap bearingCap){
         bearingCap.setFinishTime(dateFormater.format(new Date()));
@@ -57,7 +57,7 @@ public class BearingCapController {
         return new Result(wheelInfoList,"添加成功",100);
     }
 
-    @RequestMapping("/unFinishBearingCap2")
+    @RequestMapping("/unFinish")
     @ResponseBody
     public Result unFinishBearing2(){
         List<WheelInfo> wheelInfoList = new ArrayList<>();
@@ -106,21 +106,21 @@ public class BearingCapController {
     }
 
 
-    @RequestMapping("/findBearingCapById")
+    @RequestMapping("/findById")
     @ResponseBody
     public Result findBearingCapById(String id){
         BearingCap bearingCap = bearingCapDao.findBearingCapByWheelId(Integer.parseInt(id));
         return new Result(bearingCap,"添加成功",100);
     }
 
-    @RequestMapping("/deleteBearingCap")
+    @RequestMapping("/delete")
     @ResponseBody
     public Result deleteBearingCap(String id){
         bearingCapService.deleteBearingCap(id);
         return new Result(null,"添加成功",100);
     }
 
-    @RequestMapping("/searchWheelInfoBycondition")
+    @RequestMapping("/searchBycondition")
     @ResponseBody
     public Result searchWheelInfoBycondition(@RequestBody SearchWheelParam param){
         List<WheelInfo> wheelInfoList = bearingCapService.searchWheelInfoBycondition(param);

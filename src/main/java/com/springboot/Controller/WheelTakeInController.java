@@ -38,7 +38,7 @@ public class WheelTakeInController {
          this.dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
-    @RequestMapping("/addWheel")
+    @RequestMapping("/add")
     @ResponseBody
     public Result addWheel(@RequestBody WheelInfo wheelInfo){
         wheelInfo.setInfoTakeFinishTime(dateFormater.format(new Date()));
@@ -71,7 +71,7 @@ public class WheelTakeInController {
         return new Result(data,"添加成功",100);
     }
 
-    @RequestMapping("/findWheelTakeinById")
+    @RequestMapping("/findById")
     @ResponseBody
     public Result findwheelTakeinById(String id){
         WheelInfo wheelInfo = wheelDao.findWheelInfoById(Integer.parseInt(id));
@@ -81,7 +81,7 @@ public class WheelTakeInController {
         return new Result(wheelInfo,"添加成功",100);
     }
 
-    @RequestMapping("/sesrchinfo")
+    @RequestMapping("/searchBycondition")
     @ResponseBody
     public Result findWheelInfo(@RequestBody SearchWheelParam param){
         List<WheelInfo> list = null;
@@ -93,11 +93,43 @@ public class WheelTakeInController {
         }
          return new Result(list,"查询成功",100);
     }
-    @RequestMapping("/modifyWheel")
+    @RequestMapping("/modify")
     @ResponseBody
     public Result modifyWheel(@RequestBody WheelInfo wheelInfo){
         wheelInfo.setInfoTakeFinishTime(dateFormater.format(new Date()));
-        System.out.println(wheelInfo);
+        //信息采集 0 未完成，1已完成
+        wheelInfo.setInfoTakeFinish("1");
+        //轮对测量 0 未完成，1已完成
+        wheelInfo.setIsMeasureFinish("0");
+        //轴承检查 0 未完成，1已完成
+        wheelInfo.setIsbearingRepairFinish("0");
+        //超声波探伤 -1不需要，0未完成，1已完成
+        wheelInfo.setIsaxleInspectionFinish("-1");
+        //车轮旋面 -1不需要，0未完成，1已完成
+        wheelInfo.setIsWheelRoundingFinish("-1");
+        //轴承压装 -1不需要，1左端压装，2右端压装，3两端压装，4已完成
+        wheelInfo.setIsbearingLoadFinish("-1");
+        //磁粉探伤 -1不需要，0未完成，1已完成
+        wheelInfo.setIsmagnetInspectionFinish("-1");
+        wheelInfo.setIsbearingCapFinish("-1");
+        //旋修关盖 -1不需要，0未完成，1已完成
+        wheelInfo.setIsbearingCapFinishW("-1");
+        //推卸关盖 -1不需要，0未完成，1已完成
+        wheelInfo.setIsbearingCapFinishL("-1");
+        //磨合 0 未完成，1已完成
+        wheelInfo.setIsbearingrollTestFinish("0");
+        //支出 0 未完成，1已完成
+        wheelInfo.setIsreMeasureFinish("0");
+        //支出 0 未完成，1已完成
+        wheelInfo.setIsWheelRoundingFinish("0");
+        //质检 0 未完成，1已完成
+        wheelInfo.setIsqualityInspectionFinish("0");
+        //验收 0 未完成，1已完成
+        wheelInfo.setIsverifyFinish("0");
+        //是否完工 0 未完成，1已完成
+        wheelInfo.setIsprocessFinish("0");
+        //状态 0检修中，1良好存放，2支出，3报废存放，4已送厂
+        wheelInfo.setState("0");
         WheelInfo result = null;
         result = wheelService.updateWheelInfo(wheelInfo);
         redisTemplate.opsForSet().add("preMeasure",result.getWheelId());
@@ -112,7 +144,7 @@ public class WheelTakeInController {
         redisTemplate.opsForSet().remove("preQualityCheck",result.getWheelId());
         return new Result(result,"修改成功",100);
     }
-    @RequestMapping("/deleteWheel")
+    @RequestMapping("/delete")
     @ResponseBody
     public Result deleteWheel(String id){
         try{
@@ -137,16 +169,4 @@ public class WheelTakeInController {
         }
         return new Result(path,"二维码生成",100);
     }
-//    @RequestMapping("/read/image")
-//    public ResponseEntity<byte[]> getImageContent(HttpServletRequest request){
-//        HttpHeaders responseHeaders = new HttpHeaders();
-//
-//        String imageUrl=request.getParameter("imageUrl");
-//        FileContent file= FileContent.getImageByte(imageUrl);
-//
-//        responseHeaders.set("Access-Control-Allow-Origin","*");
-//        responseHeaders.set("Content-Type",file.getContent_type());
-//
-//        return new ResponseEntity<>(file.getContent(), responseHeaders, HttpStatus.OK);
-//    }
 }

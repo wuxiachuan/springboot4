@@ -29,7 +29,7 @@ public class WheelDispatchController {
     private RedisTemplate redisTemplate;
     private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @RequestMapping("/addWheelDispatch")
+    @RequestMapping("/add")
     @ResponseBody
     public Result addWheelDispatchRemeasure(@RequestBody WheelDispatch wheelDispatch){
         wheelDispatch.setFinishTime(dateFormater.format(new Date()));
@@ -38,7 +38,7 @@ public class WheelDispatchController {
         return new Result(wheelDispatch,"添加成功",100);
     }
 
-    @RequestMapping("/modifyWheelDispatch")
+    @RequestMapping("/modify")
     @ResponseBody
     public Result modifyWheelDispatchRemeasure(@RequestBody WheelDispatch wheelDispatch){
         wheelDispatch.setFinishTime(dateFormater.format(new Date()));
@@ -54,7 +54,7 @@ public class WheelDispatchController {
         return new Result(wheelInfoList,"添加成功",100);
     }
 
-    @RequestMapping("/unFinishWheelDispatch2")
+    @RequestMapping("/unFinish")
     @ResponseBody
     public Result unFinishBearing2(){
         List<WheelInfo> wheelInfoList = new ArrayList<>();
@@ -102,21 +102,21 @@ public class WheelDispatchController {
         return new Result(data,"添加成功",100);
     }
 
-    @RequestMapping("/findWheelDispatchById")
+    @RequestMapping("/findById")
     @ResponseBody
     public Result findBearingCapById(String id){
         WheelDispatch wheelDispatch = wheelDispatchDao.findWheelDispatchByWheelId(Integer.parseInt(id));
         return new Result(wheelDispatch,"添加成功",100);
     }
 
-    @RequestMapping("/deleteWheelDispatch")
+    @RequestMapping("/delete")
     @ResponseBody
     public Result deleteBearingCap(String id){
         wheelDispatchService.deleteWheelDispatch(id);
         return new Result(null,"添加成功",100);
     }
 
-    @RequestMapping("/searchWheelInfoByconditionDispatch")
+    @RequestMapping("/searchBycondition")
     @ResponseBody
     public Result searchWheelInfoBycondition(@RequestBody SearchWheelParam param){
         List<WheelInfo> wheelInfoList = wheelDispatchService.searchWheelInfoDispatch(param);

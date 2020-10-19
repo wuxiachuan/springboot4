@@ -27,7 +27,7 @@ public class BearingLoadController {
     private RedisTemplate redisTemplate;
     private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @RequestMapping("/addBearingLoad")
+    @RequestMapping("/add")
     @ResponseBody
     public Result addBearingLoad(@RequestBody BearingLoad bearingLoad){
         bearingLoad.setFinishTime(dateFormater.format(new Date()));
@@ -35,7 +35,7 @@ public class BearingLoadController {
         redisTemplate.opsForSet().add("preBearingrCap",bearingLoad.getWheelId());
         return new Result(bearingLoad,"添加成功",100);
     }
-    @RequestMapping("/modifyBearingLoad")
+    @RequestMapping("/modify")
     @ResponseBody
     public Result updateBearingLoad(@RequestBody BearingLoad bearingLoad ){
         bearingLoad.setFinishTime(dateFormater.format(new Date()));
@@ -53,7 +53,7 @@ public class BearingLoadController {
         List<WheelInfo> wheelInfoList = bearingLoadDao.findWheelInfoToBearingLoad();
         return new Result(wheelInfoList,"添加成功",100);
     }
-    @RequestMapping("/unFinishBearingLoad2")
+    @RequestMapping("/unFinish")
     @ResponseBody
     public Result unFinishBearing2(){
         List<WheelInfo> wheelInfoList = new ArrayList<>();
@@ -102,7 +102,7 @@ public class BearingLoadController {
     }
 
 
-    @RequestMapping("/searchWheelInfoBycondition")
+    @RequestMapping("/searchBycondition")
     @ResponseBody
     public Result searchWheelInfoBycondition(@RequestBody SearchWheelParam param){
         List<WheelInfo> wheelInfoList = bearingLoadService.searchWheelInfoBycondition(param);
@@ -113,7 +113,7 @@ public class BearingLoadController {
     }
 
 
-    @RequestMapping("/findBearingLoadById")
+    @RequestMapping("/findById")
     @ResponseBody
     public Result findBearingById(String id){
         BearingLoad bearingLoad = bearingLoadDao.findBearingLoadByWheelId(Integer.parseInt(id));
@@ -123,7 +123,7 @@ public class BearingLoadController {
         return new Result(bearingLoad,"添加成功",100);
     }
 
-    @RequestMapping("/deleteBearingLoad")
+    @RequestMapping("/delete")
     @ResponseBody
     public Result deleteBearingLoad(String id,String index){
         bearingLoadService.deleteBearing(id,index);
