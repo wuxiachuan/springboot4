@@ -1,20 +1,20 @@
 package com.springboot.Controller;
 
 import com.springboot.dao.QRcodeDao;
+import com.springboot.dao.VehicleInfoDao;
 import com.springboot.dao.WheelDao;
-import com.springboot.domain.*;
+import com.springboot.domain.Result;
+import com.springboot.domain.SearchWheelParam;
+import com.springboot.domain.VehicleInfo;
+import com.springboot.domain.WheelInfo;
 import com.springboot.service.WheelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import java.net.http.HttpHeaders;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +30,8 @@ public class WheelTakeInController {
     @Autowired
     private WheelDao wheelDao;
     @Autowired
+    private VehicleInfoDao vehicleDao;
+    @Autowired
     private RedisTemplate redisTemplate;
 
     private SimpleDateFormat dateFormater;
@@ -44,8 +46,39 @@ public class WheelTakeInController {
         wheelInfo.setInfoTakeFinishTime(dateFormater.format(new Date()));
         WheelInfo result = null;
         String path = null;
+        String vehicleNum = wheelInfo.getVehicleNumber();
         try{
             result = wheelService.insertWheelInfo(wheelInfo);
+            VehicleInfo vehicleInfo = vehicleDao.findVehicleInfo(vehicleNum);
+            if (vehicleInfo==null) {
+                String vehicleType = wheelInfo.getVehicleType();
+                String repairDate = wheelInfo.getTakeInDate();
+                String axleType = wheelInfo.getAxleType();
+                vehicleInfo = new VehicleInfo(vehicleNum,vehicleType,repairDate,axleType);
+                vehicleDao.insertVehicleInfo(vehicleInfo);
+                redisTemplate.opsForSet().add(repairDate+"Vehicle",vehicleNum);
+                redisTemplate.opsForHash().put(vehicleNum,"vehicleType",vehicleType);
+                redisTemplate.opsForHash().put(vehicleNum,"axleType",axleType);
+            }else {
+                String wheelId = result.getWheelId().toString();
+                String pos = wheelInfo.getAxlePosition();
+                if ("1".equals(pos)){
+                    vehicleDao.addAxleIn1(wheelId,vehicleNum);
+                    redisTemplate.opsForHash().put(vehicleNum,"axleIn1",wheelId);
+                }else if("2".equals(pos)){
+                    vehicleDao.addAxleIn2(wheelId,vehicleNum);
+                    redisTemplate.opsForHash().put(vehicleNum,"axleIn2",wheelId);
+                }else if("3".equals(pos)){
+                    vehicleDao.addAxleIn3(wheelId,vehicleNum);
+                    redisTemplate.opsForHash().put(vehicleNum,"axleIn3",wheelId);
+                }else if("4".equals(pos)){
+                    vehicleDao.addAxleIn4(wheelId,vehicleNum);
+                    vehicleDao.prepareVehicle(vehicleNum);
+                    redisTemplate.opsForHash().put(vehicleNum,"axleIn4",wheelId);
+                }else {
+
+                }
+            }
             redisTemplate.opsForSet().add("preMeasure",result.getWheelId());
             path = wheelService.generateQRcode(result.getWheelId().toString());
         }catch(Exception e){

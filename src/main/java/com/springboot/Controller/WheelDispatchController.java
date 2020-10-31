@@ -1,6 +1,7 @@
 package com.springboot.Controller;
 
 import com.springboot.dao.BearingTestDao;
+import com.springboot.dao.VehicleInfoDao;
 import com.springboot.dao.WheelDao;
 import com.springboot.dao.WheelDispatchDao;
 import com.springboot.domain.*;
@@ -25,6 +26,8 @@ public class WheelDispatchController {
     private WheelDispatchDao wheelDispatchDao;
     @Autowired
     private WheelDao wheelDao;
+    @Autowired
+    private VehicleInfoDao vehicleInfoDao;
     @Autowired
     private RedisTemplate redisTemplate;
     private SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -138,14 +141,13 @@ public class WheelDispatchController {
         String vnum = map.get("vehicleNum");
         String takeInDateFrom = map.get("takeInDateFrom");
         String takeInDateTo = map.get("takeInDateTo");
-        List<VehicleInfo> list = wheelDispatchDao.findvehicleNum(vnum,takeInDateFrom,takeInDateTo);
+        List<VehicleInfo> list = vehicleInfoDao.findVehicleInfoByCondition(vnum,takeInDateFrom,takeInDateTo);
         return new Result(list,"添加成功",100);
     }
     
     @RequestMapping("/find2match")
     @ResponseBody
     public Result find2match(@RequestBody VehicleInfo vehicleInfo){
-        System.out.println(vehicleInfo);
         List<WheelDispatch> list = wheelDispatchService.find2match(vehicleInfo);
         return new Result(list,"添加成功",100);
     }
