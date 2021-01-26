@@ -20,12 +20,14 @@ public class WheelRoundServiceImp implements WheelRoundService{
     private WheelDao wheelDao;
     @Override
     public void addWheelRound(WheelRound wheelRound) {
-        Integer count =  wheelRoundDao.findWheelIdCount(wheelRound.getWheelId());
-        if (count == 1){
-            updateWheelRound(wheelRound);
-        }else{
-            wheelRoundDao.insertWheelRound(wheelRound);
-        }
+//        Integer count =  wheelRoundDao.findWheelIdCount(wheelRound.getWheelId());
+//        if (count == 1){
+//            updateWheelRound(wheelRound);
+//        }else{
+//            wheelRoundDao.insertWheelRound(wheelRound);
+//        }
+//        flushWheelInfoWheelRound(wheelRound);
+        wheelRoundDao.insertWheelRound(wheelRound);
         flushWheelInfoWheelRound(wheelRound);
     }
 

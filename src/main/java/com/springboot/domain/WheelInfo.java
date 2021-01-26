@@ -40,9 +40,15 @@ public class WheelInfo implements Serializable {
     private String  iswheelDispatchFinish;
     private String  isqualityInspectionFinish;
     private String  isverifyFinish;
+    private String  isbearingCapFinishW;
+    private String  isbearingCapFinishL;
 
-    private String   isbearingCapFinishW;
-    private String   isbearingCapFinishL;
+    private String   isbearingUnCapFinish;
+    private String   isbearingUnloadFinish;
+    private String   iswheelPolishFinish;
+    private String   isreInspectionFinish;
+    private String   isbearingNeckFinish;
+
     private String   isprocessFinish;
     private String   state;
     private String   dispatchVehicleType;
@@ -58,6 +64,10 @@ public class WheelInfo implements Serializable {
     private String   isprocessFinishTime;
     private String   isreMeasureFinish;
     private String   finishTime;
+    private String   repairWay;
+    private String   repairProcess;
+    private String   discardReason;
+
 
     public WheelInfo() {
         init();
@@ -70,19 +80,30 @@ public class WheelInfo implements Serializable {
         isMeasureFinish= "0";
         //轴承检查 0 未完成，1已完成
         isbearingRepairFinish= "0";
+        //除锈 -1不需要，0未完成，1已完成
+        iswheelPolishFinish= "-1";
         //超声波探伤 -1不需要，0未完成，1已完成
         isaxleInspectionFinish= "-1";
+        //磁粉探伤 -1不需要，0未完成，1已完成
+        ismagnetInspectionFinish = "0";
+        //人工复探 -1不需要，0未完成，1已完成
+        isreInspectionFinish= "-1";
         //车轮旋面 -1不需要，0未完成，1已完成
         isWheelRoundingFinish= "-1";
-        //轴承压装 -1不需要，1左端压装，2右端压装，3两端压装，4已完成
+        //轴颈测量 -1不需要，1已完成，2左端压装，3右端压装，5两端压装
+        isbearingNeckFinish= "-1";
+        //轴承压装 -1不需要，1已完成，2左端压装，3右端压装，5两端压装
         isbearingLoadFinish= "-1";
-        //磁粉探伤 -1不需要，0未完成，1已完成
-        ismagnetInspectionFinish = "-1";
+        //关盖 -1不需要，0未完成，1已完成
         isbearingCapFinish= "-1";
-        //旋修关盖 -1不需要，0未完成，1已完成
+        //旋面关盖 -1不需要，0未完成，1已完成
         isbearingCapFinishW= "-1";
-        //推卸关盖 -1不需要，0未完成，1已完成
+        //压装关盖 -1不需要，0未完成，1已完成
         isbearingCapFinishL= "-1";
+        //开盖 -1不需要，0未完成，1已完成
+        isbearingUnCapFinish= "-1";
+        //退卸 -1不需要，1已完成,2左端退卸，3右端退卸，5两端退卸
+        isbearingUnloadFinish= "-1";
         //磨合 0 未完成，1已完成
         isbearingrollTestFinish= "0";
         //支出 0 未完成，1已完成
@@ -339,6 +360,22 @@ public class WheelInfo implements Serializable {
         this.isbearingrollTestFinish = isbearingrollTestFinish;
     }
 
+    public String getIsbearingCapFinishW() {
+        return isbearingCapFinishW;
+    }
+
+    public void setIsbearingCapFinishW(String isbearingCapFinishW) {
+        this.isbearingCapFinishW = isbearingCapFinishW;
+    }
+
+    public String getIsbearingCapFinishL() {
+        return isbearingCapFinishL;
+    }
+
+    public void setIsbearingCapFinishL(String isbearingCapFinishL) {
+        this.isbearingCapFinishL = isbearingCapFinishL;
+    }
+
     public String getIswheelDispatchFinish() {
         return iswheelDispatchFinish;
     }
@@ -379,20 +416,44 @@ public class WheelInfo implements Serializable {
         this.isbearingCapFinish = isbearingCapFinish;
     }
 
-    public String getIsbearingCapFinishW() {
-        return isbearingCapFinishW;
+    public String getIsbearingUnCapFinish() {
+        return isbearingUnCapFinish;
     }
 
-    public void setIsbearingCapFinishW(String isbearingCapFinishW) {
-        this.isbearingCapFinishW = isbearingCapFinishW;
+    public void setIsbearingUnCapFinish(String isbearingUnCapFinish) {
+        this.isbearingUnCapFinish = isbearingUnCapFinish;
     }
 
-    public String getIsbearingCapFinishL() {
-        return isbearingCapFinishL;
+    public String getIsbearingUnloadFinish() {
+        return isbearingUnloadFinish;
     }
 
-    public void setIsbearingCapFinishL(String isbearingCapFinishL) {
-        this.isbearingCapFinishL = isbearingCapFinishL;
+    public void setIsbearingUnloadFinish(String isbearingUnloadFinish) {
+        this.isbearingUnloadFinish = isbearingUnloadFinish;
+    }
+
+    public String getIswheelPolishFinish() {
+        return iswheelPolishFinish;
+    }
+
+    public void setIswheelPolishFinish(String iswheelPolishFinish) {
+        this.iswheelPolishFinish = iswheelPolishFinish;
+    }
+
+    public String getIsreInspectionFinish() {
+        return isreInspectionFinish;
+    }
+
+    public void setIsreInspectionFinish(String isreInspectionFinish) {
+        this.isreInspectionFinish = isreInspectionFinish;
+    }
+
+    public String getIsbearingNeckFinish() {
+        return isbearingNeckFinish;
+    }
+
+    public void setIsbearingNeckFinish(String isbearingNeckFinish) {
+        this.isbearingNeckFinish = isbearingNeckFinish;
     }
 
     public String getIsprocessFinish() {
@@ -499,6 +560,30 @@ public class WheelInfo implements Serializable {
         this.storePositionY = storePositionY;
     }
 
+    public String getRepairWay() {
+        return repairWay;
+    }
+
+    public void setRepairWay(String repairWay) {
+        this.repairWay = repairWay;
+    }
+
+    public String getRepairProcess() {
+        return repairProcess;
+    }
+
+    public void setRepairProcess(String repairProcess) {
+        this.repairProcess = repairProcess;
+    }
+
+    public String getDiscardReason() {
+        return discardReason;
+    }
+
+    public void setDiscardReason(String discardReason) {
+        this.discardReason = discardReason;
+    }
+
     @Override
     public String toString() {
         return "WheelInfo{" +
@@ -539,17 +624,27 @@ public class WheelInfo implements Serializable {
                 ", isverifyFinish='" + isverifyFinish + '\'' +
                 ", isbearingCapFinishW='" + isbearingCapFinishW + '\'' +
                 ", isbearingCapFinishL='" + isbearingCapFinishL + '\'' +
+                ", isbearingUnCapFinish='" + isbearingUnCapFinish + '\'' +
+                ", isbearingUnloadFinish='" + isbearingUnloadFinish + '\'' +
+                ", iswheelPolishFinish='" + iswheelPolishFinish + '\'' +
+                ", isreInspectionFinish='" + isreInspectionFinish + '\'' +
+                ", isbearingNeckFinish='" + isbearingNeckFinish + '\'' +
                 ", isprocessFinish='" + isprocessFinish + '\'' +
                 ", state='" + state + '\'' +
                 ", dispatchVehicleType='" + dispatchVehicleType + '\'' +
                 ", dipatchVehicleNumber='" + dipatchVehicleNumber + '\'' +
                 ", dispatchDate='" + dispatchDate + '\'' +
                 ", dipatchAxlePosition='" + dipatchAxlePosition + '\'' +
+                ", storePositionX='" + storePositionX + '\'' +
+                ", storePositionY='" + storePositionY + '\'' +
                 ", reserve1='" + reserve1 + '\'' +
                 ", reserve2='" + reserve2 + '\'' +
                 ", isprocessFinishTime='" + isprocessFinishTime + '\'' +
                 ", isreMeasureFinish='" + isreMeasureFinish + '\'' +
                 ", finishTime='" + finishTime + '\'' +
+                ", repairWay='" + repairWay + '\'' +
+                ", repairProcess='" + repairProcess + '\'' +
+                ", discardReason='" + discardReason + '\'' +
                 '}';
     }
 }

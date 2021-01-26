@@ -59,7 +59,9 @@ public class BearingTestController {
         Set<Integer> set = redisTemplate.opsForSet().members("preBearingrollTest");
         for (Integer id:set){
             WheelInfo wheelInfo = wheelDao.findWheelInfoById(id);
-            wheelInfoList.add(wheelInfo);
+            if (wheelInfo!=null){
+                wheelInfoList.add(wheelInfo);
+            }
         }
         return new Result(wheelInfoList,"添加成功",100);
     }

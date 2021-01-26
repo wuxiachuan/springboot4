@@ -114,10 +114,10 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    public UserInfo findUserByName(String name) {
-        UserInfo userInfo = userDao.findUserByName("%"+name+"%");
-        appendLogInfo(userInfo);
-        return userInfo;
+    public List<UserInfo> findUserByName(String name) {
+        List<UserInfo> userInfos = userDao.findUserByName("%"+name+"%");
+        //appendLogInfo(userInfo);
+        return userInfos;
     }
 
     //查找所有用户

@@ -1,6 +1,7 @@
 package com.springboot.dao;
 
 import com.springboot.domain.BearingLoad;
+import com.springboot.domain.BearingUnLoad;
 import com.springboot.domain.WheelInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -11,7 +12,8 @@ import java.util.List;
 public interface BearingLoadDao {
     void insertBearingLoad(BearingLoad bearingLoad);
     void updateBearingLoad(BearingLoad bearingLoad);
-
+    void addBearingNeckMeasure(BearingLoad bearingLoad);
+    void addBearingLoad(BearingLoad bearingLoad);
     List<WheelInfo> findWheelInfoToBearingLoad();
     List<WheelInfo> searchWheelInfoBycondition(@Param("wheelId") String wheelId,
                                                @Param("takeInDateFrom") String takeInDateFrom,

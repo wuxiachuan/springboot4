@@ -60,7 +60,9 @@ public class BearingLoadController {
         Set<Integer> set = redisTemplate.opsForSet().members("preBearingLoad");
         for (Integer id:set){
             WheelInfo wheelInfo = wheelDao.findWheelInfoById(id);
-            wheelInfoList.add(wheelInfo);
+            if (wheelInfo!=null){
+                wheelInfoList.add(wheelInfo);
+            }
         }
         return new Result(wheelInfoList,"添加成功",100);
     }
@@ -136,5 +138,11 @@ public class BearingLoadController {
         bearingLoad.setRepairProgress("222");
         bearingLoadDao.insertBearingLoad(bearingLoad);
         return new Result(bearingLoad,"删除成功",100);
+    }
+    @RequestMapping("/getoriginBearingNeckMeasure")
+    @ResponseBody
+    public Result getoriginBearingNeckMeasure(String id){
+        BearingLoad bearingLoad = bearingLoadDao.findBearingLoadByWheelId(Integer.parseInt(id));
+        return new Result(bearingLoad,"获取成功",100);
     }
 }

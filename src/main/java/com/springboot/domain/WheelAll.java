@@ -15,6 +15,7 @@ public class WheelAll  implements Serializable {
     private BearingRepair bearingRepair;
     private WheelDispatch wheelDispatch;
     private List<Problem> problem;
+    private List<BearingUnLoad> bearingUnLoad;
 
     public WheelAll() {
     }
@@ -105,5 +106,13 @@ public class WheelAll  implements Serializable {
 
     public void setProblem(List<Problem> problem) {
         this.problem = problem;
+    }
+
+    public List<BearingUnLoad> getBearingUnLoad() {
+        return bearingUnLoad;
+    }
+
+    public void setBearingUnLoad(List<BearingUnLoad> bearingUnLoad) {
+        this.bearingUnLoad = bearingUnLoad;
     }
 }

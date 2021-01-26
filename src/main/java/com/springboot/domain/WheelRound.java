@@ -18,6 +18,8 @@ public class WheelRound  implements Serializable {
     private String   worker ;
     private String   isFinish ;
     private String finishTime ;
+    private String  repairProcess;
+    private String  discardReason;
 
     public WheelRound() {
     }
@@ -140,6 +142,22 @@ public class WheelRound  implements Serializable {
 
     public void setFinishTime(String finishTime) {
         this.finishTime = finishTime;
+    }
+
+    public String getRepairProcess() {
+        return repairProcess;
+    }
+
+    public void setRepairProcess(String repairProcess) {
+        this.repairProcess = repairProcess;
+    }
+
+    public String getDiscardReason() {
+        return discardReason;
+    }
+
+    public void setDiscardReason(String discardReason) {
+        this.discardReason = discardReason;
     }
 
     @Override

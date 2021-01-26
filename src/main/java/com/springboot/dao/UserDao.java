@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserDao {
     UserInfo findUserById(Integer id);
     UserInfo findUserByNameAndPassword(@Param("name") String name,@Param("password") String paasword);
-    UserInfo findUserByName (String name);
+    List<UserInfo> findUserByName (String name);
     List<UserInfo> findAllUser(@Param("isonline") String isonline);
     void updateUser(UserInfo user);
     void addUser(UserInfo user);

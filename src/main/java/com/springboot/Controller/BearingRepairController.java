@@ -35,18 +35,37 @@ public class BearingRepairController {
    public Result addBearing(@RequestBody BearingRepair bearingRepair){
         bearingRepair.setFinishTime(dateFormater.format(new Date()));
         BearingRepair result = bearingRepairService.addBearingRepair(bearingRepair);
-        WheelInfo wheelInfo = wheelDao.findWheelInfoById(result.getWheelId());
-        if("0".equals(wheelInfo.getIsmagnetInspectionFinish())){
-            redisTemplate.opsForSet().add("preMagInspection",wheelInfo.getWheelId());
-        }else if("0".equals(wheelInfo.getIsWheelRoundingFinish())){
-            redisTemplate.opsForSet().add("preWheelRounding",wheelInfo.getWheelId());
-        }else if("1".equals(wheelInfo.getIsbearingLoadFinish())||"2".equals(wheelInfo.getIsbearingLoadFinish())||"3".equals(wheelInfo.getIsbearingLoadFinish())){
-            redisTemplate.opsForSet().add("preBearingLoad",wheelInfo.getWheelId());
+        String repairProgressLeft = bearingRepair.getRepairProgressLeft();
+        String repairProgressRight = bearingRepair.getRepairProgressRight();
+        if ("0".equals(repairProgressLeft)&&"0".equals(repairProgressRight)){
+
+        }else if (!"0".equals(repairProgressLeft)&&"0".equals(repairProgressRight)){
+            wheelDao.setWheelInfoisbearingUnLoadFinish(bearingRepair.getWheelId(),"2");
+            wheelDao.setWheelInfoisbearingNeckFinish(bearingRepair.getWheelId(),"2");
+            wheelDao.setWheelInfoisbearingLoadFinish(bearingRepair.getWheelId(),"2");
+            wheelDao.setWheelInfobearingUnCapFinish(bearingRepair.getWheelId());
+        }else if(!"0".equals(repairProgressRight)&&!"0".equals(repairProgressLeft)){
+            wheelDao.setWheelInfoisbearingUnLoadFinish(bearingRepair.getWheelId(),"3");
+            wheelDao.setWheelInfoisbearingNeckFinish(bearingRepair.getWheelId(),"3");
+            wheelDao.setWheelInfoisbearingLoadFinish(bearingRepair.getWheelId(),"3");
+            wheelDao.setWheelInfobearingUnCapFinish(bearingRepair.getWheelId());
         }else {
-            redisTemplate.opsForSet().add("preBearingrollTest",wheelInfo.getWheelId());
+            wheelDao.setWheelInfoisbearingUnLoadFinish(bearingRepair.getWheelId(),"5");
+            wheelDao.setWheelInfoisbearingNeckFinish(bearingRepair.getWheelId(),"5");
+            wheelDao.setWheelInfoisbearingLoadFinish(bearingRepair.getWheelId(),"5");
+            wheelDao.setWheelInfobearingUnCapFinish(bearingRepair.getWheelId());
+        }
+
+        WheelInfo wheelInfo = wheelDao.findWheelInfoById(result.getWheelId());
+
+        if("0".equals(wheelInfo.getIsbearingUnCapFinish())){
+            redisTemplate.opsForSet().add("preBearingUnCap",wheelInfo.getWheelId());
+        }else {
+            redisTemplate.opsForSet().add("preMagInspection",wheelInfo.getWheelId());
         }
         return new Result(result,"添加成功",100);
     };
+
    @RequestMapping("/unFinishBearing")
    @ResponseBody
     public Result unFinishBearing(){
@@ -61,7 +80,9 @@ public class BearingRepairController {
         Set<Integer> set = redisTemplate.opsForSet().members("preBearingRepair");
         for (Integer id:set){
             WheelInfo wheelInfo = wheelDao.findWheelInfoById(id);
-            wheelInfoList.add(wheelInfo);
+            if (wheelInfo!=null){
+                wheelInfoList.add(wheelInfo);
+            }
         }
         return new Result(wheelInfoList,"添加成功",100);
     }

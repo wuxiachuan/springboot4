@@ -22,15 +22,8 @@ public class WheelMeasureServiceImp implements WheelMeasureService{
 
     @Override
     public void addMeasure(WheelMeasure wheelMeasure) {
-        Integer count =  measureDao.findWheelIdCount(wheelMeasure.getWheelId());
-        if (count == 1){
-            updateWheelMeasure(wheelMeasure);
-        }else{
-            measureDao.insertWheelMeasure(wheelMeasure);
-            isdiscard(wheelMeasure);
-        }
-        measureDao.flushWheelInfoMeasureFinish(wheelMeasure.getWheelId());
-        flushWheelInfo(wheelMeasure);
+         measureDao.insertWheelMeasure(wheelMeasure);
+         measureDao.flushWheelInfoInspectionFinish(wheelMeasure.getWheelId());
     }
 
     @Override
@@ -56,13 +49,13 @@ public class WheelMeasureServiceImp implements WheelMeasureService{
         }else {
             //第一次报废
             if ("4".equals(repairProgress)){
-                isdiscard(wheelMeasure);
+                discardWheel(wheelMeasure.getWheelId(),wheelMeasure.getDiscardReason());
             }
         }
         if ("4".equals(repairProgress)){
-            wheelDao.discardWheel(wheelMeasure.getWheelId(),"3");
+            wheelDao.discardWheel(wheelMeasure.getWheelId(),"3",wheelMeasure.getDiscardReason());
         }else {
-            wheelDao.discardWheel(wheelMeasure.getWheelId(),"0");
+            wheelDao.discardWheel(wheelMeasure.getWheelId(),"0",wheelMeasure.getDiscardReason());
         }
         fresh(wheelMeasure.getWheelId());
         flushWheelInfo(wheelMeasure);
@@ -127,13 +120,10 @@ public class WheelMeasureServiceImp implements WheelMeasureService{
         wheelDao.rollbackWheelInfoprocessFinish(id);
     }
     //报废轮对
-    public void isdiscard(WheelMeasure wh){
-        String repairProgress = wh.getRepairProcess();
-        if ("4".equals(repairProgress)){
-            //修改状态
-            wheelDao.discardWheel(wh.getWheelId(),"3");
-            //存入轮场
-            wheelRepository.discardAxleInPosition(String.valueOf(wh.getWheelId()));
-        }
+    public void discardWheel(Integer wheelId,String reason){
+        //修改状态
+        wheelDao.discardWheel(wheelId,"3",reason);
+        //存入轮场
+        wheelRepository.discardAxleInPosition(String.valueOf(wheelId));
     }
 }

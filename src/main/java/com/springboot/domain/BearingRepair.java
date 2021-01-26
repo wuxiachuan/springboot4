@@ -46,6 +46,10 @@ public class BearingRepair implements Serializable {
     private String  unloadReasonRight;
     private String  unloadDateRight;
     private String  repairProgressRight;
+    private String  unCapperLeft;
+    private String  unCapperRight;
+    private String  unCapDateLeft;
+    private String  unCapDateRight;
 
     public BearingRepair() {
     }
@@ -392,6 +396,38 @@ public class BearingRepair implements Serializable {
 
     public void setRepairProgressRight(String repairProgressRight) {
         this.repairProgressRight = repairProgressRight;
+    }
+
+    public String getUnCapperLeft() {
+        return unCapperLeft;
+    }
+
+    public void setUnCapperLeft(String unCapperLeft) {
+        this.unCapperLeft = unCapperLeft;
+    }
+
+    public String getUnCapperRight() {
+        return unCapperRight;
+    }
+
+    public void setUnCapperRight(String unCapperRight) {
+        this.unCapperRight = unCapperRight;
+    }
+
+    public String getUnCapDateLeft() {
+        return unCapDateLeft;
+    }
+
+    public void setUnCapDateLeft(String unCapDateLeft) {
+        this.unCapDateLeft = unCapDateLeft;
+    }
+
+    public String getUnCapDateRight() {
+        return unCapDateRight;
+    }
+
+    public void setUnCapDateRight(String unCapDateRight) {
+        this.unCapDateRight = unCapDateRight;
     }
 
     @Override

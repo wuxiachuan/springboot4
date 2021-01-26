@@ -21,21 +21,32 @@ public class VehicleInfo implements Serializable {
     private String  axleOut2;
     private String  axleOut3;
     private String  axleOut4;
+    private WheelInfo in1;
+    private WheelInfo in2;
+    private WheelInfo in3;
+    private WheelInfo in4;
+    private WheelDispatch out1;
+    private WheelDispatch out2;
+    private WheelDispatch out3;
+    private WheelDispatch out4;
     private String  isFinish;
     private String  finishTime;
+    private String location;
+    private String sequence;
 
     private List<WheelMeasure> axleIn;
     private List<WheelDispatch> axleOut;
     private String axleLife;
     private String bearingLife;
-    private double low;
-    private double high;
+    private Integer low;
+    private Integer high;
     private boolean isShow;
     private Integer offset;
 
     public VehicleInfo() {
         this.isShow = false;
         this.isFinish = "-1";
+        this.offset = 0;
     }
 
     public VehicleInfo(String vehicleNumber,String  vehicleType,String  RepairDate,String  axleType) {
@@ -231,19 +242,19 @@ public class VehicleInfo implements Serializable {
         this.bearingLife = bearingLife;
     }
 
-    public double getLow() {
+    public Integer getLow() {
         return low;
     }
 
-    public void setLow(double low) {
+    public void setLow(Integer low) {
         this.low = low;
     }
 
-    public double getHigh() {
+    public Integer getHigh() {
         return high;
     }
 
-    public void setHigh(double high) {
+    public void setHigh(Integer high) {
         this.high = high;
     }
 
@@ -261,6 +272,86 @@ public class VehicleInfo implements Serializable {
 
     public void setOffset(Integer offset) {
         this.offset = offset;
+    }
+
+    public WheelInfo getIn1() {
+        return in1;
+    }
+
+    public void setIn1(WheelInfo in1) {
+        this.in1 = in1;
+    }
+
+    public WheelInfo getIn2() {
+        return in2;
+    }
+
+    public void setIn2(WheelInfo in2) {
+        this.in2 = in2;
+    }
+
+    public WheelInfo getIn3() {
+        return in3;
+    }
+
+    public void setIn3(WheelInfo in3) {
+        this.in3 = in3;
+    }
+
+    public WheelInfo getIn4() {
+        return in4;
+    }
+
+    public void setIn4(WheelInfo in4) {
+        this.in4 = in4;
+    }
+
+    public WheelDispatch getOut1() {
+        return out1;
+    }
+
+    public void setOut1(WheelDispatch out1) {
+        this.out1 = out1;
+    }
+
+    public WheelDispatch getOut2() {
+        return out2;
+    }
+
+    public void setOut2(WheelDispatch out2) {
+        this.out2 = out2;
+    }
+
+    public WheelDispatch getOut3() {
+        return out3;
+    }
+
+    public void setOut3(WheelDispatch out3) {
+        this.out3 = out3;
+    }
+
+    public WheelDispatch getOut4() {
+        return out4;
+    }
+
+    public void setOut4(WheelDispatch out4) {
+        this.out4 = out4;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(String sequence) {
+        this.sequence = sequence;
     }
 
     @Override
@@ -283,16 +374,18 @@ public class VehicleInfo implements Serializable {
                 ", axleOut2='" + axleOut2 + '\'' +
                 ", axleOut3='" + axleOut3 + '\'' +
                 ", axleOut4='" + axleOut4 + '\'' +
+                ", in1=" + in1 +
+                ", in2=" + in2 +
+                ", in3=" + in3 +
+                ", in4=" + in4 +
+                ", out1=" + out1 +
+                ", out2=" + out2 +
+                ", out3=" + out3 +
+                ", out4=" + out4 +
                 ", isFinish='" + isFinish + '\'' +
                 ", finishTime='" + finishTime + '\'' +
-                ", axleIn=" + axleIn +
-                ", axleOut=" + axleOut +
-                ", axleLife='" + axleLife + '\'' +
-                ", bearingLife='" + bearingLife + '\'' +
-                ", low=" + low +
-                ", high=" + high +
-                ", isShow=" + isShow +
-                ", offset=" + offset +
+                ", location='" + location + '\'' +
+                ", sequence='" + sequence + '\'' +
                 '}';
     }
 }

@@ -36,8 +36,13 @@ public class WheelMeasureController {
     @ResponseBody
     public Result addMeasure(@RequestBody WheelMeasure wheelMeasure){
         wheelMeasure.setFinishTime(dateFormater.format(new Date()));
-        wheelMeasureService.addMeasure(wheelMeasure);
-        if (!"4".equals(wheelMeasure.getRepairProcess())){
+        String repairProcess = wheelMeasure.getRepairProcess();
+        if (repairProcess.equals("1")){
+            //送厂
+            wheelMeasureService.discardWheel(wheelMeasure.getWheelId(),wheelMeasure.getDiscardReason());
+        }else{
+            wheelDao.setWheelInfoWheelRoundingFinish(wheelMeasure.getWheelId());
+            wheelMeasureService.addMeasure(wheelMeasure);
             redisTemplate.opsForSet().add("preBearingRepair",wheelMeasure.getWheelId());
         }
         return new Result(wheelMeasure,"添加成功",100);
@@ -57,7 +62,9 @@ public class WheelMeasureController {
         Set<Integer> set = redisTemplate.opsForSet().members("preMeasure");
         for (Integer id:set){
             WheelInfo wheelInfo = wheelDao.findWheelInfoById(id);
-            wheelInfoList.add(wheelInfo);
+            if (wheelInfo!=null){
+                wheelInfoList.add(wheelInfo);
+            }
         }
         return new Result(wheelInfoList,"添加成功",100);
     }
@@ -66,12 +73,14 @@ public class WheelMeasureController {
     @ResponseBody
     public Result chooseWheel(String id){
         Integer wheelId = Integer.parseInt(id);
-        Boolean res = redisTemplate.opsForSet().isMember("preMeasure",wheelId);
-        if (res){
-            redisTemplate.opsForSet().remove("preMeasure",wheelId);
-            return new Result(null,"添加成功",100);
-        }else {
-            return new Result(null,"添加失败",101);
+        synchronized (WheelMeasureController.class){
+            Boolean res = redisTemplate.opsForSet().isMember("preMeasure",wheelId);
+            if (res){
+                redisTemplate.opsForSet().remove("preMeasure",wheelId);
+                return new Result(null,"添加成功",100);
+            }else {
+                return new Result(null,"添加失败",101);
+            }
         }
     }
 

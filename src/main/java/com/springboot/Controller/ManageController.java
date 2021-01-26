@@ -36,6 +36,13 @@ public class ManageController {
         return  new Result(result,"查询成功",100);
     }
 
+    @RequestMapping("/queryWithOutPage")
+    @ResponseBody
+    public Result findInfoWithOutPage(@RequestBody SearchWheelParam param){
+        List<WheelInfo> data = manageService.findWheelInfoByCondition(param);
+        return  new Result(data,"查询成功",100);
+    }
+
     @RequestMapping("/queryAll")
     @ResponseBody
    public Result findInfoAll(@RequestBody WheelInfo wh){

@@ -69,26 +69,39 @@ public class QualityController {
             worker = result.getBearingRepair().getworker();
         }
         if ("3".equals(process)){
-            worker = result.getAxleInspection().getMagInspector();
+            worker = result.getBearingRepair().getUnCapperLeft();
         }
         if ("4".equals(process)){
-            worker = result.getAxleInspection().getWorker();
+            worker = result.getBearingRepair().getUnloaderLeft();
         }
         if ("5".equals(process)){
-            worker = result.getWheelRound().getWorker();
+            worker = result.getAxleInspection().getMagInspector();
         }
         if ("6".equals(process)){
-            worker = result.getBearingLoad().getWorker();
+            worker = result.getAxleInspection().getWorker();
         }
         if ("7".equals(process)){
-            worker = result.getBearingCap().getworker();
+            worker = result.getAxleInspection().getReultInspector();
         }
         if ("8".equals(process)){
-            worker = result.getBearingTest().getworker();
+            worker = result.getWheelRound().getWorker();
         }
         if ("9".equals(process)){
+            worker = result.getBearingLoad().getNeckMeasureWorker();
+        }
+        if ("10".equals(process)){
+            worker = result.getBearingLoad().getWorker();
+        }
+        if ("11".equals(process)){
+            worker = result.getBearingCap().getworker();
+        }
+        if ("12".equals(process)){
+            worker = result.getBearingTest().getworker();
+        }
+        if ("13".equals(process)){
             worker = result.getWheelDispatch().getWorker();
         }
+
         problem.setWorker(worker);
         problemDao.insertProblem(problem);
         return  new Result(problem,"添加成功",100);
@@ -113,6 +126,7 @@ public class QualityController {
         PageInfo res = new PageInfo(list);
         return  new Result(res,"添加成功",100);
     }
+
     @RequestMapping("/getProblems")
     @ResponseBody
     public Result getProblems( String worker){

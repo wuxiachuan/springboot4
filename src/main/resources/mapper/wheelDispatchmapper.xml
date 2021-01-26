@@ -230,6 +230,44 @@
             AND  w.isqualityInspectionFinish = '1'
             AND  w.iswheelDispatchFinish = '0'
     </select>
+    <select id="find2match" parameterType="String" resultType="WheelDispatch">
+        SELECT wd.* FROM `wheeldispatch` wd
+        JOIN wheelinfo wi ON wi.`WheelId` = wd.`wheelId`
+        WHERE wd.wheelStatus = '0'
+        AND  wd.chooseMark = '0'
+        AND  wi.isqualityInspectionFinish = '1'
+        AND  wi.iswheelDispatchFinish = '0'
+        <if test="axleNumber != '' ">
+            AND wd.`axleNumber` = #{axleNumber}
+        </if>
+        <if test="axleType != '' ">
+            AND wd.`axleType` = #{axleType}
+        </if>
+        <if test="axleMaterial != '' ">
+            AND wd.`axleMaterial` = #{axleMaterial}
+        </if>
+        <if test="axleMadeIn != '' ">
+            AND wd.`axleMadeIn` = #{axleMadeIn}
+        </if>
+        <if test="wheelDiameterLow != '' ">
+            AND wd.`wheelDiameterLeft` >= #{wheelDiameterLow}
+        </if>
+        <if test="wheelDiameterHigh != '' ">
+            AND #{wheelDiameterHigh} >= wd.`wheelDiameterLeft`
+        </if>
+        <if test="bearingAssembleDateLeft != null">
+            AND wd.`bearingAssembleDateLeft` >= #{bearingAssembleDateLeft}
+        </if>
+        <if test="bearingAssembleDateRight != null">
+            AND wd.`bearingAssembleDateRight` >= #{bearingAssembleDateRight}
+        </if>
+        <if test="axleMadeDate != null">
+            AND wd.`axleMadeDate` >= #{axleMadeDate}
+        </if>
+        <if test="takeInDate != null">
+            AND wi.`TakeInDate` >=  #{takeInDate}
+        </if>
+    </select>
     <!--        完成支出登记-->
     <update id="updateDispatchStatus" >
         UPDATE wheeldispatch SET
@@ -257,7 +295,10 @@
     </select>
 
     <update id="setchooseMark" parameterType="int">
-        UPDATE wheeldispatch SET chooseMark = '1' WHERE wheelId = #{wheelId}
+        UPDATE wheeldispatch SET chooseMark = '1' WHERE wheelId = #{id1} OR wheelId = #{id2} OR wheelId = #{id3} OR wheelId = #{id4}
+    </update>
+    <update id="flushchooseMark" parameterType="String">
+        UPDATE wheeldispatch SET chooseMark = '0' WHERE wheelId = #{id1} OR wheelId = #{id2} OR wheelId = #{id3} OR wheelId = #{id4}
     </update>
     <update id="resetchooseMark" parameterType="int">
         UPDATE wheeldispatch SET chooseMark = '0' WHERE wheelStatus = '0'

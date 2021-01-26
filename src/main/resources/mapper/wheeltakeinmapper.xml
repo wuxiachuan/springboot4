@@ -22,6 +22,16 @@
         isbearingCapFinish,
         isbearingCapFinishW,
         isbearingCapFinishL,
+
+        isbearingUnCapFinish,
+        isbearingUnloadFinish,
+        iswheelPolishFinish,
+        isreInspectionFinish,
+        isbearingNeckFinish,
+        repairProcess,
+        repairWay,
+        discardReason,
+
         isprocessFinish,
         state,
         dipatchVehicleNumber,
@@ -51,6 +61,16 @@
         #{isbearingCapFinish},
         #{isbearingCapFinishW},
         #{isbearingCapFinishL},
+
+        #{isbearingUnCapFinish},
+        #{isbearingUnloadFinish},
+        #{iswheelPolishFinish},
+        #{isreInspectionFinish},
+        #{isbearingNeckFinish},
+        #{repairProcess},
+        #{repairWay},
+        #{discardReason},
+
         #{isprocessFinish},
         #{state},
         #{dipatchVehicleNumber},
@@ -83,6 +103,16 @@
         isbearingCapFinish = #{isbearingCapFinish},
         isbearingCapFinishW = #{isbearingCapFinishW},
         isbearingCapFinishL = #{isbearingCapFinishL},
+
+        isbearingUnCapFinish = #{isbearingUnCapFinish},
+        isbearingUnloadFinish = #{isbearingUnloadFinish},
+        iswheelPolishFinish = #{iswheelPolishFinish},
+        isreInspectionFinish = #{isreInspectionFinish},
+        isbearingNeckFinish = #{isbearingNeckFinish},
+        repairProcess = #{repairProcess},
+        repairWay = #{repairWay},
+        discardReason = #{discardReason},
+
         isprocessFinish = #{isprocessFinish},
         state = #{state},
         dipatchVehicleNumber = #{dipatchVehicleNumber},
@@ -100,6 +130,9 @@
         select * from wheelinfo
     </select>
     <select id="findWheelInfoById" parameterType="int" resultType="WheelInfo">
+        select * from wheelinfo where wheelId=#{wheelId} AND isprocessFinish = '0'
+    </select>
+    <select id="findWheelInfoByIdAll" parameterType="int" resultType="WheelInfo">
         select * from wheelinfo where wheelId=#{wheelId}
     </select>
     <update id="deleteWheelInfo" parameterType="int">
@@ -112,7 +145,11 @@
         select * from wheelinfo  where isbearingRepairFinish = '0' and isMeasureFinish = '1' and state != '3' and state != '4'
     </select>
     <update id="discardWheel">
-        UPDATE wheelinfo SET state = #{state} where wheelId = #{wheelId}
+        UPDATE wheelinfo SET
+        state = #{state},
+        isprocessFinish = '1',
+        discardReason = #{reason}
+        where wheelId = #{wheelId}
     </update>
 
     <update id="robackWheelInfoMeasureFinish" parameterType="int">
@@ -154,6 +191,48 @@
     <update id="rollbackWheelInfoprocessFinish" parameterType="int">
         UPDATE wheelinfo SET isprocessFinish = '0' where wheelId = #{wheelId}
     </update>
+
+
+    <update id="setWheelInfoAxleInspectionFinish" >
+        UPDATE wheelinfo SET
+        isaxleInspectionFinish = '0',
+        isbearingUnCapFinish = '0',
+        isbearingCapFinish = '0'
+        where wheelId = #{wheelId}
+    </update>
+    <update id="setWheelInfoWheelRoundingFinish" >
+        UPDATE wheelinfo SET
+        isWheelRoundingFinish = '0',
+        isbearingUnCapFinish = '0',
+        isbearingCapFinish = '0'
+        WHERE wheelId = #{wheelId}
+    </update>
+    <update id="setWheelInfoisbearingNeckFinish" >
+        UPDATE wheelinfo SET isbearingNeckFinish = #{flag} where wheelId = #{wheelId}
+    </update>
+    <update id="setWheelInfoisbearingLoadFinish" >
+        UPDATE wheelinfo SET isbearingLoadFinish = #{flag} where wheelId = #{wheelId}
+    </update>
+    <update id="setWheelInfoMagInspectionFinish" >
+        UPDATE wheelinfo SET ismagnetInspectionFinish = '0' where wheelId = #{wheelId}
+    </update>
+    <update id="setWheelInfoisbearingUnLoadFinish" >
+        UPDATE wheelinfo SET
+        isbearingUnloadFinish = #{flag},
+        isbearingLoadFinish = #{flag},
+        isbearingNeckFinish = #{flag},
+        isbearingUnCapFinish = '0',
+        isbearingCapFinish = '0'
+        where wheelId = #{wheelId}
+    </update>
+    <update id="setWheelInfobearingCapFinish" >
+        UPDATE wheelinfo SET isbearingCapFinish = '0' where wheelId = #{wheelId}
+    </update>
+    <update id="setWheelInfobearingUnCapFinish" >
+        UPDATE wheelinfo SET isbearingUnCapFinish = '0' where wheelId = #{wheelId}
+    </update>
+
+
     <select id="findWheelInfo" parameterType="String" resultType="WheelInfo">
         SELECT * FROM wheelinfo
         <where>
@@ -351,5 +430,8 @@
         select w.*,r.finishTime from wheelinfo w
                 JOIN wheelDispatch r ON w.`WheelId` = r.`wheelId`
                 where w.isreMeasureFinish = '1' and w.`isqualityInspectionFinish`='0'
+    </select>
+    <select id="findTodayWheelInfo" parameterType="String" resultType="WheelInfo">
+        SELECT * FROM wheelinfo w WHERE w.`TakeInDate` = #{ date }
     </select>
 </mapper>

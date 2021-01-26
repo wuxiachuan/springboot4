@@ -18,12 +18,14 @@ public class AxleInspectionServiceImp implements AxleInspectionService{
     private WheelDao wheelDao;
     @Override
     public void addAxleInspection(AxleInspection axleInspection) {
-        Integer count =  axleInspectionDao.findWheelIdCount(axleInspection.getWheelId());
-        if (count == 1){
-            updateAxleInspection(axleInspection);
-        }else{
-            axleInspectionDao.insertAxleInspection(axleInspection);
-        }
+//        Integer count =  axleInspectionDao.findWheelIdCount(axleInspection.getWheelId());
+//        if (count == 1){
+//            updateAxleInspection(axleInspection);
+//        }else{
+//            axleInspectionDao.insertAxleInspection(axleInspection);
+//        }
+//        flushWheelInfoAxleInspection(axleInspection);
+        axleInspectionDao.insertAxleInspection(axleInspection);
         flushWheelInfoAxleInspection(axleInspection);
     }
 
@@ -59,13 +61,15 @@ public class AxleInspectionServiceImp implements AxleInspectionService{
 
     @Override
     public void addMagInspection(AxleInspection axleInspection) {
-        Integer count =  axleInspectionDao.findWheelIdCount(axleInspection.getWheelId());
-        if (count == 1){
-            updateMagInspection(axleInspection);
-        }else{
-            axleInspectionDao.insertMagInspection(axleInspection);
-        }
-        flushWheelInfoMagInspection(axleInspection);
+//        Integer count =  axleInspectionDao.findWheelIdCount(axleInspection.getWheelId());
+//        if (count == 1){
+//            updateMagInspection(axleInspection);
+//        }else{
+//            axleInspectionDao.insertMagInspection(axleInspection);
+//        }
+//        flushWheelInfoMagInspection(axleInspection);
+        axleInspectionDao.insertMagInspection(axleInspection);
+        wheelDao.setWheelInfoAxleInspectionFinish(axleInspection.getWheelId());
     }
 
     @Override
@@ -99,6 +103,33 @@ public class AxleInspectionServiceImp implements AxleInspectionService{
                 param.getInfoTakeFinishTimeFrom(),
                 param.getInfoTakeFinishTimeTo());
     }
+
+    @Override
+    public void addReInspection(AxleInspection axleInspection) {
+        axleInspectionDao.updateReInspection(axleInspection);
+        axleInspectionDao.flushWheelInfoReInspectionFinish(axleInspection.getWheelId());
+    }
+
+    @Override
+    public void updateReInspection(AxleInspection axleInspection) {
+
+    }
+
+    @Override
+    public void flushWheelInfoReInspection(AxleInspection axleInspection) {
+
+    }
+
+    @Override
+    public void deleteBearingReInspection(String id) {
+
+    }
+
+    @Override
+    public List<WheelInfo> searchWheelInfoReInspection(SearchWheelParam param) {
+        return null;
+    }
+
     private void fresh(Integer id){
         wheelDao.rollbackWheelInforollTestFinish(id);
         wheelDao.rollbackWheelInfowheelRemeasureFinish(id);

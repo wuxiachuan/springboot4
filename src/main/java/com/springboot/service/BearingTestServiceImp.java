@@ -21,12 +21,13 @@ public class BearingTestServiceImp implements BearingTestService{
     @Override
     public void addBearingTest(BearingTest bearingTest) {
 
-        Integer count =  bearingTestDao.findWheelIdCount(bearingTest.getWheelId());
-        if (count == 1){
-            updateBearingTest(bearingTest);
-        }else{
-            bearingTestDao.insertBearingTest(bearingTest);
-        }
+//        Integer count =  bearingTestDao.findWheelIdCount(bearingTest.getWheelId());
+//        if (count == 1){
+//            updateBearingTest(bearingTest);
+//        }else{
+//            bearingTestDao.insertBearingTest(bearingTest);
+//        }
+        bearingTestDao.insertBearingTest(bearingTest);
         flushWheelInfoTest(bearingTest);
     }
 

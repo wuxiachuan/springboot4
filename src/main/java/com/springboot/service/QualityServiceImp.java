@@ -57,7 +57,7 @@ public class QualityServiceImp implements QualityService{
             axleInspectionDao.updateMagInspection(info);
             axleInspectionDao.updateAxleInspection(info);
         }
-        else  if ("wheelRounding".equals(database)){
+        else  if ("wheelRound".equals(database)){
             WheelRound info = JSON.parseObject(JSON.toJSONString(data),WheelRound.class);
             wheelRoundDao.updateWheelRound(info);
         }

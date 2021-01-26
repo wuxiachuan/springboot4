@@ -1,6 +1,7 @@
 package com.springboot.dao;
 
 import com.springboot.domain.BearingRepair;
+import com.springboot.domain.BearingUnCap;
 import com.springboot.domain.WheelInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -11,6 +12,7 @@ import java.util.List;
 public interface BearingRepairDao {
     void insertBearingRepair(BearingRepair bearingRepair);
     void updateBearingRepair(BearingRepair bearingRepair);
+    void updateBearingUnCap(BearingUnCap bearingUnCap);
     void flushWheelInfoRepairFinish(Integer wheelId);
     void rollbackWheelInfoRepairFinish(Integer wheelId);
     void flushWheelInfoLoadFinish(@Param("wheelId") Integer wheelId,@Param("loadindex") String loadindex,@Param("capindex") String capindex);

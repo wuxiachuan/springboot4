@@ -20,13 +20,13 @@ public class BearingCapServiceImp implements BearingCapService{
     private WheelDao wheelDao;
     @Override
     public void addBearingCap(BearingCap bearingCap) {
-
-        Integer count =  bearingCapDao.findWheelIdCount(bearingCap.getWheelId());
-        if (count == 1){
-            updateBearingCap(bearingCap);
-        }else{
-            bearingCapDao.insertBearingCap(bearingCap);
-        }
+//        Integer count =  bearingCapDao.findWheelIdCount(bearingCap.getWheelId());
+//        if (count == 1){
+//            updateBearingCap(bearingCap);
+//        }else{
+//            bearingCapDao.insertBearingCap(bearingCap);
+//        }
+        bearingCapDao.insertBearingCap(bearingCap);
         flushWheelInfo(bearingCap);
     }
 

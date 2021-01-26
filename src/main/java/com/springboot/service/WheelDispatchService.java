@@ -12,6 +12,6 @@ public interface WheelDispatchService {
     List<WheelInfo> searchWheelInfoDispatch(SearchWheelParam param);
     List<VehicleInfo> dispatch(List<VehicleInfo> numlist);
     List<WheelDispatch> find2match(VehicleInfo target);
-    void receiveResult(List<VehicleInfo> resultlist,String matcher);
+    Boolean receiveResult(List<VehicleInfo> resultlist,String matcher);
     void adddata();
 }

@@ -20,4 +20,10 @@ public interface AxleInspectionService {
     void flushWheelInfoMagInspection(AxleInspection axleInspection);
     void deleteBearingMagInspection(String id);
     List<WheelInfo> searchWheelInfoMagInspection(SearchWheelParam param);
+
+    void addReInspection(AxleInspection axleInspection);
+    void updateReInspection(AxleInspection axleInspection);
+    void flushWheelInfoReInspection(AxleInspection axleInspection);
+    void deleteBearingReInspection(String id);
+    List<WheelInfo> searchWheelInfoReInspection(SearchWheelParam param);
 }

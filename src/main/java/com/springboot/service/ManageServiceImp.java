@@ -35,6 +35,8 @@ public class ManageServiceImp implements ManageService{
     private BearingRepairDao bearingRepairDao;
     @Autowired
     private ProblemDao problemDao;
+    @Autowired
+    private BearingUnLoadDao bearingUnLoadDao;
     private DateFormat dateFormat;
 
     public ManageServiceImp(){
@@ -153,6 +155,7 @@ public class ManageServiceImp implements ManageService{
         BearingLoad bearingLoad = null;
         BearingRepair bearingRepair = null;
         BearingCap bearingCap = null;
+        List<BearingUnLoad> bearingUnLoads = null;
         List<Problem> problem = null;
 
         wheelRound = findWheelRoundById(wh);
@@ -164,6 +167,7 @@ public class ManageServiceImp implements ManageService{
         bearingLoad = findBearingLoadById(wh);
         bearingRepair = findBearingRepairById(wh);
         bearingCap = findBearingCapById(wh);
+        bearingUnLoads = findBearingUnLoadById(wh);
         problem = findProblemById(wh);
 
         WheelAll wheelAll = new WheelAll();
@@ -178,6 +182,7 @@ public class ManageServiceImp implements ManageService{
         wheelAll.setBearingTest(bearingTest);
         wheelAll.setWheelInfo(wh);
         wheelAll.setProblem(problem);
+        wheelAll.setBearingUnLoad(bearingUnLoads);
         wheelAll.setWheelId(wh.getWheelId());
 
         return wheelAll;
@@ -244,7 +249,7 @@ public class ManageServiceImp implements ManageService{
         BearingLoad bearingLoad = null;
         Integer id = wh.getWheelId();
         String isFinish = wh.getIsbearingLoadFinish();
-        if ("4".equals(isFinish)){
+        if ("1".equals(isFinish)){
             bearingLoad = bearingLoadDao.findBearingLoadByWheelId(id);
         }
         return bearingLoad;
@@ -274,6 +279,16 @@ public class ManageServiceImp implements ManageService{
         Integer id = wh.getWheelId();
         problem = problemDao.findProblemByWheelId(id);
         return problem;
+    }
+    private List<BearingUnLoad> findBearingUnLoadById(WheelInfo wh){
+        List<BearingUnLoad> bearingUnLoads = null;
+        Integer id = wh.getWheelId();
+        String isFinish = wh.getIsbearingUnloadFinish();
+        if ("1".equals(isFinish)){
+            bearingUnLoads = bearingUnLoadDao.findBearingUnLoadById(id);
+        }
+        System.out.println(bearingUnLoads);
+        return bearingUnLoads;
     }
 
     @Override

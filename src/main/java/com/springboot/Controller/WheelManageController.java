@@ -40,7 +40,10 @@ public class WheelManageController {
     @RequestMapping("/getWheelsDetails")
     @ResponseBody
     public Result getWheelsDetails(String id){
-        WheelInfo wheelInfo = wheelDao.findWheelInfoById(Integer.parseInt(id));
-        return  new Result(wheelInfo,"添加成功",100);
+        if (!"null".equals(id)){
+            WheelInfo wheelInfo = wheelDao.findWheelInfoByIdAll(Integer.parseInt(id));
+            return  new Result(wheelInfo,"添加成功",100);
+        }
+        return  new Result(null,"查询失败",101);
     }
 }

@@ -8,16 +8,16 @@
         (
             wheelId	,
             ultAxleLeft	,
-            ultAxleRight	,
-            reultAxleLeft	,
-            reultAxleRight	,
-            ultAxleFootLeft	,
-            ultAxleFootRight	,
-            ultAxleNeckLeft	,
-            ultAxleNeckRight	,
-            reultAxleNeckLeft	,
-            reultAxleNeckRight	,
-            ultisFinish	,
+            ultAxleRight,
+            reultAxleLeft,
+            reultAxleRight,
+            ultAxleFootLeft,
+            ultAxleFootRight,
+            ultAxleNeckLeft,
+            ultAxleNeckRight,
+            reultAxleNeckLeft,
+            reultAxleNeckRight,
+            ultisFinish,
             ultfinishTime	,
             worker	,
             reultisFinish	,
@@ -69,6 +69,8 @@
         )
     </insert>
 
+
+
     <update id="updateAxleInspection" parameterType="AxleInspection">
         update axleInspection set
 
@@ -97,12 +99,22 @@
                     magAxleBody	=	#{	magAxleBody	},
                     magtAxleNeckLeft	=	#{	magtAxleNeckLeft	},
                     magAxleNeckRight	=	#{	magAxleNeckRight	},
-
                     magInspector	=	#{	magInspector	},
                     magisFinish	=	#{	magisFinish	},
                     magfinishTime	=	#{	magfinishTime	}
-
                     where wheelId=#{wheelId}
+    </update>
+
+    <update id="updateReInspection" parameterType="AxleInspection">
+        update axleInspection set
+           reultAxleLeft = #{	reultAxleLeft	},
+           reultAxleRight = #{	reultAxleRight	},
+           reultAxleNeckLeft = #{	reultAxleNeckLeft	},
+           reultAxleNeckRight = #{	reultAxleNeckRight	},
+           reultisFinish = #{	reultisFinish	},
+           reultfinishTime = #{	reultfinishTime	},
+           reultInspector = #{	reultInspector	}
+           where wheelId=#{wheelId}
     </update>
 
     <select id="findWheelInfoToAxleInspection" resultType="WheelInfo">
@@ -187,6 +199,13 @@
     </update>
     <update id="rollbackWheelInfoMagInspectionFinish" >
                 UPDATE wheelinfo SET ismagnetInspectionFinish = '0' where wheelId = #{wheelId}
+    </update>
+
+    <update id="flushWheelInfoReInspectionFinish" >
+                UPDATE wheelinfo SET isreInspectionFinish = '1' where wheelId = #{wheelId}
+    </update>
+    <update id="rollbackWheelInfoReInspectionFinish" >
+                UPDATE wheelinfo SET isreInspectionFinish = '0' where wheelId = #{wheelId}
     </update>
 
 

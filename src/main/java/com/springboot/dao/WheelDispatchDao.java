@@ -56,7 +56,8 @@ public interface WheelDispatchDao {
                                     @Param("takeInDateFrom")String takeInDateFrom,
                                     @Param("takeInDateTo")String takeInDateTo);
 
-    void setchooseMark(Integer wheelId);
+    void setchooseMark(@Param("id1")Integer id1,@Param("id2")Integer id2,@Param("id3")Integer id3,@Param("id4")Integer id4);
+    void flushchooseMark(@Param("id1")String id1,@Param("id2")String id2,@Param("id3")String id3,@Param("id4")String id4);
     void resetchooseMark();
     void updateDispatchStatus(@Param("wheelId") Integer wheelId,
                               @Param("vehicleType") String vehicleType,
@@ -64,4 +65,15 @@ public interface WheelDispatchDao {
                               @Param("axleDispatchPosition") Integer axleDispatchPosition,
                               @Param("dispatchFinishTime") String dispatchFinishTime,
                               @Param("matcher") String matcher);
+    List<WheelDispatch> find2match(@Param("axleNumber") String axleNumber,
+                                   @Param("axleType")String axleType,
+                                   @Param("axleMaterial")String axleMaterial,
+                                   @Param("axleMadeIn")String axleMadeIn,
+                                   @Param("wheelDiameterLow")String wheelDiameterLow,
+                                   @Param("wheelDiameterHigh") String wheelDiameterHigh,
+                                   @Param("bearingAssembleDateLeft")String bearingAssembleDateLeft,
+                                   @Param("bearingAssembleDateRight")String bearingAssembleDateRight,
+                                   @Param("axleMadeDate")String axleMadeDate,
+                                   @Param("takeInDate")String takeInDate);
+
 }

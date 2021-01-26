@@ -24,6 +24,7 @@ import java.util.*;
 import static java.time.Duration.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
+//@Deprecated
 class Springboot4ApplicationTests {
     @Autowired
     DataSource dataSource;
@@ -38,7 +39,7 @@ class Springboot4ApplicationTests {
     void contextLoads() {
         System.out.println(dataSource.getClass());
     }
-    @Test
+//    @Test
     public  void createQualifiedWheelRepository(){
         for (int i=0;i<10;i++){
             redisTemplate.opsForList().rightPush("qualifiedRepository",100);
@@ -50,7 +51,7 @@ class Springboot4ApplicationTests {
             }
         }
     }
-    @Test
+//    @Test
     public  void createDiscardWheelRepository(){
         for (int i=0;i<3;i++){
             redisTemplate.opsForList().rightPush("discardRepository",100);
@@ -145,7 +146,7 @@ class Springboot4ApplicationTests {
         List<String> list = new ArrayList<>();
         list.add("hello");
         list.add("world");
-        System.out.println(list.get(3));
+        System.out.println(list.get(1));
     }
     @Test
     public void testTime() throws ParseException {
@@ -198,6 +199,12 @@ class Springboot4ApplicationTests {
                 //车轮制造单位
                 "");
         System.out.println(data);
+    }
+    @Test
+    void testSetMeasure(){
+//        wheelDao.setWheelInfoWheelRoundingFinish(598);
+        WheelInfo wheelInfo = wheelDao.findWheelInfoById(600);
+        System.out.println(wheelInfo);
     }
 
 }

@@ -35,9 +35,11 @@ public class WheelTakeInController {
     private RedisTemplate redisTemplate;
 
     private SimpleDateFormat dateFormater;
+    private SimpleDateFormat dateFormater2;
 
     public WheelTakeInController(){
          this.dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         this.dateFormater2 = new SimpleDateFormat("yyyy-MM-dd");
     }
 
     @RequestMapping("/add")
@@ -47,34 +49,59 @@ public class WheelTakeInController {
         WheelInfo result = null;
         String path = null;
         String vehicleNum = wheelInfo.getVehicleNumber();
+        String repairWay = wheelInfo.getRepairWay();
+        String repairProcess = wheelInfo.getRepairProcess();
+        if (repairWay.equals("1")){
+            wheelInfo.setState("3");
+            wheelInfo.setIsprocessFinish("1");
+        }else if(repairWay.equals("2")){
+            //旋面
+            wheelInfo.setIsWheelRoundingFinish("0");
+            wheelInfo.setIsbearingUnCapFinish("0");
+            wheelInfo.setIsbearingCapFinish("0");
+        }else if(repairWay.equals("4")){
+            //超探
+            wheelInfo.setIsaxleInspectionFinish("0");
+            wheelInfo.setIsbearingUnCapFinish("0");
+            wheelInfo.setIsbearingCapFinish("0");
+        }else if(repairWay.equals("6")){
+            //旋面，超探
+            wheelInfo.setIsWheelRoundingFinish("0");
+            wheelInfo.setIsaxleInspectionFinish("0");
+            wheelInfo.setIsbearingUnCapFinish("0");
+            wheelInfo.setIsbearingCapFinish("0");
+        }else {
+
+        }
+
+        if (repairProcess.equals("1")){
+
+        }else if(repairProcess.equals("2")){
+            //二级修
+            wheelInfo.setIsmagnetInspectionFinish("0");
+        }else if(repairProcess.equals("3")){
+            //三级修
+            wheelInfo.setIsbearingUnCapFinish("0");
+            wheelInfo.setIsbearingCapFinish("0");
+        }else {
+
+        }
+        //设置完成标志位
+        wheelInfo.setInfoTakeFinish("1");
         try{
             result = wheelService.insertWheelInfo(wheelInfo);
             VehicleInfo vehicleInfo = vehicleDao.findVehicleInfo(vehicleNum);
-            if (vehicleInfo==null) {
-                String vehicleType = wheelInfo.getVehicleType();
-                String repairDate = wheelInfo.getTakeInDate();
-                String axleType = wheelInfo.getAxleType();
-                vehicleInfo = new VehicleInfo(vehicleNum,vehicleType,repairDate,axleType);
-                vehicleDao.insertVehicleInfo(vehicleInfo);
-                redisTemplate.opsForSet().add(repairDate+"Vehicle",vehicleNum);
-                redisTemplate.opsForHash().put(vehicleNum,"vehicleType",vehicleType);
-                redisTemplate.opsForHash().put(vehicleNum,"axleType",axleType);
-            }else {
+            if (vehicleInfo!=null) {
                 String wheelId = result.getWheelId().toString();
                 String pos = wheelInfo.getAxlePosition();
                 if ("1".equals(pos)){
                     vehicleDao.addAxleIn1(wheelId,vehicleNum);
-                    redisTemplate.opsForHash().put(vehicleNum,"axleIn1",wheelId);
                 }else if("2".equals(pos)){
                     vehicleDao.addAxleIn2(wheelId,vehicleNum);
-                    redisTemplate.opsForHash().put(vehicleNum,"axleIn2",wheelId);
                 }else if("3".equals(pos)){
                     vehicleDao.addAxleIn3(wheelId,vehicleNum);
-                    redisTemplate.opsForHash().put(vehicleNum,"axleIn3",wheelId);
                 }else if("4".equals(pos)){
                     vehicleDao.addAxleIn4(wheelId,vehicleNum);
-                    vehicleDao.prepareVehicle(vehicleNum);
-                    redisTemplate.opsForHash().put(vehicleNum,"axleIn4",wheelId);
                 }else {
 
                 }
@@ -125,6 +152,14 @@ public class WheelTakeInController {
             return new Result(null,"查询失败",100);
         }
          return new Result(list,"查询成功",100);
+    }
+    @RequestMapping("/today")
+    @ResponseBody
+    public Result getToday(){
+        String date = this.dateFormater2.format(new Date());
+        List<WheelInfo> list = null;
+        list = wheelDao.findTodayWheelInfo(date);
+        return new Result(list,"查询成功",100);
     }
     @RequestMapping("/modify")
     @ResponseBody

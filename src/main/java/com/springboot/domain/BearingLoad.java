@@ -104,6 +104,9 @@ public class BearingLoad implements Serializable {
     private  String repairSaved;
     private  String neckFootDiameterLeftAvg ;
     private  String neckFootDiameterRightAvg ;
+    private  String neckMeasureWorker;
+    private  String isneckMeasureFinish;
+    private  String neckMeasureFinishTime;
 
     public BearingLoad() {
     }
@@ -290,6 +293,30 @@ public class BearingLoad implements Serializable {
 
     public void setAxleNeckDiameterLeftAvg(String axleNeckDiameterLeftAvg) {
         this.axleNeckDiameterLeftAvg = axleNeckDiameterLeftAvg;
+    }
+
+    public String getNeckMeasureWorker() {
+        return neckMeasureWorker;
+    }
+
+    public void setNeckMeasureWorker(String neckMeasureWorker) {
+        this.neckMeasureWorker = neckMeasureWorker;
+    }
+
+    public String getIsneckMeasureFinish() {
+        return isneckMeasureFinish;
+    }
+
+    public void setIsneckMeasureFinish(String isneckMeasureFinish) {
+        this.isneckMeasureFinish = isneckMeasureFinish;
+    }
+
+    public String getNeckMeasureFinishTime() {
+        return neckMeasureFinishTime;
+    }
+
+    public void setNeckMeasureFinishTime(String neckMeasureFinishTime) {
+        this.neckMeasureFinishTime = neckMeasureFinishTime;
     }
 
     public String getAxleNeckDiameterRightAvg() {
@@ -866,5 +893,109 @@ public class BearingLoad implements Serializable {
 
     public void setNeckFootDiameterRightAvg(String neckFootDiameterRightAvg) {
         this.neckFootDiameterRightAvg = neckFootDiameterRightAvg;
+    }
+
+    @Override
+    public String toString() {
+        return "BearingLoad{" +
+                "id=" + id +
+                ", wheelId=" + wheelId +
+                ", axleNeckDiameterLeftA1='" + axleNeckDiameterLeftA1 + '\'' +
+                ", axleNeckDiameterLeftA2='" + axleNeckDiameterLeftA2 + '\'' +
+                ", axleNeckDiameterLeftA3='" + axleNeckDiameterLeftA3 + '\'' +
+                ", axleNeckDiameterLeftB1='" + axleNeckDiameterLeftB1 + '\'' +
+                ", axleNeckDiameterLeftB2='" + axleNeckDiameterLeftB2 + '\'' +
+                ", axleNeckDiameterLeftB3='" + axleNeckDiameterLeftB3 + '\'' +
+                ", axleNeckDiameterRightA1='" + axleNeckDiameterRightA1 + '\'' +
+                ", axleNeckDiameterRightA2='" + axleNeckDiameterRightA2 + '\'' +
+                ", axleNeckDiameterRightA3='" + axleNeckDiameterRightA3 + '\'' +
+                ", axleNeckDiameterRightB1='" + axleNeckDiameterRightB1 + '\'' +
+                ", axleNeckDiameterRightB2='" + axleNeckDiameterRightB2 + '\'' +
+                ", axleNeckDiameterRightB3='" + axleNeckDiameterRightB3 + '\'' +
+                ", axleNeckRoundnessLeftA='" + axleNeckRoundnessLeftA + '\'' +
+                ", axleNeckRoundnessLeftB='" + axleNeckRoundnessLeftB + '\'' +
+                ", axleNeckRoundnessRightA='" + axleNeckRoundnessRightA + '\'' +
+                ", axleNeckRoundnessRightB='" + axleNeckRoundnessRightB + '\'' +
+                ", axleNeckDiameterLeftAvgA='" + axleNeckDiameterLeftAvgA + '\'' +
+                ", axleNeckDiameterLeftAvgB='" + axleNeckDiameterLeftAvgB + '\'' +
+                ", axleNeckDiameterRightAvgA='" + axleNeckDiameterRightAvgA + '\'' +
+                ", axleNeckDiameterRightAvgB='" + axleNeckDiameterRightAvgB + '\'' +
+                ", axleNeckDiameterLeftAvg='" + axleNeckDiameterLeftAvg + '\'' +
+                ", axleNeckDiameterRightAvg='" + axleNeckDiameterRightAvg + '\'' +
+                ", neckFootDiameterLeft1='" + neckFootDiameterLeft1 + '\'' +
+                ", neckFootDiameterLeft2='" + neckFootDiameterLeft2 + '\'' +
+                ", neckFootDiameterRight1='" + neckFootDiameterRight1 + '\'' +
+                ", neckFootDiameterRight2='" + neckFootDiameterRight2 + '\'' +
+                ", neckFootRoundnessLeft='" + neckFootRoundnessLeft + '\'' +
+                ", neckFootRoundnessRight='" + neckFootRoundnessRight + '\'' +
+                ", axleTypeLeft='" + axleTypeLeft + '\'' +
+                ", axleTypeRight='" + axleTypeRight + '\'' +
+                ", bearingInnerDiameterLeft='" + bearingInnerDiameterLeft + '\'' +
+                ", bearingInnerDiameterRight='" + bearingInnerDiameterRight + '\'' +
+                ", sealDiameterLeft='" + sealDiameterLeft + '\'' +
+                ", sealDiameterRight='" + sealDiameterRight + '\'' +
+                ", backerInnerDiameterLeft='" + backerInnerDiameterLeft + '\'' +
+                ", backerInnerDiameterRight='" + backerInnerDiameterRight + '\'' +
+                ", backerRoundnessLeft='" + backerRoundnessLeft + '\'' +
+                ", backerRoundnessRight='" + backerRoundnessRight + '\'' +
+                ", fitBearing2NeckLeft='" + fitBearing2NeckLeft + '\'' +
+                ", fitSeal2NeckLeft='" + fitSeal2NeckLeft + '\'' +
+                ", fitSeal2BackerLeft='" + fitSeal2BackerLeft + '\'' +
+                ", fitBearing2NeckRight='" + fitBearing2NeckRight + '\'' +
+                ", fitSeal2NeckRight='" + fitSeal2NeckRight + '\'' +
+                ", fitSeal2BackerRight='" + fitSeal2BackerRight + '\'' +
+                ", maxPressureLeft='" + maxPressureLeft + '\'' +
+                ", maxPressureRight='" + maxPressureRight + '\'' +
+                ", finalPressureLeft='" + finalPressureLeft + '\'' +
+                ", finalPressureRight='" + finalPressureRight + '\'' +
+                ", axleGapLeft='" + axleGapLeft + '\'' +
+                ", axleGapRight='" + axleGapRight + '\'' +
+                ", bearingAssemble1stLeft='" + bearingAssemble1stLeft + '\'' +
+                ", bearingLevelLeft='" + bearingLevelLeft + '\'' +
+                ", bearingmadeInLeft='" + bearingmadeInLeft + '\'' +
+                ", wheelAssemble1st='" + wheelAssemble1st + '\'' +
+                ", axleNumber='" + axleNumber + '\'' +
+                ", bearingAssembleLeft='" + bearingAssembleLeft + '\'' +
+                ", axleMadeDate='" + axleMadeDate + '\'' +
+                ", axleMaterial='" + axleMaterial + '\'' +
+                ", axleMadeIn='" + axleMadeIn + '\'' +
+                ", bearingAssembleInLeft='" + bearingAssembleInLeft + '\'' +
+                ", repairLevelLeft='" + repairLevelLeft + '\'' +
+                ", bearingAssemble1stRight='" + bearingAssemble1stRight + '\'' +
+                ", bearingLevelRight='" + bearingLevelRight + '\'' +
+                ", bearingmadeInRight='" + bearingmadeInRight + '\'' +
+                ", wheelAssemblelast='" + wheelAssemblelast + '\'' +
+                ", wheelAssembleIn='" + wheelAssembleIn + '\'' +
+                ", bearingAssembleRight='" + bearingAssembleRight + '\'' +
+                ", bearingAssembleInRight='" + bearingAssembleInRight + '\'' +
+                ", repairLevelRight='" + repairLevelRight + '\'' +
+                ", sealMarkLeft='" + sealMarkLeft + '\'' +
+                ", sealMarkRight='" + sealMarkRight + '\'' +
+                ", envTemperatureLeft='" + envTemperatureLeft + '\'' +
+                ", envTemperatureRight='" + envTemperatureRight + '\'' +
+                ", temperatureRiseLeft='" + temperatureRiseLeft + '\'' +
+                ", temperatureRiseRight='" + temperatureRiseRight + '\'' +
+                ", highestTempLeft='" + highestTempLeft + '\'' +
+                ", highestTempRight='" + highestTempRight + '\'' +
+                ", matcherLeft='" + matcherLeft + '\'' +
+                ", worker='" + worker + '\'' +
+                ", caperLeft='" + caperLeft + '\'' +
+                ", matcherRight='" + matcherRight + '\'' +
+                ", loaderLeft='" + loaderLeft + '\'' +
+                ", loaderRight='" + loaderRight + '\'' +
+                ", caperRight='" + caperRight + '\'' +
+                ", foreMan='" + foreMan + '\'' +
+                ", qualityInspector='" + qualityInspector + '\'' +
+                ", Inspector='" + Inspector + '\'' +
+                ", isFinish='" + isFinish + '\'' +
+                ", finishTime='" + finishTime + '\'' +
+                ", repairProgress='" + repairProgress + '\'' +
+                ", repairSaved='" + repairSaved + '\'' +
+                ", neckFootDiameterLeftAvg='" + neckFootDiameterLeftAvg + '\'' +
+                ", neckFootDiameterRightAvg='" + neckFootDiameterRightAvg + '\'' +
+                ", neckMeasureWorker='" + neckMeasureWorker + '\'' +
+                ", isneckMeasureFinish='" + isneckMeasureFinish + '\'' +
+                ", neckMeasureFinishTime='" + neckMeasureFinishTime + '\'' +
+                '}';
     }
 }

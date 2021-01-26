@@ -28,6 +28,8 @@ public class AxleInspection implements Serializable {
     private String	reultisFinish	;
     private String	reultfinishTime	;
     private String	reultInspector	;
+    private String  repairProcess;
+    private String  discardReason;
 
     public AxleInspection() {
     }
@@ -222,5 +224,51 @@ public class AxleInspection implements Serializable {
 
     public void setReultInspector(String reultInspector) {
         this.reultInspector = reultInspector;
+    }
+
+    public String getRepairProcess() {
+        return repairProcess;
+    }
+
+    public void setRepairProcess(String repairProcess) {
+        this.repairProcess = repairProcess;
+    }
+
+    public String getDiscardReason() {
+        return discardReason;
+    }
+
+    public void setDiscardReason(String discardReason) {
+        this.discardReason = discardReason;
+    }
+
+    @Override
+    public String toString() {
+        return "AxleInspection{" +
+                "id=" + id +
+                ", wheelId=" + wheelId +
+                ", magAxleBody='" + magAxleBody + '\'' +
+                ", magtAxleNeckLeft='" + magtAxleNeckLeft + '\'' +
+                ", magAxleNeckRight='" + magAxleNeckRight + '\'' +
+                ", ultAxleLeft='" + ultAxleLeft + '\'' +
+                ", ultAxleRight='" + ultAxleRight + '\'' +
+                ", reultAxleLeft='" + reultAxleLeft + '\'' +
+                ", reultAxleRight='" + reultAxleRight + '\'' +
+                ", ultAxleFootLeft='" + ultAxleFootLeft + '\'' +
+                ", ultAxleFootRight='" + ultAxleFootRight + '\'' +
+                ", ultAxleNeckLeft='" + ultAxleNeckLeft + '\'' +
+                ", ultAxleNeckRight='" + ultAxleNeckRight + '\'' +
+                ", reultAxleNeckLeft='" + reultAxleNeckLeft + '\'' +
+                ", reultAxleNeckRight='" + reultAxleNeckRight + '\'' +
+                ", magInspector='" + magInspector + '\'' +
+                ", magisFinish='" + magisFinish + '\'' +
+                ", magfinishTime='" + magfinishTime + '\'' +
+                ", ultisFinish='" + ultisFinish + '\'' +
+                ", ultfinishTime='" + ultfinishTime + '\'' +
+                ", worker='" + worker + '\'' +
+                ", reultisFinish='" + reultisFinish + '\'' +
+                ", reultfinishTime='" + reultfinishTime + '\'' +
+                ", reultInspector='" + reultInspector + '\'' +
+                '}';
     }
 }

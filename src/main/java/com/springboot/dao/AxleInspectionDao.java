@@ -45,4 +45,10 @@ public interface AxleInspectionDao {
     void flushWheelInfoMagInspectionFinish(Integer wheelId);
     void rollbackWheelInfoMagInspectionFinish(Integer wheelId);
 
+    void insertReInspection(AxleInspection axleInspection);
+    void updateReInspection(AxleInspection axleInspection);
+
+    void flushWheelInfoReInspectionFinish(Integer wheelId);
+    void rollbackWheelInfoReInspectionFinish(Integer wheelId);
+
 }

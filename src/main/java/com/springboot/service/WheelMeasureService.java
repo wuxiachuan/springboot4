@@ -14,4 +14,5 @@ public interface WheelMeasureService {
     void deleteWheelMeasure(String wheelId);
     void flushWheelInfo(WheelMeasure wheelMeasure);
     List<WheelInfo> searchWheelInfoMeasure(SearchWheelParam param);
+    void discardWheel(Integer wheelId,String reason);
 }

@@ -33,15 +33,7 @@ public class AxleInspectionController {
         axleInspection.setUltfinishTime(dateFormater.format(new Date()));
         axleInspection.setReultfinishTime(dateFormater.format(new Date()));
         axleInspectionService.addAxleInspection(axleInspection);
-
-        WheelInfo wheelInfo = wheelDao.findWheelInfoById(axleInspection.getWheelId());
-        if("0".equals(wheelInfo.getIsWheelRoundingFinish())){
-            redisTemplate.opsForSet().add("preWheelRounding",wheelInfo.getWheelId());
-        }else if("1".equals(wheelInfo.getIsbearingLoadFinish())||"2".equals(wheelInfo.getIsbearingLoadFinish())||"3".equals(wheelInfo.getIsbearingLoadFinish())){
-            redisTemplate.opsForSet().add("preBearingLoad",wheelInfo.getWheelId());
-        }else {
-            redisTemplate.opsForSet().add("preBearingrollTest",wheelInfo.getWheelId());
-        }
+        redisTemplate.opsForSet().add("preReInspection",axleInspection.getWheelId());
         return new Result(axleInspection,"添加成功",100);
     }
 
@@ -86,7 +78,9 @@ public class AxleInspectionController {
         Set<Integer> set = redisTemplate.opsForSet().members("preAxleInspection");
         for (Integer id:set){
             WheelInfo wheelInfo = wheelDao.findWheelInfoById(id);
-            wheelInfoList.add(wheelInfo);
+            if (wheelInfo!=null){
+                wheelInfoList.add(wheelInfo);
+            }
         }
         return new Result(wheelInfoList,"添加成功",100);
     }

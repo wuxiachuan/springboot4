@@ -3,6 +3,7 @@ package com.springboot.service;
 import com.springboot.dao.BearingRepairDao;
 import com.springboot.dao.WheelDao;
 import com.springboot.domain.BearingRepair;
+import com.springboot.domain.BearingUnCap;
 import com.springboot.domain.SearchWheelParam;
 import com.springboot.domain.WheelInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,16 @@ public class BearingRepairServiceImp implements BearingRepairService{
     @Override
     public BearingRepair addBearingRepair(BearingRepair bearingRepair) {
 
-        Integer count =  bearingRepairDao.findWheelIdCount(bearingRepair.getWheelId());
-        if (count == 1){
-            updateBearingRepair(bearingRepair);
-        }else{
-            bearingRepairDao.insertBearingRepair(bearingRepair);
-        }
+//        Integer count =  bearingRepairDao.findWheelIdCount(bearingRepair.getWheelId());
+//        if (count == 1){
+//            updateBearingRepair(bearingRepair);
+//        }else{
+//            bearingRepairDao.insertBearingRepair(bearingRepair);
+//        }
+//        bearingRepairDao.flushWheelInfoRepairFinish(bearingRepair.getWheelId());
+//        flushWheelInfo(bearingRepair);
+        bearingRepairDao.insertBearingRepair(bearingRepair);
         bearingRepairDao.flushWheelInfoRepairFinish(bearingRepair.getWheelId());
-        flushWheelInfo(bearingRepair);
         return bearingRepair;
     }
 
@@ -57,6 +60,12 @@ public class BearingRepairServiceImp implements BearingRepairService{
                 param.getAxleNumber(),param.getVehicleNumber(),
                 param.getInfoTakeFinishTimeFrom(),
                 param.getInfoTakeFinishTimeTo());
+    }
+
+    @Override
+    public void addBearingUnCap(BearingUnCap bearingUnCap) {
+        bearingRepairDao.updateBearingUnCap(bearingUnCap);
+        wheelDao.setWheelInfobearingUnCapFinish(bearingUnCap.getWheelId());
     }
 
     @Override

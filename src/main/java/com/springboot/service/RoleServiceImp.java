@@ -62,15 +62,21 @@ public class RoleServiceImp implements RoleService{
         List<Menu> wheelsub = new ArrayList<>();
         wheelsub.add(information);
         wheelsub.add(measure);
-        wheelsub.add(repairProcess);
+//        wheelsub.add(repairProcess);
         Menu wheelTakein = new Menu(300,"轮对收入","",wheelsub);
 
         Menu appearanceInspection= new Menu(401,"外观检查","/appearanceInspection",null);
-        Menu bearingLoad = new Menu(402,"轴承压装","/load",null);
-        Menu bearingCap = new Menu(403,"轴承关盖","/capping",null);
-        Menu bearingTest = new Menu(404,"轴承磨合","/rollTest",null);
+        Menu bearingUnCap = new Menu(402,"轴承开盖","/uncap",null);
+        Menu bearingUnLoad = new Menu(403,"轴承退卸","/unload",null);
+        Menu bearingNeck = new Menu(404,"轴颈测量","/neckDiameter",null);
+        Menu bearingLoad = new Menu(406,"轴承压装","/load",null);
+        Menu bearingCap = new Menu(407,"轴承关盖","/capping",null);
+        Menu bearingTest = new Menu(408,"轴承磨合","/rollTest",null);
         List<Menu> bearingRepairsub = new ArrayList<>();
         bearingRepairsub.add(appearanceInspection);
+        bearingRepairsub.add(bearingUnCap);
+        bearingRepairsub.add(bearingUnLoad);
+        bearingRepairsub.add(bearingNeck);
         bearingRepairsub.add(bearingLoad);
         bearingRepairsub.add(bearingCap);
         bearingRepairsub.add(bearingTest);
@@ -81,10 +87,12 @@ public class RoleServiceImp implements RoleService{
         wheelRoundingsub.add(wheelRounding);
         Menu wheelRound = new Menu(500,"车轮旋面","",wheelRoundingsub);
 
-        Menu magneticInspection= new Menu(601,"磁粉探伤","/magneticInspection",null);
-        Menu ultrasonicInspection= new Menu(602,"超声波探伤","/ultrasonicInspection",null);
-        Menu reinspection= new Menu(603,"人工复探","/reinspection",null);
+        Menu wheelpolish= new Menu(601,"轮对除锈","/wheelpolish",null);
+        Menu magneticInspection= new Menu(602,"磁粉探伤","/magneticInspection",null);
+        Menu ultrasonicInspection= new Menu(603,"超声波探伤","/ultrasonicInspection",null);
+        Menu reinspection= new Menu(604,"人工复探","/reinspection",null);
         List<Menu> inspectionsub = new ArrayList<>();
+        inspectionsub.add(wheelpolish);
         inspectionsub.add(magneticInspection);
         inspectionsub.add(ultrasonicInspection);
         inspectionsub.add(reinspection);
@@ -117,15 +125,19 @@ public class RoleServiceImp implements RoleService{
         managesub.add(sheet);
         Menu manage = new Menu(900,"综合管理","",managesub);
 
-
+        Menu plan= new Menu(1001,"制定计划","/planMaking",null);
+        List<Menu> plansub = new ArrayList<>();
+        plansub.add(plan);
+        Menu planmaking = new Menu(1000,"生产计划","",plansub);
 
         List<Menu> menus = new ArrayList<>();
         menus.add(usermanage);
         menus.add(rightmanage);
+        menus.add(planmaking);
         menus.add(wheelTakein);
-        menus.add(wheelRound);
         menus.add(bearingRepair);
         menus.add(inspection);
+        menus.add(wheelRound);
         menus.add(wheelDispatch);
         menus.add(quality);
         menus.add(manage);

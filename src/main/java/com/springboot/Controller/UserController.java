@@ -123,10 +123,12 @@ public class UserController {
             PageHelper.startPage(page,size);
             List<UserInfo> list =  new ArrayList<>();
             for (String name : set){
-                UserInfo userInfo = userService.findUserByName(name);
-                userInfo = userServiceImp.appendMobileLogInfo(userInfo);
-                userInfo.setIsOnline("1");
-                list.add(userInfo);
+                List<UserInfo> userInfos = userService.findUserByName(name);
+                for(UserInfo userInfo : userInfos){
+                    userInfo = userServiceImp.appendMobileLogInfo(userInfo);
+                    userInfo.setIsOnline("1");
+                    list.add(userInfo);
+                }
             }
             if (list != null){
                 PageInfo pageInfo = new PageInfo(list);
@@ -196,7 +198,9 @@ public class UserController {
     @ResponseBody
     public Result searchusers(@RequestBody Map<String,Object> map){
         String username = (String) map.get("username");
-        UserInfo userInfo =  userService.findUserByName(username);
+        System.out.println(username);
+        List<UserInfo> userInfo =  userService.findUserByName(username);
+        System.out.println(userInfo);
         if (userInfo != null){
             return new Result(userInfo,"用户查询成功",100);
         }

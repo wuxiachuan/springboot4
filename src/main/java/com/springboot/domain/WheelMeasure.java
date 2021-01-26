@@ -21,6 +21,7 @@ public class WheelMeasure implements Serializable {
     private String  internalDistance3;
     private String  problem;
     private String  repairProcess;
+    private String  discardReason;
     private String  worker;
     private String  isFinish;
     private String  finishTime;
@@ -194,6 +195,14 @@ public class WheelMeasure implements Serializable {
 
     public void setFinishTime(String finishTime) {
         this.finishTime = finishTime;
+    }
+
+    public String getDiscardReason() {
+        return discardReason;
+    }
+
+    public void setDiscardReason(String discardReason) {
+        this.discardReason = discardReason;
     }
 
     @Override

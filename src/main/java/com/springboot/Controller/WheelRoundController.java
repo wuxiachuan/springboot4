@@ -3,6 +3,7 @@ package com.springboot.Controller;
 import com.springboot.dao.WheelDao;
 import com.springboot.dao.WheelRoundDao;
 import com.springboot.domain.*;
+import com.springboot.service.WheelMeasureService;
 import com.springboot.service.WheelRoundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,6 +19,8 @@ import java.util.*;
 @RequestMapping("/wheelRound")
 public class WheelRoundController {
     @Autowired
+    private WheelMeasureService wheelMeasureService;
+    @Autowired
     private WheelRoundDao wheelRoundDao;
     @Autowired
     private WheelRoundService wheelRoundService;
@@ -31,10 +34,16 @@ public class WheelRoundController {
     @ResponseBody
     public Result addbearingCap(@RequestBody WheelRound wheelRound){
         wheelRound.setFinishTime(dateFormater.format(new Date()));
+        String repairProcess = wheelRound.getRepairProcess();
+        if (repairProcess.equals("1")){
+            //送厂
+            wheelMeasureService.discardWheel(wheelRound.getWheelId(),wheelRound.getDiscardReason());
+            return new Result(wheelRound,"添加成功",100);
+        }
         wheelRoundService.addWheelRound(wheelRound);
         WheelInfo wheelInfo = wheelDao.findWheelInfoById(wheelRound.getWheelId());
-        if("1".equals(wheelInfo.getIsbearingLoadFinish())||"2".equals(wheelInfo.getIsbearingLoadFinish())||"3".equals(wheelInfo.getIsbearingLoadFinish())){
-            redisTemplate.opsForSet().add("preBearingLoad",wheelInfo.getWheelId());
+        if("2".equals(wheelInfo.getIsbearingLoadFinish())||"3".equals(wheelInfo.getIsbearingLoadFinish())||"5".equals(wheelInfo.getIsbearingLoadFinish())){
+            redisTemplate.opsForSet().add("preNeckMeasure",wheelInfo.getWheelId());
         }else {
             redisTemplate.opsForSet().add("preBearingrCap",wheelInfo.getWheelId());
         }
@@ -75,7 +84,9 @@ public class WheelRoundController {
         Set<Integer> set = redisTemplate.opsForSet().members("preWheelRounding");
         for (Integer id:set){
             WheelInfo wheelInfo = wheelDao.findWheelInfoById(id);
-            wheelInfoList.add(wheelInfo);
+            if (wheelInfo!=null){
+                wheelInfoList.add(wheelInfo);
+            }
         }
         return new Result(wheelInfoList,"添加成功",100);
     }

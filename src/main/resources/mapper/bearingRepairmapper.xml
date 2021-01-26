@@ -138,6 +138,18 @@
                     repairProgressRight=#{repairProgressRight}
                     where wheelId=#{wheelId}
     </update>
+
+    <update id="updateBearingUnCap" parameterType="BearingUnCap">
+        update bearingRepair set
+                    uncapReasonLeft=#{unCapReasonLeft},
+                    uncapReasonRight=#{unCapReasonRight},
+                    unCapperLeft=#{unCapperLeft},
+                    unCapperRight=#{unCapperRight},
+                    unCapDateLeft=#{unCapDateLeft},
+                    unCapDateRight=#{unCapDateRight}
+                    where wheelId=#{wheelId}
+    </update>
+
     <update id="flushWheelInfoRepairFinish" parameterType="int">
         UPDATE wheelinfo SET isbearingRepairFinish = '1' where wheelId = #{wheelId}
     </update>
