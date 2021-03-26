@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
+//@Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
     @Bean
     public WheelInterceptor getWheelInterceptor(){
@@ -25,8 +25,10 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 "/**/*.woff",
                 "/**/*.ttf",
                 "/userManage/login",     //登录路径
+                "/userManage/getRights",     //获取权限
                 "/mob/login",                 //移动端访问登录
-                "/wheelqrcode/**"
+                "/wheelqrcode/**",       //二维码
+                "brocast/**"
         );
     }
 }

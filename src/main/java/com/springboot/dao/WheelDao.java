@@ -64,8 +64,14 @@ public interface WheelDao {
                                              //车轮制造单位
                                              @Param("dispatchDate") String dispatchDate);
     void robackWheelInfoMeasureFinish(Integer wheelId);
+    void finishWheelInfoMeasure(Integer wheelId);
+    void rollbackWheelInfobearingUnCapFinish(Integer wheelId);
+    void finishWheelInfobearingUnCap(Integer wheelId);
+    void finishWheelInfobearingUnLoad(Integer wheelId);
     void rollbackWheelInfoMagInspectionFinish(Integer wheelId);
+    void finishWheelInfoMagInspection(Integer wheelId);
     void rollbackWheelInfoAxleInspectionFinish(Integer wheelId);
+    void finishWheelInfoAxleInspection(Integer wheelId);
     void rollbackWheelInfoWheelRoundingFinish(Integer wheelId);
     void rollbackWheelInfoRepairFinish(Integer wheelId);
     void rollbackWheelInfoisbearingLoadFinish(Integer wheelId);
@@ -76,6 +82,8 @@ public interface WheelDao {
     void rollbackWheelInfoqualityInspectionFinish(Integer wheelId);
     void rollbackWheelInfoverifyFinish(Integer wheelId);
     void rollbackWheelInfoprocessFinish(Integer wheelId);
+    void finishWheelInfoisbearingNeck(Integer wheelId);
+    void finishWheelInfoisbearingLoad(Integer wheelId);
 
     void setWheelInfoAxleInspectionFinish(Integer wheelId);
     void setWheelInfoMagInspectionFinish(Integer wheelId);
@@ -85,6 +93,10 @@ public interface WheelDao {
     void setWheelInfoisbearingUnLoadFinish(@Param("wheelId") Integer wheelId,@Param("flag") String flag);
     void setWheelInfobearingCapFinish(Integer wheelId);
     void setWheelInfobearingUnCapFinish(Integer wheelId);
+
+
+
+
 
     List<WheelInfo> findWheelMeasure();
     List<WheelInfo> findBearingRepair();

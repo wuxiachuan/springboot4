@@ -31,11 +31,13 @@ public class WheelInterceptor implements HandlerInterceptor {
         if (name == null) {
             return false;
         }
+        //是否为手机访问
         Boolean ismobile = false;
         if ("mobile".equals(terminal)){
             ismobile = true;
         }
         if (ismobile){
+            //记录登录日志
             String ipaddr = request.getRemoteAddr();
             redisTemplate.opsForHash().putIfAbsent(name+"mobtoken","ip",ipaddr);
             redisTemplate.opsForList().leftPush(name+"moblog",url+"="+dateFormater.format(new Date())+"="+ipaddr);

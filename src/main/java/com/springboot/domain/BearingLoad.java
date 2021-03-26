@@ -107,6 +107,8 @@ public class BearingLoad implements Serializable {
     private  String neckMeasureWorker;
     private  String isneckMeasureFinish;
     private  String neckMeasureFinishTime;
+    private  String axleNeckRoundnessRight;
+    private  String axleNeckRoundnessLeft;
 
     public BearingLoad() {
     }
@@ -893,6 +895,22 @@ public class BearingLoad implements Serializable {
 
     public void setNeckFootDiameterRightAvg(String neckFootDiameterRightAvg) {
         this.neckFootDiameterRightAvg = neckFootDiameterRightAvg;
+    }
+
+    public String getAxleNeckRoundnessRight() {
+        return axleNeckRoundnessRight;
+    }
+
+    public void setAxleNeckRoundnessRight(String axleNeckRoundnessRight) {
+        this.axleNeckRoundnessRight = axleNeckRoundnessRight;
+    }
+
+    public String getAxleNeckRoundnessLeft() {
+        return axleNeckRoundnessLeft;
+    }
+
+    public void setAxleNeckRoundnessLeft(String axleNeckRoundnessLeft) {
+        this.axleNeckRoundnessLeft = axleNeckRoundnessLeft;
     }
 
     @Override

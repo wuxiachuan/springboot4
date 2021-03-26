@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface BearingLoadDao {
-    void insertBearingLoad(BearingLoad bearingLoad);
+    void updateBearingNeckMeasure(BearingLoad bearingLoad);
     void updateBearingLoad(BearingLoad bearingLoad);
     void addBearingNeckMeasure(BearingLoad bearingLoad);
     void addBearingLoad(BearingLoad bearingLoad);

@@ -8,7 +8,6 @@ public class Role implements Serializable {
     private String roleName;
     private String roleDesc;
     private List<Right> rights;
-    private List<UserInfo> users;
 
     public Role() {
     }
@@ -45,14 +44,6 @@ public class Role implements Serializable {
         this.rights = rights;
     }
 
-    public List<UserInfo> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<UserInfo> users) {
-        this.users = users;
-    }
-
     @Override
     public String toString() {
         return "Role{" +
@@ -60,7 +51,6 @@ public class Role implements Serializable {
                 ", roleName='" + roleName + '\'' +
                 ", roleDesc='" + roleDesc + '\'' +
                 ", rights=" + rights +
-                ", users=" + users +
                 '}';
     }
 }

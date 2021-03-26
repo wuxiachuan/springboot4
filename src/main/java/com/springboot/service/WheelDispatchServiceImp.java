@@ -269,6 +269,7 @@ public class WheelDispatchServiceImp implements WheelDispatchService{
                 vehicleInfo.setAxleOut4(id4.toString());
 
                 vehicleInfo.setAxleOut(axleOut);
+                //匹配标记
                 setChooseMark(id1,id2,id3,id4);
             }else {
                 vehicleInfo.setAxleOut(null);

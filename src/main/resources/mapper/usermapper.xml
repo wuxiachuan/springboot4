@@ -18,7 +18,6 @@
         <id property="id" column="id"/>
         <result property="roleName" column="roleName"/>
         <result property="roleDesc" column="roleDesc"/>
-        <collection property="users" column="id" select="findUserByRoleId"/>
         <collection property="rights" column="id" select="findRightByRoleId"/>
     </resultMap>
     <!--    获取原始role-right表-->

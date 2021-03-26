@@ -59,17 +59,22 @@ public class WheelTakeInController {
             wheelInfo.setIsWheelRoundingFinish("0");
             wheelInfo.setIsbearingUnCapFinish("0");
             wheelInfo.setIsbearingCapFinish("0");
+            wheelInfo.setDiscardReason("");
         }else if(repairWay.equals("4")){
             //超探
             wheelInfo.setIsaxleInspectionFinish("0");
+            wheelInfo.setIsreInspectionFinish("0");
             wheelInfo.setIsbearingUnCapFinish("0");
             wheelInfo.setIsbearingCapFinish("0");
+            wheelInfo.setDiscardReason("");
         }else if(repairWay.equals("6")){
             //旋面，超探
             wheelInfo.setIsWheelRoundingFinish("0");
             wheelInfo.setIsaxleInspectionFinish("0");
+            wheelInfo.setIsreInspectionFinish("0");
             wheelInfo.setIsbearingUnCapFinish("0");
             wheelInfo.setIsbearingCapFinish("0");
+            wheelInfo.setDiscardReason("");
         }else {
 
         }
@@ -225,16 +230,14 @@ public class WheelTakeInController {
     @RequestMapping("/getQRcode")
     @ResponseBody
     public Result generateQRcode(String id){
-        String path = null;
-        path = qRcodeDao.findQRcode(Integer.parseInt(id));
+        String path = qRcodeDao.findQRcode(Integer.parseInt(id));
         try {
             if (path == null){
                 path = wheelService.generateQRcode(id);
             }
         } catch (Exception exception) {
-            exception.printStackTrace();
-            return new Result(null,"二维码生成",101);
+            return new Result(null,"二维码获取失败",101);
         }
-        return new Result(path,"二维码生成",100);
+        return new Result(path,"获取二维码",100);
     }
 }

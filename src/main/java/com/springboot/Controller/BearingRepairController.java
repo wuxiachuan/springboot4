@@ -41,19 +41,10 @@ public class BearingRepairController {
 
         }else if (!"0".equals(repairProgressLeft)&&"0".equals(repairProgressRight)){
             wheelDao.setWheelInfoisbearingUnLoadFinish(bearingRepair.getWheelId(),"2");
-            wheelDao.setWheelInfoisbearingNeckFinish(bearingRepair.getWheelId(),"2");
-            wheelDao.setWheelInfoisbearingLoadFinish(bearingRepair.getWheelId(),"2");
-            wheelDao.setWheelInfobearingUnCapFinish(bearingRepair.getWheelId());
-        }else if(!"0".equals(repairProgressRight)&&!"0".equals(repairProgressLeft)){
+        }else if(!"0".equals(repairProgressRight)&&"0".equals(repairProgressLeft)){
             wheelDao.setWheelInfoisbearingUnLoadFinish(bearingRepair.getWheelId(),"3");
-            wheelDao.setWheelInfoisbearingNeckFinish(bearingRepair.getWheelId(),"3");
-            wheelDao.setWheelInfoisbearingLoadFinish(bearingRepair.getWheelId(),"3");
-            wheelDao.setWheelInfobearingUnCapFinish(bearingRepair.getWheelId());
         }else {
             wheelDao.setWheelInfoisbearingUnLoadFinish(bearingRepair.getWheelId(),"5");
-            wheelDao.setWheelInfoisbearingNeckFinish(bearingRepair.getWheelId(),"5");
-            wheelDao.setWheelInfoisbearingLoadFinish(bearingRepair.getWheelId(),"5");
-            wheelDao.setWheelInfobearingUnCapFinish(bearingRepair.getWheelId());
         }
 
         WheelInfo wheelInfo = wheelDao.findWheelInfoById(result.getWheelId());

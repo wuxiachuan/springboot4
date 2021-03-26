@@ -48,11 +48,13 @@ public class WheelServiceImp implements WheelService{
     public String generateQRcode(String wheelId) throws Exception {
         // 存放在二维码中的内容
         String text = wheelId;
+        //二维码名称
         String name = "QR"+wheelId+".jpg";
         // 生成的二维码的路径及名称
         String destPath = "I:/wheelqrcode/"+name;
         //生成二维码
         QRCodeUtil.encode(text,null, destPath, true);
+        //插入数据库
         qRcodeDao.insertQRcode(Integer.parseInt(wheelId),name,destPath);
         return name;
     }

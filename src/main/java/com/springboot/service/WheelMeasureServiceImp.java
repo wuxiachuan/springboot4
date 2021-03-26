@@ -23,7 +23,7 @@ public class WheelMeasureServiceImp implements WheelMeasureService{
     @Override
     public void addMeasure(WheelMeasure wheelMeasure) {
          measureDao.insertWheelMeasure(wheelMeasure);
-         measureDao.flushWheelInfoInspectionFinish(wheelMeasure.getWheelId());
+         measureDao.flushWheelInfoMeasureFinish(wheelMeasure.getWheelId());
     }
 
     @Override

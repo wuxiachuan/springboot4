@@ -65,7 +65,7 @@ public class BearingRepairServiceImp implements BearingRepairService{
     @Override
     public void addBearingUnCap(BearingUnCap bearingUnCap) {
         bearingRepairDao.updateBearingUnCap(bearingUnCap);
-        wheelDao.setWheelInfobearingUnCapFinish(bearingUnCap.getWheelId());
+        wheelDao.finishWheelInfobearingUnCap(bearingUnCap.getWheelId());
     }
 
     @Override

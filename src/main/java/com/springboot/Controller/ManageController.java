@@ -63,7 +63,7 @@ public class ManageController {
 
     @RequestMapping("/getWheelList")
     @ResponseBody
-    public Result getWheelMeasure(String name){
+    public Result getWheelList(String name){
         List<WheelInfo> data = null;
         try {
             data = manageService.findWheels(name);

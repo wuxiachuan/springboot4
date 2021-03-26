@@ -5,10 +5,29 @@
 <mapper namespace="com.springboot.dao.WheelDao">
     <insert id="insertWheelInfo" parameterType="WheelInfo" useGeneratedKeys="true" keyProperty="wheelId">
         INSERT INTO wheelinfo
-        (takeInDate,takeInDepot,takeInReason,vehicleType,vehicleNumber,axleNumber,axleType,axleMaterial,
-        axleMadeDate,axleMadeIn,wheelType,wheelMaterial,wheelMadeIn,wheelAssemblefirstDate,wheelAssemblefirstIn,
-        wheelAssemblelastDate,wheelAssemblelastIn,wheelMarkLeft,wheelMarkRight,worker,infoTakeFinish,
-        infoTakeFinishTime,axlePosition,
+        (takeInDate,
+        takeInDepot,
+        takeInReason,
+        vehicleType,
+        vehicleNumber,
+        axleNumber,
+        axleType,
+        axleMaterial,
+        axleMadeDate,
+        axleMadeIn,
+        wheelType,
+        wheelMaterial,
+        wheelMadeIn,
+        wheelAssemblefirstDate,
+        wheelAssemblefirstIn,
+        wheelAssemblelastDate,
+        wheelAssemblelastIn,
+        wheelMarkLeft,
+        wheelMarkRight,
+        worker,
+        infoTakeFinish,
+        infoTakeFinishTime,
+        axlePosition,
         isMeasureFinish,
         isbearingRepairFinish,
         isaxleInspectionFinish,
@@ -155,11 +174,29 @@
     <update id="robackWheelInfoMeasureFinish" parameterType="int">
         UPDATE wheelinfo SET isMeasureFinish = '0' where wheelId = #{wheelId}
     </update>
+    <update id="finishWheelInfoMeasure" parameterType="int">
+        UPDATE wheelinfo SET isMeasureFinish = '1' where wheelId = #{wheelId}
+    </update>
+    <update id="rollbackWheelInfobearingUnCapFinish" >
+        UPDATE wheelinfo SET isbearingUnCapFinish = '0' where wheelId = #{wheelId}
+    </update>
+    <update id="finishWheelInfobearingUnCap" >
+        UPDATE wheelinfo SET isbearingUnCapFinish = '1' where wheelId = #{wheelId}
+    </update>
+    <update id="finishWheelInfobearingUnLoad" >
+        UPDATE wheelinfo SET isbearingUnloadFinish = '1' where wheelId = #{wheelId}
+    </update>
     <update id="rollbackWheelInfoMagInspectionFinish" parameterType="int">
         UPDATE wheelinfo SET ismagnetInspectionFinish = '-1' where wheelId = #{wheelId}
     </update>
+    <update id="finishWheelInfoMagInspection" parameterType="int">
+        UPDATE wheelinfo SET ismagnetInspectionFinish = '1' where wheelId = #{wheelId}
+    </update>
     <update id="rollbackWheelInfoAxleInspectionFinish" parameterType="int">
         UPDATE wheelinfo SET isaxleInspectionFinish = '-1' where wheelId = #{wheelId}
+    </update>
+    <update id="finishWheelInfoAxleInspection" parameterType="int">
+        UPDATE wheelinfo SET isaxleInspectionFinish = '1' where wheelId = #{wheelId}
     </update>
     <update id="rollbackWheelInfoWheelRoundingFinish" parameterType="int">
         UPDATE wheelinfo SET isWheelRoundingFinish = '-1',isbearingCapFinishW = '-1',isbearingCapFinish = '-1'  where wheelId = #{wheelId}
@@ -191,6 +228,13 @@
     <update id="rollbackWheelInfoprocessFinish" parameterType="int">
         UPDATE wheelinfo SET isprocessFinish = '0' where wheelId = #{wheelId}
     </update>
+    <update id="finishWheelInfoisbearingNeck" >
+        UPDATE wheelinfo SET isbearingNeckFinish = '1' where wheelId = #{wheelId}
+    </update>
+    <update id="finishWheelInfoisbearingLoad" >
+        UPDATE wheelinfo SET isbearingLoadFinish = '1' where wheelId = #{wheelId}
+    </update>
+
 
 
     <update id="setWheelInfoAxleInspectionFinish" >

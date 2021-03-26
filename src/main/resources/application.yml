@@ -38,8 +38,8 @@ spring:
 #    initialization-mode: always
 
 server:
-  servlet:
-    context-path: /spt2
+#  servlet:
+#    context-path: /spt2
   port: 8081
 mybatis:
   mapper-locations: classpath:mapper/*mapper.xml

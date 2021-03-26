@@ -46,8 +46,10 @@ public class UserServiceImp implements UserService{
             redisTemplate.delete(oldtoken);
         }
 
-        Map<String,Object> resmap = getUserRightMap(user);
         String token = UUID.randomUUID().toString();
+        Map<String,Object> resmap = getUserRightMap(user,token);
+        resmap.put("userid",user.getId());
+        resmap.put("username",user.getUsername());
         resmap.put("token",token);
         String status = user.getStatus();
         redisTemplate.opsForValue().set(token,name);
@@ -72,10 +74,10 @@ public class UserServiceImp implements UserService{
             redisTemplate.delete(oldtoken);
         }
 
-        Map<String,Object> resmap = getUserRightMap(user);
+        String token = UUID.randomUUID().toString();
+        Map<String,Object> resmap = getUserRightMap(user,token);
         resmap.put("userid",user.getId());
         resmap.put("username",user.getUsername());
-        String token = UUID.randomUUID().toString();
         resmap.put("token",token);
         String status = user.getStatus();
         redisTemplate.opsForValue().set(token,name);
@@ -87,7 +89,7 @@ public class UserServiceImp implements UserService{
         return resmap;
     }
 
-    public Map<String,Object> getUserRightMap(UserInfo user){
+    public Map<String,Object> getUserRightMap(UserInfo user,String token){
         Map<String,Object> resmap = new HashMap<>();
         List<Right> rights = new ArrayList<>();
         List<Right> subrights = new ArrayList<>();
@@ -98,10 +100,15 @@ public class UserServiceImp implements UserService{
         }
         for (Right right : rights){
             rightsUrl.add(right.getUrl());
+            redisTemplate.opsForList().leftPush(token+"right",right.getUrl());
             subrights.addAll(right.getSubRight());
         }
+        subrightsUrl.add("/home");
+        subrightsUrl.add("/welcome");
+        subrightsUrl.add("/noright");
         for (Right right : subrights){
             subrightsUrl.add(right.getUrl());
+            redisTemplate.opsForList().leftPush(token+"right",right.getUrl());
         }
         resmap.put("rights",rightsUrl);
         resmap.put("subrights",subrightsUrl);

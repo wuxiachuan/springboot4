@@ -59,12 +59,16 @@ public class UserController {
     public UserInfo getbyid(Integer id){
         return userService.findUserById(id);
     }
+
+
+
     //登录
     @RequestMapping(value = "/login",produces = "application/json")
     @ResponseBody
     public Result logincheck(@RequestBody Map<String,Object> map){
         String name = (String) map.get("name");
         String password = (String) map.get("password");
+        System.out.println(name);
         Map<String,Object> resmap = userService.login(name,password);
         if (resmap==null){
             return new Result(null,"用户名或密码错误",101);
@@ -278,5 +282,16 @@ public class UserController {
             return new Result(null,"删除失败",101);
         }
         return new Result(null,"删除成功",100);
+    }
+    //获取用户权限
+    @RequestMapping("/getRights")
+    @ResponseBody
+    public Result getUsersRights(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        List<String> rights = redisTemplate.opsForList().range(token+"right",0,-1);
+        if (rights != null){
+            return new Result(rights,"用户获取成功",100);
+        }
+        return new Result(null,"用户获取失败",101);
     }
 }

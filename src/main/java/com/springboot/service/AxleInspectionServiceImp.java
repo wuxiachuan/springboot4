@@ -25,7 +25,7 @@ public class AxleInspectionServiceImp implements AxleInspectionService{
 //            axleInspectionDao.insertAxleInspection(axleInspection);
 //        }
 //        flushWheelInfoAxleInspection(axleInspection);
-        axleInspectionDao.insertAxleInspection(axleInspection);
+        axleInspectionDao.updateAxleInspection(axleInspection);
         flushWheelInfoAxleInspection(axleInspection);
     }
 
@@ -69,7 +69,7 @@ public class AxleInspectionServiceImp implements AxleInspectionService{
 //        }
 //        flushWheelInfoMagInspection(axleInspection);
         axleInspectionDao.insertMagInspection(axleInspection);
-        wheelDao.setWheelInfoAxleInspectionFinish(axleInspection.getWheelId());
+        wheelDao.finishWheelInfoMagInspection(axleInspection.getWheelId());
     }
 
     @Override

@@ -37,11 +37,15 @@ public class WheelMeasureController {
     public Result addMeasure(@RequestBody WheelMeasure wheelMeasure){
         wheelMeasure.setFinishTime(dateFormater.format(new Date()));
         String repairProcess = wheelMeasure.getRepairProcess();
-        if (repairProcess.equals("1")){
+        if (repairProcess.equals("0")){
             //送厂
             wheelMeasureService.discardWheel(wheelMeasure.getWheelId(),wheelMeasure.getDiscardReason());
-        }else{
+        }else if (repairProcess.equals("1")){
+            //旋面
             wheelDao.setWheelInfoWheelRoundingFinish(wheelMeasure.getWheelId());
+            wheelMeasureService.addMeasure(wheelMeasure);
+            redisTemplate.opsForSet().add("preBearingRepair",wheelMeasure.getWheelId());
+        }else {
             wheelMeasureService.addMeasure(wheelMeasure);
             redisTemplate.opsForSet().add("preBearingRepair",wheelMeasure.getWheelId());
         }

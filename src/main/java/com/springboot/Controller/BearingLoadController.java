@@ -136,7 +136,7 @@ public class BearingLoadController {
     public Result deleteBearingLoad(){
         BearingLoad bearingLoad = new BearingLoad();
         bearingLoad.setRepairProgress("222");
-        bearingLoadDao.insertBearingLoad(bearingLoad);
+        bearingLoadDao.addBearingLoad(bearingLoad);
         return new Result(bearingLoad,"删除成功",100);
     }
     @RequestMapping("/getoriginBearingNeckMeasure")

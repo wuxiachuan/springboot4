@@ -35,19 +35,19 @@ public class BearingLoadServiceImp implements BearingLoadService{
     @Override
     public void addBearingLoad(BearingLoad bearingLoad) {
          bearingLoadDao.addBearingLoad(bearingLoad);
-         wheelDao.setWheelInfoisbearingLoadFinish(bearingLoad.getWheelId(),"1");
+         wheelDao.finishWheelInfoisbearingLoad(bearingLoad.getWheelId());
     }
 
     @Override
     public void addBearingUnLoad(BearingUnLoad bearingUnLoad) {
         bearingUnLoadDao.insertBearingUnLoad(bearingUnLoad);
-        wheelDao.setWheelInfoisbearingUnLoadFinish(bearingUnLoad.getWheelId(),"1");
+        wheelDao.finishWheelInfobearingUnLoad(bearingUnLoad.getWheelId());
     }
 
     @Override
     public void addBearingNeckMeasure(BearingLoad bearingLoad) {
         bearingLoadDao.addBearingNeckMeasure(bearingLoad);
-        wheelDao.setWheelInfoisbearingNeckFinish(bearingLoad.getWheelId(),"1");
+        wheelDao.finishWheelInfoisbearingNeck(bearingLoad.getWheelId());
     }
 
     @Override
